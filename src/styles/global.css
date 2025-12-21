@@ -195,3 +195,6 @@
     @apply will-change-transform scale-110 w-full h-full object-cover block;
   }
 }
+
+/* Reliability: never hide native cursor */
+html, body { cursor: auto !important; }
