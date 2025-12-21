@@ -1,0 +1,128 @@
+---
+// src/Components/Blog/BlogFilters.astro
+import { blogCategories, type BlogCategory } from '../../data/blogData';
+
+interface Props {
+  activeCategory?: BlogCategory;
+}
+
+const { activeCategory = "tutti" } = Astro.props;
+const categories = Object.entries(blogCategories);
+---
+
+<div class="blog-filters">
+  <span class="filters-label">Filtra per:</span>
+  <div class="filters-buttons">
+    {categories.map(([key, label]) => (
+      <button 
+        class={`filter-btn ${activeCategory === key ? 'active' : ''}`}
+        data-category={key}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .blog-filters {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .filters-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--nova-muted);
+    font-weight: 600;
+  }
+  
+  .filters-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: var(--nova-text);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .filter-btn:hover {
+    border-color: var(--nova-accent);
+    color: var(--nova-accent);
+  }
+  
+  .filter-btn.active {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .blog-filters {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .filters-buttons {
+      width: 100%;
+    }
+    
+    .filter-btn {
+      flex: 1;
+      min-width: calc(50% - 0.5rem);
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  // Gestione filtri client-side
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const blogCards = document.querySelectorAll('.blog-card');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+      
+      // Update active state
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      // Filter cards
+      blogCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        
+        if (category === 'tutti' || cardCategory === category) {
+          card.style.display = 'flex';
+          // Fade in animation
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.3s ease';
+            card.style.opacity = '1';
+          }, 10);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+
+

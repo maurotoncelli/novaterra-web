@@ -1,0 +1,202 @@
+---
+// src/Components/Services/ServicesList.astro
+import { servicesIntro, servicesList } from '../../data/servicesData';
+---
+
+<div class="services-section">
+  <!-- Intro -->
+  <div class="services-intro">
+    <span class="subtitle">{servicesIntro.subtitle}</span>
+    <h2 class="section-title">{servicesIntro.title}</h2>
+  </div>
+  
+  <!-- Lista Servizi -->
+  <ul class="services-list">
+    {servicesList.map((service, index) => (
+      <li class="service-item">
+        <a href={service.slug} class="service-link">
+          <!-- Immagine Sinistra -->
+          <div class="service-image">
+            <img src={service.image} alt={service.title} loading="lazy" />
+          </div>
+          
+          <!-- Info Destra -->
+          <div class="service-info">
+            <div class="service-header">
+              <!-- Numerazione automatica: index + 1 -->
+              <span class="service-num">{String(index + 1).padStart(2, '0')}</span>
+              <span class="service-symbol">{service.symbol}</span>
+              <h3 class="service-title">{service.title}</h3>
+            </div>
+            <span class="service-arrow">DETTAGLI →</span>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .services-section {
+    width: 100%;
+    padding-bottom: 6rem;
+  }
+  
+  .services-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+  }
+  
+  .services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .service-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 180px; /* Altezza ridotta */
+  }
+  
+  .service-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .service-link {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    gap: 0;
+    text-decoration: none;
+    color: var(--nova-text);
+    height: 100%;
+    align-items: stretch;
+  }
+  
+  /* Immagine Sinistra */
+  .service-image {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 180px; /* Altezza ridotta */
+  }
+  
+  .service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+  }
+  
+  .service-item:hover .service-image img {
+    transform: scale(1.05);
+  }
+  
+  /* Info Destra */
+  .service-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 2.5rem;
+    gap: 0.8rem;
+  }
+  
+  .service-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* Numero, Icona, Titolo sulla stessa riga */
+  .service-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+  }
+  
+  .service-num {
+    font-size: 1.1rem; /* Più grande */
+    font-weight: 700;
+    color: var(--nova-accent);
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  
+  .service-symbol {
+    font-size: 1.8rem; /* Più grande */
+    color: var(--nova-accent);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  .service-title {
+    font-size: 1.6rem; /* Più grande */
+    font-weight: 600;
+    color: var(--nova-text);
+    transition: all 0.3s ease;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .service-item:hover .service-title {
+    color: white;
+  }
+  
+  .service-arrow {
+    font-size: 1rem; /* Più grande */
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--nova-muted);
+    transition: all 0.3s ease;
+  }
+  
+  .service-item:hover .service-arrow {
+    color: var(--nova-accent);
+    transform: translateX(10px);
+  }
+  
+  @media (max-width: 768px) {
+    .service-item {
+      height: auto; /* Altezza automatica mobile */
+    }
+    
+    .service-link {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    
+    .service-image {
+      height: 200px; /* Altezza fissa anche mobile */
+    }
+    
+    .service-info {
+      padding: 1.5rem;
+    }
+    
+    .service-num {
+      font-size: 0.85rem;
+    }
+    
+    .service-title {
+      font-size: 1.1rem;
+    }
+    
+    .service-symbol {
+      font-size: 1.5rem;
+    }
+    
+    .service-arrow {
+      font-size: 0.8rem;
+    }
+  }
+</style>
+

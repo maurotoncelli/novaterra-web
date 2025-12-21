@@ -1,0 +1,23 @@
+---
+// src/pages/mezzi/index.astro
+// Redirect 301 verso la route ufficiale /parco-mezzi (navbar + canonical)
+export const prerender = true;
+const to = "/parco-mezzi";
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Redirecting…</title>
+    <link rel="canonical" href={to} />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <meta name="robots" content="noindex,follow" />
+  </head>
+  <body style="background:#121110;color:#Eae8e3;font-family:Manrope,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px;">
+    <p>
+      Reindirizzamento a <a href={to} style="color:#cd5c2f;">{to}</a>…
+    </p>
+  </body>
+</html>

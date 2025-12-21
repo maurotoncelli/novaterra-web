@@ -1,0 +1,77 @@
+---
+// src/pages/contatti.astro
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../Components/Contact/ContactForm.astro';
+import ContactInfo from '../Components/Contact/ContactInfo.astro';
+import ContactMap from '../Components/Contact/ContactMap.astro';
+---
+
+<Layout 
+  title="Contatti | Novaterra - Earth Engineering" 
+  description="Contatta NOVATERRA per preventivi e consulenze. Riccardo Toncelli, movimento terra in Toscana."
+>
+  
+  <section class="page-section">
+    <div class="container">
+      
+      <!-- Grid 2 colonne: Info | Form -->
+      <div class="contact-layout">
+        
+        <!-- Colonna Info -->
+        <div>
+          <ContactInfo />
+        </div>
+
+        <!-- Colonna Form -->
+        <div>
+          <ContactForm />
+        </div>
+
+      </div>
+
+      <!-- Mappa -->
+      <ContactMap />
+
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* Layout dinamico con navbar height */
+  .page-section {
+    /* Padding dinamico: navbar height + spazio extra */
+    padding-top: calc(var(--navbar-height) + 4rem);
+    padding-bottom: 6rem;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+  }
+  
+  @media (max-width: 768px) {
+    .page-section {
+      /* Mobile: navbar più piccola + padding ridotto */
+      padding-top: calc(var(--navbar-height) + 2rem);
+      padding-bottom: 4rem;
+    }
+    
+    .contact-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

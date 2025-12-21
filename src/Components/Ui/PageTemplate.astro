@@ -1,0 +1,86 @@
+---
+// src/Components/Ui/PageTemplate.astro
+// Clean, reusable page scaffold:
+// - Layout (meta, navbar, footer)
+// - PageHero (consistent hero across pages)
+// - Container wrapper for page content
+//
+// WP-ready: in the future, `meta` + `hero` can be fed from a CMS (WordPress).
+import Layout from '../../layouts/Layout.astro';
+import PageHero from './PageHero.astro';
+
+type HeroTitle = {
+  main: string;
+  accent: string;
+};
+
+export type PageHeroConfig = {
+  subtitle: string;
+  title: HeroTitle;
+  image: string;
+  description?: string;
+  accentItalic?: boolean;
+  parallaxSpeed?: number;
+};
+
+export type PageMeta = {
+  title: string;
+  description?: string;
+  canonicalHref?: string;
+  robotsMeta?: string;
+};
+
+interface Props {
+  meta: PageMeta;
+  hero: PageHeroConfig;
+  showPreloader?: boolean;
+  containerClass?: string;
+}
+
+const { meta, hero, showPreloader = false, containerClass = '' } = Astro.props;
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonicalHref={meta.canonicalHref}
+  robotsMeta={meta.robotsMeta}
+  showPreloader={showPreloader}
+>
+  <div class="page-shell">
+    <PageHero
+      subtitle={hero.subtitle}
+      title={hero.title}
+      image={hero.image}
+      description={hero.description}
+      accentItalic={hero.accentItalic ?? true}
+      parallaxSpeed={hero.parallaxSpeed}
+    />
+
+    <div class={`container ${containerClass}`}>
+      <slot />
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-shell {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 6rem 5vw;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+
+

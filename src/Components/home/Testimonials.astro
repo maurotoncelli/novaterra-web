@@ -1,0 +1,56 @@
+---
+import { testimonials } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section class="container mx-auto px-[5vw] mt-32 relative z-10">
+    
+    <!-- Header Standard -->
+    <SectionHeader subtitle="Feedback" title="Dicono di Noi." />
+
+    <!-- TYPEWRITER BOX -->
+    <div class="border-l border-nova-accent pl-8 py-4 min-h-[250px] flex flex-col justify-center max-w-[900px] mx-auto reveal-fx">
+        <p class="text-[clamp(1.5rem,3vw,2.5rem)] font-light text-white leading-[1.5] mb-8">
+            <span id="typewriter-target"></span><span class="inline-block w-1 h-[1em] bg-nova-accent ml-2 animate-pulse align-middle"></span>
+        </p>
+        <span id="typewriter-author" class="text-[0.9rem] font-bold tracking-[0.15em] uppercase text-nova-muted opacity-0 transition-opacity duration-1000"></span>
+    </div>
+</section>
+
+<!-- SCRIPT MACCHINA DA SCRIVERE (Invariato) -->
+<script define:vars={{ testimonials }}>
+    let tIndex = 0;
+    let charIndex = 0;
+    const typeSpeed = 50; 
+    const pauseDelay = 3000; 
+    const target = document.getElementById('typewriter-target');
+    const author = document.getElementById('typewriter-author');
+
+    function typeWriter() {
+        if (!target || !author) return;
+        
+        const currentItem = testimonials[tIndex];
+
+        if (charIndex < currentItem.text.length) {
+            target.innerText = currentItem.text.substring(0, charIndex + 1);
+            charIndex++;
+            setTimeout(typeWriter, typeSpeed);
+        } else {
+            author.innerText = currentItem.author;
+            author.style.opacity = '1';
+            setTimeout(erase, pauseDelay);
+        }
+    }
+
+    function erase() {
+        if (!target || !author) return;
+        author.style.opacity = '0';
+        target.innerText = "";
+        charIndex = 0;
+        tIndex = (tIndex + 1) % testimonials.length;
+        typeWriter();
+    }
+
+    // Start
+    typeWriter();
+</script>

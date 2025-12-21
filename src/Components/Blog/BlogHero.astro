@@ -1,0 +1,75 @@
+---
+// src/Components/Blog/BlogHero.astro
+import { blogHero } from '../../data/blogData';
+---
+
+<div class="blog-hero">
+  <div 
+    class="blog-hero-bg parallax-img" 
+    data-speed="0.5"
+    style={`background-image: url('${blogHero.image}');`}
+  ></div>
+  
+  <div class="blog-hero-content">
+    <span class="subtitle text-white">{blogHero.subtitle}</span>
+    <h1 class="display-text text-white m-0">
+      {blogHero.title.main}<br>
+      <em class="font-extralight italic text-nova-accent">{blogHero.title.accent}</em>.
+    </h1>
+  </div>
+</div>
+
+<style>
+  .blog-hero {
+    position: relative;
+    width: 100%;
+    height: 55vh;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 6rem;
+  }
+  
+  .blog-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.4) contrast(1.1);
+    z-index: 1;
+  }
+  
+  .blog-hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 3rem 5vw;
+  }
+  
+  .text-white { color: white; }
+  .text-nova-accent { color: var(--nova-accent); }
+  .m-0 { margin: 0; }
+  .font-extralight { font-weight: 200; }
+  .italic { font-style: italic; }
+  
+  @media (max-width: 768px) {
+    .blog-hero {
+      height: auto;
+      min-height: 60vh;
+      padding-top: 80px;
+      margin-bottom: 4rem;
+    }
+    
+    .blog-hero-content {
+      padding-bottom: 3rem;
+    }
+  }
+</style>
+

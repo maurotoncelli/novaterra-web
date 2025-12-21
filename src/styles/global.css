@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --nova-bg: #121110;
+    --nova-surface: #1c1b19;
+    --nova-accent: #cd5c2f;
+    --nova-text: #Eae8e3;
+    --nova-muted: #9c9891;
+    --nova-line: rgba(234, 232, 227, 0.15);
+    --container-width: 1400px;
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    
+    /* Navbar height - dinamico e centralizzato */
+    --navbar-height: 92px;
+    --navbar-padding-y: 2.25rem;
+  }
+
+  html, body {
+    @apply bg-nova-bg text-nova-text font-sans antialiased;
+    margin: 0;
+    padding: 0;
+    cursor: none;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  html {
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { display: none; }
+  * { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+@layer components {
+  /* Display Text - Titoli grandi H1/H2 come nel demo */
+  .display-text {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem); /* Più grande: 48px-96px */
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--nova-text);
+    margin-bottom: 0;
+  }
+  
+  /* Section Title - Titoli medi per sezioni */
+  .section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--nova-text);
+  }
+  
+  /* Subtitle - Label piccole sopra titoli */
+  .subtitle {
+    @apply text-xs uppercase tracking-[0.2em] font-bold text-nova-accent mb-4 block;
+  }
+
+  /* Navbar sizing hard override (prevents fixed navbar from cutting hero text) */
+  .navbar-main,
+  .overlay-navbar {
+    height: var(--navbar-height) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .overlay-content {
+    padding-top: var(--navbar-height) !important;
+  }
+  
+  /* Phone Button - Pulsante telefono in evidenza */
+  .btn-contact-phone {
+    @apply inline-block text-lg font-semibold text-nova-accent 
+           border border-nova-accent px-8 py-3 mt-2 mb-4
+           transition-all duration-300 hover:bg-nova-accent hover:text-white
+           no-underline;
+  }
+  
+  /* Minimal Button - Link sottolineato */
+  .btn-minimal {
+    @apply inline-block text-nova-text no-underline border-b border-white/30 
+           pb-1 transition-all duration-300 hover:border-nova-accent hover:text-nova-accent;
+  }
+  
+  /* Floating Label Inputs - Stile identico al demo */
+  .input-group {
+    position: relative;
+    margin-bottom: 3rem;
+  }
+  
+  .input-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #444;
+    padding: 1rem 0;
+    color: var(--nova-text);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-field:focus {
+    border-color: var(--nova-accent);
+  }
+  
+  .input-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--nova-muted);
+    transform: translateY(-100%);
+    font-weight: 600;
+    pointer-events: none;
+  }
+  
+  /* Submit Button - Stile identico al demo */
+  .submit-btn {
+    background: transparent;
+    color: var(--nova-text);
+    border: 1px solid var(--nova-line);
+    padding: 1.5rem 4rem;
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: auto;
+    display: inline-block;
+  }
+  
+  .submit-btn:hover {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    color: white;
+  }
+
+  /* Parallax Wrapper - Per immagini con parallax */
+  .parallax-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Parallax Image - Per hero backgrounds */
+  .parallax-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  .noise-overlay {
+    @apply fixed inset-0 pointer-events-none z-50;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .cursor-cross {
+    /* Keep the custom cursor above the nav overlay (z-[100001]) so it's always visible in the menu */
+    @apply fixed top-0 left-0 w-[30px] h-[30px] pointer-events-none z-[100005] mix-blend-difference -translate-x-1/2 -translate-y-1/2;
+  }
+  .cursor-cross::before { 
+    @apply content-[''] absolute top-1/2 left-0 w-full h-[1px] bg-nova-accent transition-all duration-200; 
+  }
+  .cursor-cross::after { 
+    @apply content-[''] absolute left-1/2 top-0 w-[1px] h-full bg-nova-accent transition-all duration-200; 
+  }
+  .cursor-cross.hovered::before { @apply h-[3px] bg-white; }
+  .cursor-cross.hovered::after { @apply w-[3px] bg-white; }
+
+  .geo-coords {
+    @apply fixed top-[25px] left-1/2 -translate-x-1/2 font-semibold text-nova-accent text-[12px] tracking-[0.1em] z-[2000] pointer-events-none;
+    text-shadow: 0 0 10px rgba(205, 92, 47, 0.3);
+  }
+
+  .parallax-img {
+    @apply will-change-transform scale-110 w-full h-full object-cover block;
+  }
+}

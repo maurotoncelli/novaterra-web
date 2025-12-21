@@ -1,0 +1,87 @@
+---
+// src/pages/blog/index.astro
+import PageTemplate from '../../Components/Ui/PageTemplate.astro';
+import BlogFilters from '../../Components/Blog/BlogFilters.astro';
+import BlogCard from '../../Components/Blog/BlogCard.astro';
+import { getAllPosts } from '../../lib/blogRepository';
+import { blogHero } from '../../data/blogData';
+
+const posts = getAllPosts(); // Ordinati per data (più recenti prima)
+---
+
+<PageTemplate
+  meta={{
+    title: "Notizie & Insight | Novaterra - Movimento Terra in Toscana",
+    description:
+      "Aggiornamenti, guide tecniche e novità dal mondo del movimento terra. Incentivi, case study e curiosità dal settore.",
+    canonicalHref: "/blog"
+  }}
+  hero={blogHero}
+>
+  <!-- Filtri Categorie -->
+  <BlogFilters activeCategory="tutti" />
+
+  <!-- Grid Articoli -->
+  <div class="blog-grid">
+    {posts.map((post) => (
+      <BlogCard post={post} />
+    ))}
+  </div>
+
+  <!-- Empty State (nascosto di default, mostrato da JS se nessun risultato) -->
+  <div class="empty-state" id="emptyState" style="display: none;">
+    <p>Nessun articolo trovato in questa categoria.</p>
+  </div>
+</PageTemplate>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--nova-muted);
+    font-size: 1.1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Mostra empty state se nessun articolo visibile
+  function checkEmptyState() {
+    const blogCards = document.querySelectorAll('.blog-card');
+    const emptyState = document.getElementById('emptyState');
+    
+    if (!emptyState) return;
+    
+    const visibleCards = Array.from(blogCards).filter((card: Element) => 
+      (card as HTMLElement).style.display !== 'none'
+    );
+    
+    if (visibleCards.length === 0) {
+      emptyState.style.display = 'block';
+    } else {
+      emptyState.style.display = 'none';
+    }
+  }
+  
+  // Observer per filtri (collegato a BlogFilters.astro)
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      setTimeout(checkEmptyState, 100);
+    });
+  });
+</script>
+

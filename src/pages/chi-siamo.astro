@@ -1,0 +1,105 @@
+---
+// src/pages/chi-siamo.astro
+import Layout from '../layouts/Layout.astro';
+import BioSection from '../Components/About/BioSection.astro';
+import VideoSection from '../Components/About/VideoSection.astro';
+import Timeline from '../Components/About/Timeline.astro';
+import { aboutHero, ctaSection } from '../data/aboutData';
+---
+
+<Layout 
+  title="Chi Siamo | Novaterra - Movimento Terra in Toscana" 
+  description="La storia di Riccardo Toncelli e Novaterra: movimento terra con radici profonde e visione moderna. Dal 1993 a oggi."
+>
+  
+  <section class="about-page">
+    <div class="container">
+      
+      <!-- Hero Title -->
+      <div class="about-hero">
+        <span class="subtitle">{aboutHero.subtitle}</span>
+        <h1 class="display-text">
+          {aboutHero.title.main}<br>
+          <i class="font-extralight text-white italic">{aboutHero.title.accent}</i>.
+        </h1>
+      </div>
+      
+      <!-- Bio Section -->
+      <BioSection />
+      
+      <!-- Video Section -->
+      <VideoSection />
+      
+      <!-- Timeline -->
+      <Timeline />
+      
+      <!-- CTA -->
+      <div class="cta-section">
+        <a href={ctaSection.href} class="cta-link">
+          {ctaSection.text}
+        </a>
+      </div>
+      
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .about-page {
+    padding-top: calc(var(--navbar-height) + 4rem);
+    padding-bottom: 6rem;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .about-hero {
+    margin-bottom: 4rem;
+  }
+  
+  .display-text {
+    margin-bottom: 0;
+  }
+  
+  .cta-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .cta-link {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    border: 1px solid var(--nova-accent);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  
+  .cta-link:hover {
+    background: var(--nova-accent);
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .about-page {
+      padding-top: calc(var(--navbar-height) + 2rem);
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+

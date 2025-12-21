@@ -1,0 +1,17 @@
+---
+import { expectations } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+<section class="container mx-auto px-[5vw] mt-32 relative z-10">
+    
+    <SectionHeader subtitle="Standard Operativo" title="Cosa aspettarti da noi." />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
+        {expectations.map(exp => (
+            <div class="bg-nova-bg p-8 hover:bg-nova-surface transition-colors duration-300 flex items-center gap-4 cursor-none">
+                <span class="text-nova-accent text-xl">✓</span>
+                <span class="text-white font-bold text-sm tracking-wide uppercase">{exp}</span>
+            </div>
+        ))}
+    </div>
+</section>

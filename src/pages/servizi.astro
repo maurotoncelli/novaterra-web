@@ -1,0 +1,21 @@
+---
+// src/pages/servizi.astro
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import ServicesList from '../Components/Services/ServicesList.astro';
+import { servicesHero } from '../data/servicesData';
+---
+
+<PageTemplate
+  meta={{
+    title: "Servizi | Novaterra - Movimento Terra in Toscana",
+    description:
+      "Scopri i servizi di Novaterra: movimento terra, sbancamenti, strade, demolizioni, forestale e sistemazioni idrogeologiche in Toscana.",
+    canonicalHref: "/servizi"
+  }}
+  hero={servicesHero}
+>
+  <ServicesList />
+</PageTemplate>
+
+
+

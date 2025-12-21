@@ -1,0 +1,35 @@
+---
+import { clients } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const infiniteClients = [...clients, ...clients, ...clients, ...clients]; 
+---
+
+<section class="py-32 border-t border-white/10 relative z-10 overflow-hidden bg-nova-bg">
+    
+    <div class="px-[5vw]">
+        <SectionHeader subtitle="Fiducia" title="Clienti & Partner" />
+    </div>
+
+    <!-- WRAPPER SCROLL -->
+    <div class="relative w-full overflow-hidden mask-linear-gradient mt-12">
+        <div class="flex whitespace-nowrap animate-marquee gap-24 w-max">
+            {infiniteClients.map(client => (
+                <span class="text-xl md:text-3xl font-extrabold text-nova-muted/60 uppercase tracking-widest flex-shrink-0 select-none">
+                    {client}
+                </span>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    /* ... Lascia lo stile CSS di prima ... */
+    .mask-linear-gradient {
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .animate-marquee { animation: scroll 60s linear infinite; will-change: transform; }
+    .animate-marquee:hover { animation-play-state: paused; }
+    @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+</style>

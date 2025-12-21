@@ -1,0 +1,54 @@
+---
+// src/Components/About/VideoSection.astro
+import { videoSection } from '../../data/aboutData';
+---
+
+<div class="video-presentation">
+  <div class="video-header">
+    <span class="subtitle">{videoSection.subtitle}</span>
+    <h2 class="section-title">{videoSection.title}</h2>
+  </div>
+  
+  <div class="video-wrapper">
+    <video autoplay muted loop playsinline>
+      <source src={videoSection.video.src} type={videoSection.video.type} />
+      Il tuo browser non supporta il tag video.
+    </video>
+  </div>
+</div>
+
+<style>
+  .video-presentation {
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+  }
+  
+  .video-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+  }
+  
+  .video-wrapper {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border: 1px solid var(--nova-line);
+  }
+  
+  .video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+  
+  @media (max-width: 768px) {
+    .video-wrapper {
+      height: 350px;
+    }
+  }
+</style>
+
+
+

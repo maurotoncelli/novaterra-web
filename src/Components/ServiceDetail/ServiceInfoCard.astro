@@ -1,0 +1,60 @@
+---
+// src/Components/ServiceDetail/ServiceInfoCard.astro
+interface Props {
+  title: string;
+  items: string[];
+  headingLevel?: 'h2' | 'h3'; // SEO flexibility
+}
+
+const { title, items, headingLevel = 'h2' } = Astro.props;
+const HeadingTag = headingLevel;
+---
+
+<div class="service-info-card">
+  <HeadingTag class="card-title">{title}</HeadingTag>
+  <ul class="card-list">
+    {items.map((item) => (
+      <li>• {item}</li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .service-info-card {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    height: fit-content;
+  }
+  
+  .service-info-card:hover {
+    border-color: var(--nova-accent);
+    transform: translateY(-5px);
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--nova-accent);
+    margin: 0 0 1rem 0;
+  }
+  
+  .card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .card-list li {
+    margin-bottom: 0.75rem;
+    color: var(--nova-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  
+  .card-list li:last-child {
+    margin-bottom: 0;
+  }
+</style>
+

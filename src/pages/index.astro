@@ -1,16 +1,40 @@
 ---
+import Layout from '../layouts/Layout.astro';
 
+// Componenti Home
+import Hero from '../Components/Home/Hero.astro';
+import IntroSection from '../Components/Home/IntroSection.astro';
+import TargetSection from '../Components/Home/TargetSection.astro';
+import MethodSection from '../Components/Home/MethodSection.astro';
+import Certifications from '../Components/Home/Certifications.astro';
+import Expectations from '../Components/Home/Expectations.astro';
+import AssetsAndServices from '../Components/Home/AssetsAndServices.astro';
+import Testimonials from '../Components/Home/Testimonials.astro';
+import ClientsMarquee from '../Components/Home/ClientsMarquee.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Novaterra | Earth Engineering" showPreloader={true}>
+	
+	<Hero />
+
+	<!-- CONTENUTI -->
+	<IntroSection />
+	<TargetSection />
+	<MethodSection />
+	<Certifications />
+	<Expectations />
+	<AssetsAndServices />
+	<Testimonials />
+	<ClientsMarquee />
+
+	<!-- CTA FINALE -->
+	<section class="py-32 text-center relative z-10 border-t border-white/10">
+		<a 
+			href="/contatti" 
+			class="inline-block py-[20px] px-[50px] border border-nova-accent text-nova-accent text-sm uppercase tracking-[0.2em] font-bold hover:bg-nova-accent hover:text-white transition-all duration-300"
+		>
+			CONTATTACI ORA
+		</a>
+	</section>
+
+</Layout>

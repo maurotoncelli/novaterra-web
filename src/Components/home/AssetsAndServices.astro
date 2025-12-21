@@ -1,0 +1,50 @@
+---
+import { assets, homeServices } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<!-- 1. ASSETS (3 Pilastri) -->
+<section class="container mx-auto px-[5vw] mt-32 mb-24 relative z-10">
+    
+    <!-- Header Standard -->
+    <SectionHeader subtitle="Asset" title="Le Fondamenta." />
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-fx">
+        {assets.map(asset => (
+            <div class="bg-nova-surface p-8 border border-white/5 hover:border-nova-accent transition-colors duration-300">
+                <div class="text-[2.5rem] text-nova-accent font-thin mb-4 opacity-50">{asset.num}</div>
+                <h3 class="text-[1.3rem] font-bold text-white mb-4 leading-tight">{asset.title}</h3>
+                <p class="text-nova-muted font-light leading-[1.7]">{asset.desc}</p>
+            </div>
+        ))}
+    </div>
+</section>
+
+<!-- 2. IMMAGINE PARALLAX FULL WIDTH -->
+<div class="w-full h-[45vh] overflow-hidden relative my-32">
+    <img 
+        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800" 
+        class="w-full h-full object-cover grayscale brightness-50 parallax-img scale-110 transition-transform duration-100 ease-linear" 
+        alt="Panoramica Cantiere" 
+    />
+</div>
+
+<!-- 3. SERVIZI GRID -->
+<section class="container mx-auto px-[5vw] pb-16 relative z-10">
+    
+    <!-- Header Standard -->
+    <SectionHeader subtitle="Cosa Facciamo" title="Ingegneria del Paesaggio" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
+        {homeServices.map(srv => (
+            <a href={`/servizi#${srv.id}`} class="bg-nova-bg p-12 hover:bg-nova-surface transition-colors duration-300 group block">
+                <span class="text-[1.5rem] font-bold text-white group-hover:text-nova-accent transition-colors block mb-2 leading-tight">
+                    {srv.num} / {srv.title}
+                </span>
+                <span class="text-[0.75rem] font-bold tracking-[0.1em] text-nova-muted group-hover:text-white transition-colors uppercase">
+                    APPROFONDISCI &rarr;
+                </span>
+            </a>
+        ))}
+    </div>
+</section>

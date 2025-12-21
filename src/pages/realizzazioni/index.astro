@@ -1,0 +1,80 @@
+---
+// src/pages/realizzazioni/index.astro
+import PageTemplate from '../../Components/Ui/PageTemplate.astro';
+import ProjectCard from '../../Components/Projects/ProjectCard.astro';
+import ProjectFilters from '../../Components/Projects/ProjectFilters.astro';
+import { getAllProjects } from '../../lib/projectsRepository';
+import { projectsHero } from '../../data/projectsData';
+
+const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
+---
+
+<PageTemplate
+  meta={{
+    title: "Realizzazioni | Novaterra - Movimento Terra in Toscana",
+    description:
+      "I nostri progetti di movimento terra, sbancamenti, strade agricole e opere idrogeologiche. Case study dei lavori realizzati in Toscana.",
+    canonicalHref: "/realizzazioni"
+  }}
+  hero={projectsHero}
+>
+  <!-- Filtri Categorie -->
+  <ProjectFilters activeCategory="tutti" />
+
+  <!-- Lista Progetti -->
+  <div class="projects-list">
+    {projects.map((project) => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+
+  <!-- Empty State (nascosto di default, mostrato da JS se nessun risultato) -->
+  <div class="empty-state" id="emptyState" style="display: none;">
+    <p>Nessun progetto trovato in questa categoria.</p>
+  </div>
+</PageTemplate>
+
+<style>
+  .projects-list {
+    width: 100%;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--nova-muted);
+    font-size: 1.1rem;
+  }
+  
+  @media (max-width: 768px) {
+  }
+</style>
+
+<script>
+  // Mostra empty state se nessun progetto visibile
+  function checkEmptyState() {
+    const projectCards = document.querySelectorAll('.project-item');
+    const emptyState = document.getElementById('emptyState');
+    
+    if (!emptyState) return;
+    
+    const visibleCards = Array.from(projectCards).filter((card: Element) => 
+      (card as HTMLElement).style.display !== 'none'
+    );
+    
+    if (visibleCards.length === 0) {
+      emptyState.style.display = 'block';
+    } else {
+      emptyState.style.display = 'none';
+    }
+  }
+  
+  // Observer per filtri (collegato a ProjectFilters.astro)
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      setTimeout(checkEmptyState, 100);
+    });
+  });
+</script>
+

@@ -1,0 +1,272 @@
+---
+// src/Components/ServiceDetail/ServiceGalleryScroller.astro
+interface Props {
+  title: string;
+  images: Array<{
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  }>;
+}
+
+const { title, images } = Astro.props;
+---
+
+{images.length > 0 && (
+  <div class="gallery-section">
+    <span class="subtitle">{title}</span>
+    
+    <div class="gallery-scroller" id="galleryScroller">
+      {images.map((image, index) => (
+        <img 
+          src={image.src} 
+          alt={image.alt}
+          width={image.width || 1200}
+          height={image.height || 800}
+          loading="lazy"
+          data-index={index}
+          class="gallery-img-clickable"
+        />
+      ))}
+    </div>
+  </div>
+)}
+
+<!-- Lightbox Modal -->
+<div id="galleryLightbox" class="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <button class="lightbox-prev" id="lightboxPrev">‹</button>
+  <button class="lightbox-next" id="lightboxNext">›</button>
+  <img id="lightboxImage" src="" alt="" />
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<style>
+  .gallery-section {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  
+  .gallery-section .subtitle {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  
+  .gallery-scroller {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    cursor: grab;
+  }
+  
+  .gallery-scroller::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .gallery-scroller::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+  }
+  
+  .gallery-scroller::-webkit-scrollbar-thumb {
+    background: var(--nova-accent);
+    border-radius: 4px;
+  }
+  
+  .gallery-scroller:active {
+    cursor: grabbing;
+  }
+  
+  .gallery-scroller img {
+    height: 400px;
+    width: auto;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 2px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .gallery-scroller img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(205, 92, 47, 0.3);
+  }
+  
+  /* Lightbox Styles */
+  .lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .lightbox.active {
+    display: flex;
+    opacity: 1;
+  }
+  
+  .lightbox img {
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    user-select: none;
+  }
+  
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000000;
+  }
+  
+  .lightbox-close {
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+  }
+  
+  .lightbox-prev {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .lightbox-next {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .lightbox-close:hover,
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  .lightbox-close:hover {
+    transform: scale(1.1);
+  }
+  
+  .lightbox-counter {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .gallery-scroller img {
+      height: 300px;
+    }
+    
+    .lightbox-prev,
+    .lightbox-next {
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+    }
+    
+    .lightbox-prev {
+      left: 10px;
+    }
+    
+    .lightbox-next {
+      right: 10px;
+    }
+  }
+</style>
+
+<script>
+  // Lightbox Gallery con navigazione
+  const images = Array.from(document.querySelectorAll('.gallery-img-clickable')) as HTMLImageElement[];
+  const lightbox = document.getElementById('galleryLightbox');
+  const lightboxImg = document.getElementById('lightboxImage') as HTMLImageElement;
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const closeBtn = document.getElementById('lightboxClose');
+  const prevBtn = document.getElementById('lightboxPrev');
+  const nextBtn = document.getElementById('lightboxNext');
+  
+  let currentIndex = 0;
+  
+  function openLightbox(index: number) {
+    if (!lightbox || !lightboxImg || !lightboxCounter) return;
+    
+    currentIndex = index;
+    lightboxImg.src = images[currentIndex].src;
+    lightboxImg.alt = images[currentIndex].alt;
+    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+    
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    openLightbox(currentIndex);
+  }
+  
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    openLightbox(currentIndex);
+  }
+  
+  // Event listeners
+  images.forEach((img, index) => {
+    img.addEventListener('click', () => openLightbox(index));
+  });
+  
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  if (nextBtn) nextBtn.addEventListener('click', showNext);
+  if (prevBtn) prevBtn.addEventListener('click', showPrev);
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox?.classList.contains('active')) return;
+    
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNext();
+    if (e.key === 'ArrowLeft') showPrev();
+  });
+  
+  // Click outside to close
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+</script>
+

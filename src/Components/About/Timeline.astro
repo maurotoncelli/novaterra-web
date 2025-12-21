@@ -1,0 +1,243 @@
+---
+// src/Components/About/Timeline.astro
+import { timeline } from '../../data/aboutData';
+---
+
+<div class="timeline-section">
+  <div class="timeline-header">
+    <span class="subtitle">{timeline.subtitle}</span>
+    <h2 class="section-title">{timeline.title}</h2>
+  </div>
+  
+  <div class="timeline-container" id="timelineContainer">
+    <!-- Linea base grigia -->
+    <div class="timeline-line"></div>
+    <!-- Linea arancione animata (progress) -->
+    <div class="timeline-progress-bar" id="timelineProgress"></div>
+    
+    {timeline.steps.map((step, index) => (
+      <div class="timeline-item" data-index={index}>
+        <div class="timeline-dot"></div>
+        <span class="year-label">{step.year}</span>
+        <h3>{step.title}</h3>
+        <p>{step.description}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .timeline-section {
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+  }
+  
+  .timeline-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  .timeline-container {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    /* Asse unico della timeline: linea + pallini */
+    --axis-x: 10px;
+    /* Gutter a sinistra: deve essere lo stesso usato dal padding del container */
+    --timeline-gutter: 4rem;
+    /* spazio a sinistra per ospitare ring + testo */
+    padding-left: var(--timeline-gutter);
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding: 2rem 0 3rem 3rem;
+    z-index: 1;
+  }
+  
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+  
+  /* Linea verticale grigia - Asse fisso a sinistra */
+  .timeline-line {
+    position: absolute;
+    /* Compensa il padding-left del container: la linea deve stare nel gutter */
+    left: calc(var(--timeline-gutter) + var(--axis-x));
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+  
+  /* Linea arancione ANIMATA - stesso asse */
+  .timeline-progress-bar {
+    position: absolute;
+    left: calc(var(--timeline-gutter) + var(--axis-x));
+    top: 0;
+    width: 2px;
+    background: var(--nova-accent);
+    height: 0%;
+    transform: translateX(-50%);
+    transition: height 0.15s ease-out;
+    box-shadow: 0 0 12px var(--nova-accent);
+    z-index: 3;
+  }
+  
+  /* Pallino RING - centrato sulla linea con margin */
+  .timeline-dot {
+    position: absolute;
+    left: var(--axis-x);
+    top: 2.5rem;
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+    z-index: 4;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  /* Pallino ATTIVO (ring arancione con glow) */
+  .timeline-item.active .timeline-dot {
+    border-color: var(--nova-accent);
+    background: var(--nova-accent);
+    /* Halo esterno “pulito”: non invade l’interno del ring */
+    box-shadow:
+      0 0 0 6px rgba(205, 92, 47, 0.18),
+      0 0 0 1px rgba(205, 92, 47, 0.35);
+    /* Mantieni l'asse fisso anche quando scala */
+    transform: translateX(-50%) scale(1.25);
+  }
+  
+  /* Year label grande */
+  .year-label {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--nova-text);
+    opacity: 0.2;
+    margin-bottom: 0.5rem;
+    display: block;
+    line-height: 1;
+    transition: all 0.6s ease;
+  }
+  
+  .timeline-item.active .year-label {
+    opacity: 1;
+    color: var(--nova-accent);
+  }
+  
+  .timeline-item h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: var(--nova-text);
+    transition: color 0.4s;
+  }
+  
+  .timeline-item.active h3 {
+    color: var(--nova-accent);
+  }
+  
+  .timeline-item p {
+    max-width: 600px;
+    font-size: 1.1rem;
+    color: var(--nova-muted);
+    line-height: 1.8;
+  }
+  
+  @media (max-width: 768px) {
+    .timeline-container {
+      --timeline-gutter: 3rem;
+      padding-left: var(--timeline-gutter);
+      --axis-x: 10px;
+    }
+    
+    .timeline-line,
+    .timeline-progress-bar {
+      left: var(--axis-x);
+    }
+    
+    .timeline-dot {
+      left: var(--axis-x);
+    }
+    
+    .timeline-item {
+      padding-left: 2.5rem;
+    }
+    
+    .year-label {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Timeline progress bar + pallini sincronizzati PERFETTAMENTE
+  function updateTimelineProgress() {
+    const container = document.getElementById('timelineContainer');
+    const progressBar = document.getElementById('timelineProgress');
+    const items = document.querySelectorAll('.timeline-item');
+    
+    if (!container || !progressBar || !items.length) return;
+    
+    const containerRect = container.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const triggerPoint = windowHeight * 0.6; // Punto di attivazione fisso
+    
+    // Calcola altezza totale del container timeline
+    const containerTop = containerRect.top;
+    const containerHeight = containerRect.height;
+    
+    // Progress bar: cresce fino al punto di trigger (60% schermo)
+    const scrolled = Math.max(0, triggerPoint - containerTop);
+    const maxHeight = containerHeight;
+    const progressPercent = Math.min(100, Math.max(0, (scrolled / maxHeight) * 100));
+    
+    progressBar.style.height = `${progressPercent}%`;
+    
+    // Calcola la posizione ASSOLUTA della punta della progress bar
+    const progressBarBottom = containerRect.top + (containerHeight * progressPercent / 100);
+    
+    // Attiva i pallini quando la progress bar LI RAGGIUNGE FISICAMENTE
+    items.forEach((item) => {
+      const dot = item.querySelector('.timeline-dot');
+      if (!dot) return;
+      
+      const dotRect = dot.getBoundingClientRect();
+      const dotTop = dotRect.top;
+      
+      // 🎯 SINCRONIZZAZIONE PERFETTA: 
+      // Pallino si attiva quando la progress bar arriva alla sua altezza
+      if (progressBarBottom >= dotTop) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+  
+  // Throttle per performance (60fps)
+  let ticking = false;
+  function requestUpdate() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateTimelineProgress();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  
+  // Attach to scroll (Lenis gestisce lo scroll smooth)
+  window.addEventListener('scroll', requestUpdate);
+  
+  // Init immediato + al load completo
+  updateTimelineProgress();
+  window.addEventListener('load', updateTimelineProgress);
+</script>
+

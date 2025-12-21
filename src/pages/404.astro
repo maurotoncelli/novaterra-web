@@ -1,0 +1,121 @@
+---
+// src/pages/404.astro
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 | Novaterra" description="Pagina non trovata." robotsMeta="noindex,follow">
+  <section class="not-found">
+    <div class="container">
+      <div class="nf-inner">
+        <div class="nf-code">404</div>
+        <p class="nf-text">Questa pagina è stata demolita, probabilmente dalla ruspa di Riccardo.</p>
+
+        <div class="nf-actions">
+          <a class="nf-btn" href="/">Torna alla Home</a>
+          <a class="nf-link" href="/contatti">Contattaci</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    width: 100%;
+    min-height: calc(100vh - var(--navbar-height));
+    padding-top: calc(var(--navbar-height) + 6rem);
+    padding-bottom: 6rem;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: flex;
+    align-items: center;
+  }
+
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .nf-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .nf-code {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(5rem, 14vw, 10rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--nova-accent);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .nf-text {
+    margin-top: 1.25rem;
+    color: var(--nova-text);
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+
+  .nf-actions {
+    margin-top: 2.25rem;
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nf-btn {
+    display: inline-block;
+    padding: 0.95rem 1.5rem;
+    border: 1px solid rgba(205, 92, 47, 0.65);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    font-size: 0.85rem;
+    transition: background 220ms ease, color 220ms ease, transform 220ms ease, border-color 220ms ease;
+  }
+
+  .nf-btn:hover {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .nf-link {
+    display: inline-block;
+    padding: 0.95rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--nova-text);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    font-size: 0.85rem;
+    opacity: 0.85;
+    transition: opacity 220ms ease, border-color 220ms ease, color 220ms ease;
+  }
+
+  .nf-link:hover {
+    opacity: 1;
+    border-color: rgba(205, 92, 47, 0.45);
+    color: var(--nova-accent);
+  }
+
+  @media (max-width: 768px) {
+    .not-found {
+      padding-top: calc(var(--navbar-height) + 4rem);
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+
+

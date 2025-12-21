@@ -1,0 +1,25 @@
+---
+// src/pages/parco-mezzi/index.astro
+// Route ufficiale “Parco Mezzi” (navbar + canonical):
+// - UI consistente con le altre pagine (PageTemplate + PageHero)
+// - /mezzi rimane come alias con redirect 301 verso /parco-mezzi
+import PageTemplate from '../../Components/Ui/PageTemplate.astro';
+import FleetContent from '../../Components/Fleet/FleetContent.astro';
+import { fleetHero } from '../../data/fleetData';
+---
+
+<PageTemplate
+  meta={{
+    title: "Parco Mezzi | Novaterra - Movimento Terra in Toscana",
+    description:
+      "Escavatori, pale gommate, mezzi forestali e attrezzature per ogni tipo di cantiere. Il nostro parco mezzi per movimento terra.",
+    canonicalHref: "/parco-mezzi"
+  }}
+  hero={fleetHero}
+>
+  <FleetContent />
+</PageTemplate>
+
+
+
+

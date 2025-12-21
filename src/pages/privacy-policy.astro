@@ -1,0 +1,56 @@
+---
+// src/pages/privacy-policy.astro
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import { privacyHero, privacyMeta, privacySections } from '../data/privacyData';
+---
+
+<PageTemplate
+  meta={{
+    title: privacyMeta.title,
+    description: privacyMeta.description,
+    canonicalHref: "/privacy-policy"
+  }}
+  hero={privacyHero}
+>
+  <div class="privacy">
+    {privacySections.map((section) => (
+      <section class="privacy-section">
+        <h2 class="section-title">{section.title}</h2>
+        {section.paragraphs.map((p) => (
+          <p class="privacy-p">{p}</p>
+        ))}
+      </section>
+    ))}
+  </div>
+</PageTemplate>
+
+<style>
+  .privacy {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 1rem;
+  }
+
+  .privacy-section {
+    padding: 2.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .privacy-p {
+    color: var(--nova-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-top: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .privacy-section {
+      padding: 1.8rem 0;
+    }
+    .privacy-p {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+

@@ -1,0 +1,125 @@
+---
+// src/Components/Projects/ProjectFilters.astro
+import { projectCategories, type ProjectCategory } from '../../data/projectsData';
+
+interface Props {
+  activeCategory?: ProjectCategory;
+}
+
+const { activeCategory = "tutti" } = Astro.props;
+const categories = Object.entries(projectCategories);
+---
+
+<div class="project-filters">
+  <span class="filters-label">Filtra per servizio:</span>
+  <div class="filters-buttons">
+    {categories.map(([key, label]) => (
+      <button 
+        class={`filter-btn ${activeCategory === key ? 'active' : ''}`}
+        data-category={key}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .project-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .filters-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--nova-muted);
+    font-weight: 600;
+  }
+  
+  .filters-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: var(--nova-text);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .filter-btn:hover {
+    border-color: var(--nova-accent);
+    color: var(--nova-accent);
+  }
+  
+  .filter-btn.active {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .project-filters {
+      gap: 1rem;
+    }
+    
+    .filters-buttons {
+      flex-direction: column;
+    }
+    
+    .filter-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  // Gestione filtri client-side
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-item');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+      
+      // Update active state
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      // Filter cards
+      projectCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        
+        if (category === 'tutti' || cardCategory === category) {
+          card.style.display = 'block';
+          // Fade in animation
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.3s ease';
+            card.style.opacity = '1';
+          }, 10);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+
+

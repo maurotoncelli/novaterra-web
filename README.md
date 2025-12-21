@@ -1,43 +1,48 @@
-# Astro Starter Kit: Minimal
+# Novaterra | Earth Engineering (Astro)
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Sito in Astro + TypeScript + Tailwind, con Lenis (smooth scroll) e GSAP/ScrollTrigger (reveal/parallax). Architettura data-driven e CMS-ready (WordPress headless).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## 🚀 Struttura
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+  Components/        # Componenti Astro (nota: casing consistente)
+  data/              # Contenuti mock + tipi TS (data-driven)
+  lib/               # Repository layer (CMS-ready)
+  layouts/           # Layout globale
+  pages/             # Route Astro (+ dynamic routes [slug])
+  scripts/           # JS/TS globale (init Lenis/GSAP/cursor/GPS)
+  styles/            # global.css + Tailwind layers
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🧞 Comandi
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command          | Action |
+| :--------------- | :----- |
+| `npm install`    | Installa dipendenze |
+| `npm run dev`    | Dev server **fisso su `http://localhost:4321/`** |
+| `npm run dev:any`| Dev server con porta libera (fallback) |
+| `npm run build`  | Build produzione in `./dist/` |
+| `npm run preview`| Preview build |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🔒 Policy “single-port”
 
-## 🧞 Commands
+- Usiamo **una sola porta** per evitare confusione cache/DOM: `4321`.
+- Se la 4321 è occupata, prima chiudi gli altri `astro dev` oppure usa `npm run dev:any` solo temporaneamente.
 
-All commands are run from the root of the project, from a terminal:
+## 📊 Google Analytics (GA4) – predisposto
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Il sito è già predisposto per GA4 ma **non carica nulla** finché non imposti la variabile d’ambiente.
 
-## 👀 Want to learn more?
+- **Env var**: `PUBLIC_GA_MEASUREMENT_ID` (esempio: `G-XXXXXXXXXX`)
+- **Dove**: crea un file `.env` in root (non committarlo) e inserisci:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+Quando sarà presente, `src/Components/Ui/Analytics.astro` inietterà automaticamente lo snippet GA4 nel `<head>` tramite `src/layouts/Layout.astro`.
+
+## 🧠 Nota importante sul casing
+
+Per evitare problemi tra macOS (case-insensitive) e Linux/CI (case-sensitive), manteniamo **import coerenti** con la cartella `src/Components/`.

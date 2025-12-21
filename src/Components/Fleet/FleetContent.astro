@@ -1,0 +1,242 @@
+---
+// src/Components/Fleet/FleetContent.astro
+import FleetCard from './FleetCard.astro';
+import { fleetAccess, fleetIntro, fleetCategories, fleetMethod, fleetCTA } from '../../data/fleetData';
+---
+
+<!-- Sezione Accesso Totale -->
+<div class="fleet-access">
+  <div class="access-grid">
+    <div class="access-left">
+      <h3 class="section-title">{fleetAccess.title}</h3>
+      <p class="access-text">{fleetAccess.leftText}</p>
+    </div>
+    <div class="access-right">
+      {fleetAccess.rightText.map((line) => (
+        <p set:html={line}></p>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- Intro Categorie -->
+<div class="fleet-intro">
+  <span class="subtitle">{fleetIntro.subtitle}</span>
+  <h2 class="section-title">{fleetIntro.title}</h2>
+  <p class="intro-description">{fleetIntro.description}</p>
+</div>
+
+<!-- Grid Mezzi -->
+<div class="fleet-grid">
+  {fleetCategories.map((category) => (
+    <FleetCard category={category} />
+  ))}
+</div>
+
+<!-- Metodo di Scelta Section -->
+<div class="fleet-method">
+  <div class="method-grid">
+    <div class="method-left">
+      <h3 class="section-title" set:html={fleetMethod.title}></h3>
+    </div>
+    <div class="method-right">
+      {fleetMethod.paragraphs.map((paragraph) => (
+        <p set:html={paragraph}></p>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="fleet-cta">
+  <h3 class="cta-title">{fleetCTA.title}</h3>
+  <a href={fleetCTA.buttonLink} class="cta-button">
+    {fleetCTA.buttonText}
+  </a>
+</div>
+
+<style>
+  /* Accesso Totale Section */
+  .fleet-access {
+    margin-bottom: 6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 4rem;
+  }
+
+  .access-grid {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .access-left h3 {
+    margin-bottom: 1rem;
+  }
+
+  .access-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--nova-muted);
+  }
+
+  .access-right {
+    padding-left: 2rem;
+    border-left: 1px solid var(--nova-accent);
+  }
+
+  .access-right p {
+    font-size: 1.2rem;
+    color: var(--nova-text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Intro Categorie Section */
+  .fleet-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+  }
+
+  .intro-description {
+    font-size: 1.05rem;
+    color: var(--nova-muted);
+    margin-top: 1rem;
+  }
+
+  /* Fleet Grid */
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem;
+  }
+
+  /* Desktop: 4 columns for 8 items symmetry */
+  @media (min-width: 1200px) {
+    .fleet-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Method Section */
+  .fleet-method {
+    margin-top: 6rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 4rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .method-grid {
+    display: grid;
+    gap: 4rem;
+  }
+
+  .method-right p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+  }
+
+  /* CTA Section */
+  .fleet-cta {
+    text-align: center;
+    margin-top: 6rem;
+    padding-bottom: 4rem;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--nova-text);
+    margin-bottom: 2rem;
+    line-height: 1.4;
+  }
+
+  .cta-button {
+    display: inline-block;
+    border: 1px solid var(--nova-accent);
+    padding: 1.2rem 3rem;
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .cta-button:hover {
+    background: var(--nova-accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (min-width: 769px) {
+    .access-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .method-grid {
+      grid-template-columns: 1fr 1.5fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .fleet-access {
+      margin-bottom: 4rem;
+      padding-bottom: 3rem;
+    }
+
+    .access-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .access-right {
+      padding-left: 1rem;
+      border-left-width: 2px;
+    }
+
+    .access-right p {
+      font-size: 1rem;
+    }
+
+    .fleet-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .fleet-method {
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    .method-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .method-right p {
+      font-size: 1rem;
+    }
+
+    .fleet-cta {
+      margin-top: 4rem;
+      padding-bottom: 2rem;
+    }
+
+    .cta-title {
+      font-size: 1.2rem;
+    }
+
+    .cta-button {
+      padding: 1rem 2rem;
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+

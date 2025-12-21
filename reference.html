@@ -1,0 +1,3571 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Novaterra - Movimento terra in Toscana. Ingegneria del territorio, scavi e design paesaggistico a Terricciola e Valdera.">
+    <meta name="author" content="Novaterra">
+    <title>NOVATERRA | Earth Engineering</title>
+
+    <!-- Font: Manrope (Sans Serif / Bastoni) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- LENIS (Smooth Scroll Library) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- LEAFLET MAP CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- LEAFLET MAP JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        /* 
+         * -----------------------------------------------------------
+         * 1. CORE VARIABLES & RESET (DARK THEME)
+         * -----------------------------------------------------------
+         */
+        :root {
+            /* Palette */
+            --bg-color: #121110;       
+            --surface-color: #1c1b19;  
+            --text-main: #Eae8e3;      
+            --text-muted: #9c9891;     
+            --accent: #cd5c2f; /* ARANCIONE */
+            --line-color: rgba(234, 232, 227, 0.15);
+            
+            /* FONT: Solo Manrope */
+            --font-main: 'Manrope', sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --container-width: 1400px;
+            
+            /* Cursor config */
+            --cursor-size: 30px; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Forza cursore custom ovunque su Desktop */ }
+        
+        /* HIDE DEFAULT SCROLLBAR */
+        ::-webkit-scrollbar { display: none; }
+        html { -ms-overflow-style: none; scrollbar-width: none; }
+
+        html, body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            width: 100%;
+        }
+
+        /* LENIS SMOOTH SCROLL CSS */
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        /* 
+         * PRELOADER CINEMATICO (SCAVATO)
+         */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            z-index: 99999; /* Sopra a tutto */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+        
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* SVG all'interno del preloader - INGRANDITO */
+        .preloader-logo {
+            width: 550px; 
+            height: auto;
+            overflow: visible;
+        }
+
+        .preloader-logo path, 
+        .preloader-logo rect, 
+        .preloader-logo polygon, 
+        .preloader-logo polyline {
+            stroke: var(--accent); 
+            stroke-width: 2px;
+            stroke-dasharray: 2000; 
+            stroke-dashoffset: 2000; 
+            fill-opacity: 0; 
+            
+            animation: 
+                drawStroke 2.5s cubic-bezier(0.77, 0, 0.175, 1) forwards,
+                fillColor 0.8s ease-out 2.2s forwards; 
+        }
+
+        @keyframes drawStroke {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes fillColor {
+            to { 
+                fill-opacity: 1; 
+                stroke-width: 0; 
+            }
+        }
+
+        /* 
+         * DEPTH GAUGE
+         */
+        .depth-gauge {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            height: 60vh; 
+            transform: translateY(-50%);
+            width: 40px;
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            pointer-events: none;
+            mix-blend-mode: exclusion; 
+        }
+
+        .gauge-line {
+            position: absolute;
+            top: 0; right: 0;
+            width: 1px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .gauge-marker {
+            position: absolute;
+            right: 0;
+            width: 10px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .gauge-marker span {
+            position: absolute;
+            right: 15px;
+            top: -6px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-family: var(--font-main);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .current-depth-indicator {
+            position: absolute;
+            right: -2px; 
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transform: translateY(-50%);
+            transition: top 0.1s linear; 
+        }
+
+        .depth-val {
+            font-family: var(--font-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 10px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .depth-arrow {
+            width: 15px;
+            height: 2px;
+            background: var(--accent);
+            position: relative;
+        }
+        .depth-arrow::after {
+            content: ''; position: absolute; right: 0; top: -2px;
+            width: 6px; height: 6px; background: var(--accent);
+            border-radius: 50%;
+        }
+
+
+        /* 
+         * CURSORE STABILE
+         */
+        .cursor-cross {
+            position: fixed;
+            top: 0; left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            pointer-events: none;
+            z-index: 20000; /* Increased to be above lightbox */
+            will-change: transform;
+        }
+
+        .cursor-cross::before {
+            content: ''; position: absolute;
+            top: 50%; left: 0; width: 100%; height: 1px;
+            background-color: var(--accent);
+            transition: height 0.2s ease, background-color 0.2s;
+        }
+        .cursor-cross::after {
+            content: ''; position: absolute;
+            left: 50%; top: 0; height: 100%; width: 1px;
+            background-color: var(--accent);
+            transition: width 0.2s ease, background-color 0.2s;
+        }
+
+        .cursor-cross.hovered::before { height: 3px; background-color: white; }
+        .cursor-cross.hovered::after { width: 3px; background-color: white; }
+
+
+        /* 
+         * COORDINATE GPS
+         */
+        .geo-coords {
+            position: fixed;
+            top: 25px; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-main);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            z-index: 1001; 
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(205, 92, 47, 0.3);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { 
+            font-family: var(--font-main); 
+            font-weight: 700;
+            line-height: 1.1; 
+            letter-spacing: -0.02em;
+        }
+        p { 
+            font-family: var(--font-main); 
+            line-height: 1.7; 
+            color: var(--text-muted); 
+            font-weight: 300; 
+        }
+        
+        .display-text {
+            font-size: clamp(3rem, 8vw, 7rem);
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+            font-weight: 700;
+        }
+
+        /* 
+         * ANIMAZIONI GLOBALI
+         */
+        .reveal-fx {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
+            will-change: opacity, transform;
+        }
+        
+        .reveal-fx.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .parallax-wrapper {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+        .parallax-img {
+            will-change: transform;
+            transform: scale(1.1); 
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        /* Layout Utils */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 5vw;
+        }
+        .grid { display: grid; gap: 2rem; }
+        .grid-2 { grid-template-columns: 1fr; }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        
+        @media(min-width: 900px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* Grain Texture */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 9000;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 2rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(18, 17, 16, 0.9);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        .logo {
+            font-family: var(--font-main);
+            font-weight: 300; 
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            cursor: none;
+            display: inline-block; 
+        }
+
+        .logo span {
+            font-weight: 800; 
+            color: var(--accent);
+        }
+
+        .menu-toggle {
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            cursor: none;
+            color: white;
+            position: relative;
+            display: inline-block; 
+            padding: 10px; 
+        }
+        .menu-toggle::after {
+            content: ''; position: absolute; bottom: 5px; right: 10px;
+            width: calc(100% - 20px); height: 1px; background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .menu-toggle:hover::after { width: calc(100% - 20px); }
+
+        /* Full Screen Menu Overlay */
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-color);
+            z-index: 999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateY(-100%);
+            transition: transform 0.8s var(--ease-out-expo);
+        }
+        .nav-overlay.active { transform: translateY(0); }
+        
+        .nav-links { list-style: none; text-align: center; }
+        .nav-links li { overflow: hidden; margin-bottom: 1rem; }
+        
+        /* MENU LIGHT */
+        .nav-links a {
+            display: inline-block; 
+            font-family: var(--font-main);
+            font-weight: 200;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--text-main);
+            text-decoration: none;
+            transform: translateY(100%);
+            transition: transform 0.5s 0.2s ease, color 0.3s, letter-spacing 0.3s;
+            cursor: none;
+            letter-spacing: -0.02em;
+        }
+        .nav-links a:hover { 
+            color: var(--accent); 
+            letter-spacing: 0.05em;
+        }
+        .nav-overlay.active .nav-links a { transform: translateY(0); }
+
+        /* Page Structure */
+        .page-container {
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        section.page {
+            display: none;
+            padding-top: 100px;
+            padding-bottom: 100px;
+            opacity: 0;
+            animation: fadeIn 0.8s var(--ease-out-expo) forwards;
+        }
+        
+        section.page.active { display: block; }
+        section#home { padding-top: 0; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 
+         * HERO SECTION (REVERTED TO IMAGE + DELAY)
+         */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* Immagine di altissima qualità di sfondo */
+            background-image: url('https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=2800&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6) contrast(1.1);
+            transform: scale(1.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            
+            /* Initial State: Hidden for Cinematic Entry (DELAYED) */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        /* Class to trigger appearance */
+        .hero-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero h1 {
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+        
+        .hero h1 i { font-family: var(--font-main); font-weight: 200; color: var(--accent); font-style: normal; }
+
+        /* BUTTONS HERO UPDATED */
+        .hero-btn-container {
+            display: flex; 
+            gap: 20px; 
+            justify-content: center;
+        }
+
+        .btn-hero {
+            display: inline-block;
+            padding: 15px 35px;
+            margin: 0 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.1); /* Glass effect */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+            cursor: none;
+        }
+        .btn-hero:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-minimal {
+            display: inline-block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+            transition: all 0.3s;
+            cursor: none;
+            font-weight: 600;
+        }
+        .btn-minimal:hover { border-color: var(--accent); color: var(--accent); }
+        
+        /* New Elegant Phone Button (REFINED) */
+        .btn-contact-phone {
+            display: inline-block;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.8rem 2rem;
+            margin-top: 0.5rem; /* Reduced to fit name above */
+            margin-bottom: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+            border-radius: 2px;
+            cursor: none;
+        }
+        .btn-contact-phone:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-back {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            display: inline-block;
+            cursor: none;
+            z-index: 10;
+            position: relative;
+        }
+        .btn-back:hover { color: var(--accent); }
+
+        /* Card Styles */
+        .info-card {
+            background: var(--surface-color);
+            padding: 2rem;
+            border: 1px solid var(--line-color);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        /* FIX DOPPIO ELENCO PUNTATO */
+        .info-card ul {
+            list-style: none; /* Rimuove il pallino del browser */
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+        .info-card li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .info-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Content Sections */
+        .image-reveal-hover {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            filter: grayscale(100%);
+            transition: filter 0.5s;
+        }
+        .image-reveal-hover:hover { filter: grayscale(0%); }
+        .image-reveal-hover img { width: 100%; display: block; }
+
+
+        /* 
+         * RICCARDO HOME FEATURE 
+         */
+        .founder-home-feature {
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--line-color);
+        }
+        
+        .founder-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media(min-width: 900px) {
+            .founder-grid {
+                grid-template-columns: 1fr 1.3fr; 
+                align-items: center;
+                gap: 5rem;
+            }
+            .founder-grid.inverse-layout {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        .founder-img-big-wrapper {
+            width: 100%;
+            height: 500px; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+
+        /* 
+         * CHI SIAMO LAYOUT
+         */
+        .bio-layout {
+            display: grid;
+            gap: 4rem;
+        }
+        @media(min-width: 900px) {
+            .bio-layout {
+                grid-template-columns: 0.8fr 1.2fr;
+                gap: 6rem;
+                align-items: flex-start;
+            }
+        }
+        .bio-img-wrapper {
+            position: sticky;
+            top: 120px;
+            width: 100%;
+            height: 70vh; 
+            overflow: hidden;
+        }
+
+        /* 
+         * METHOD VIDEO PRESENTATION (UPDATED to VIDEO)
+         */
+        .video-presentation {
+            margin-top: 8rem;
+            margin-bottom: 8rem;
+            text-align: center;
+        }
+        /* CSS per il box video generico (usato nelle pagine progetti) */
+        .video-box {
+            width: 100%;
+            height: 500px;
+            background-image: url('https://images.unsplash.com/photo-1498661694102-0a3793ed3742?q=80&w=2700&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: grayscale(100%) brightness(0.6);
+            transition: filter 0.5s;
+            border: 1px solid var(--line-color);
+        }
+        .video-box:hover { filter: grayscale(20%) brightness(0.8); }
+        .play-btn-overlay {
+            width: 80px; height: 80px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.3s;
+            cursor: none;
+        }
+        .play-btn-overlay::after {
+            content: '▶'; color: white; font-size: 1.5rem; margin-left: 5px;
+        }
+        .video-box:hover .play-btn-overlay { transform: scale(1.1); background: rgba(255,255,255,0.1); }
+
+        /* Wrapper specifico per il video in Chi Siamo */
+        .method-video-wrapper {
+            width: 100%;
+            height: 550px; 
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line-color);
+        }
+        
+
+        /* 
+         * TIMELINE VERTICALE (DEBUGGATA E CORRETTA)
+         */
+        .timeline-section {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 4rem;
+            padding-top: 4rem;
+            position: relative;
+            z-index: 10;
+        }
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            padding-left: 50px; /* Spazio per la linea */
+        }
+        
+        /* Linea Grigia Fissa (Visibilità Aumentata) */
+        .timeline-line {
+            position: absolute;
+            left: 20px; /* Centrato nel padding */
+            top: 0; bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3); /* Colore più visibile */
+            z-index: 0;
+        }
+
+        /* Linea Arancione Animata (Progress) */
+        .timeline-progress-bar {
+            position: absolute;
+            left: 20px; /* Allineato con linea grigia */
+            top: 0;
+            width: 2px;
+            background: var(--accent);
+            height: 0%; /* Controllato via JS */
+            transition: height 0.1s linear;
+            box-shadow: 0 0 10px var(--accent);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 6rem;
+            z-index: 2;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -37px; /* 30 (padding diff) + 7 (half dot) */
+            /* Calcolo: 
+               Padding Container = 50px.
+               Linea a Left = 20px.
+               Item Content inizia a 50px.
+               Dot deve essere a 20px (assoluto).
+               Quindi: 20px - 50px = -30px.
+               Centratura dot (14px): -30px - 7px = -37px
+            */
+            top: 15px;
+            width: 14px; height: 14px;
+            background: var(--bg-color);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        /* Stato attivo per il pallino */
+        .timeline-dot.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+            transform: scale(1.2);
+        }
+
+        .year-label {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-main); 
+            opacity: 0.3;
+            margin-bottom: 0.5rem;
+            display: block;
+            line-height: 1;
+            transition: opacity 0.5s;
+        }
+        .timeline-item:hover .year-label { opacity: 1; color: var(--accent); }
+        .timeline-item p { max-width: 500px; font-size: 1.1rem; }
+        .timeline-item h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+
+
+        /* Services List - CSS FIXATO PER LAYOUT ARMONIOSO */
+        .services-list {
+            list-style: none;
+            border-top: 1px solid var(--line-color);
+        }
+        .service-item {
+            border-bottom: 1px solid var(--line-color);
+            padding: 2.5rem 0; /* Ridotto leggermente da 3rem */
+            cursor: pointer; /* Modificato per indicare cliccabilità intera riga */
+            transition: background 0.3s;
+            position: relative;
+        }
+        .service-item:hover { background: rgba(255,255,255,0.02); }
+        .service-header {
+            display: grid;
+            grid-template-columns: 0.5fr 3fr 1fr;
+            align-items: center;
+            gap: 2rem;
+        }
+        .service-num { 
+            font-family: var(--font-main); 
+            font-weight: 700; 
+            color: var(--accent); 
+            font-size: 0.9rem; 
+        }
+        
+        .service-title { 
+            font-size: 2.2rem; /* Leggermente ridotto per gestire titoli lunghi */
+            font-family: var(--font-main); 
+            font-weight: 600; 
+            transition: transform 0.3s;
+            line-height: 1.2;
+        }
+        .service-item:hover .service-title { transform: translateX(20px); color: var(--text-main); }
+        
+        .service-symbol {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 15px;
+            font-weight: 200;
+        }
+
+        .service-link {
+            text-align: right;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        .service-item:hover .service-link { color: var(--accent); }
+
+        /* Media query per mobile sulla lista servizi */
+        @media (max-width: 768px) {
+            .service-header { grid-template-columns: 1fr; gap: 1rem; }
+            .service-link { text-align: left; margin-top: 1rem; }
+            .service-title { font-size: 1.8rem; }
+        }
+
+        /* 
+         * SERVICE HERO
+         * Testata fotografica per pagine servizi singoli
+         */
+        .service-hero {
+            position: relative;
+            height: 55vh;
+            min-height: 400px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line-color);
+        }
+        .service-hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 120%;
+            background-size: cover; background-position: center;
+            z-index: 1;
+            filter: brightness(0.4) contrast(1.1);
+        }
+        .service-hero-content {
+            position: relative; z-index: 2;
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 5vw 3rem 5vw; /* Padding align with container */
+        }
+
+
+        /* Fleet Grid */
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--line-color); 
+            border: 1px solid var(--line-color);
+            margin-top: 4rem;
+        }
+        /* DESKTOP 4 COLUMNS for 8 ITEMS SYMMETRY */
+        @media(min-width: 1200px) {
+            .fleet-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .fleet-item {
+            background: var(--bg-color);
+            padding: 3rem 2rem;
+            position: relative;
+            transition: background 0.3s;
+        }
+        .fleet-item:hover { background: var(--surface-color); }
+        .fleet-icon { font-size: 2rem; margin-bottom: 1.5rem; color: var(--accent); }
+        .fleet-spec { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-top: 2rem; display: block; font-weight: 600; }
+        .fleet-list {
+            list-style: none;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .fleet-list li::before {
+            content: '•'; color: var(--accent); margin-right: 5px;
+        }
+
+        /* Portfolio */
+        .project-item {
+            margin-bottom: 8rem;
+            cursor: none; /* Per l'interazione */
+        }
+        .project-img {
+            width: 100%;
+            height: 70vh;
+            object-fit: cover;
+            filter: saturate(0.8) brightness(0.9);
+            transition: filter 0.6s ease, transform 0.1s linear; 
+        }
+        .project-item:hover .project-img { filter: saturate(1.1) brightness(1); }
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--line-color);
+            padding-top: 1rem;
+        }
+        .project-meta { font-size: 0.8rem; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+
+        /* 
+         * METHOD GRID STYLE
+         */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1px; /* Gap tecnica sottile */
+            background: var(--line-color);
+            border: 1px solid var(--line-color);
+            margin-top: 2rem;
+        }
+        .method-card {
+            background: var(--bg-color);
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .method-card:hover { background: var(--surface-color); }
+        .method-step {
+            font-size: 0.8rem; 
+            color: var(--accent); 
+            font-weight: 700; 
+            margin-bottom: 1rem;
+            display: block;
+            letter-spacing: 0.1em;
+        }
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            font-weight: 200; /* Monoline style */
+        }
+
+        /* 
+         * EXPECTATIONS GRID (COSA ASPETTARTI)
+         */
+        .expectations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Default Mobile (Tablets) */
+            gap: 1px;
+            background: var(--line-color);
+            border: 1px solid var(--line-color);
+            margin-top: 2rem;
+        }
+        @media(min-width: 900px) {
+            .expectations-grid {
+                grid-template-columns: repeat(4, 1fr); /* Desktop: 4 col x 2 rows = 8 items */
+            }
+        }
+        .expectation-item {
+            background: var(--bg-color);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: background 0.3s;
+            cursor: none;
+        }
+        .expectation-item:hover { background: var(--surface-color); }
+        .check-icon {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .exp-text {
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+
+        /* 
+         * PROJECT DETAIL ELEMENTS & MAPPA TOPOGRAFICA
+         */
+        .project-detail-layout {
+            display: grid; gap: 4rem; margin-bottom: 6rem;
+        }
+        .project-specs {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;
+            border-bottom: 1px solid var(--line-color); padding-bottom: 2rem;
+        }
+        .spec-label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 5px; }
+        .spec-value { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        
+        /* CANVAS MAP CONTAINER */
+        .topo-map-container {
+            width: 100%;
+            height: 500px;
+            background: #0e0d0c;
+            border: 1px solid var(--line-color);
+            position: relative;
+            margin-bottom: 6rem;
+            overflow: hidden;
+        }
+        .topo-canvas { width: 100%; height: 100%; display: block; }
+        .map-overlay-ui {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        /* Crosshairs negli angoli */
+        .map-overlay-ui::before, .map-overlay-ui::after {
+            content: '+'; position: absolute; color: var(--accent); font-family: monospace; font-size: 1.5rem; opacity: 0.7;
+        }
+        .map-overlay-ui::before { top: 10px; left: 10px; }
+        .map-overlay-ui::after { bottom: 10px; right: 10px; }
+        
+        .map-data-readout {
+            position: absolute; bottom: 20px; left: 20px;
+            font-family: monospace; font-size: 0.7rem; color: var(--accent);
+        }
+        
+        .project-gallery {
+            display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 6rem;
+        }
+        .gallery-img { width: 100%; height: auto; display: block; filter: grayscale(50%); transition: filter 0.3s; cursor: zoom-in; }
+        .gallery-img:hover { filter: grayscale(0%); }
+
+        @media(min-width: 900px) {
+            .project-detail-layout { grid-template-columns: 1fr 2fr; }
+            .project-specs { grid-template-columns: repeat(4, 1fr); grid-column: span 2; }
+            .project-gallery { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Home Services Grid */
+        .home-services-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--line-color);
+            border: 1px solid var(--line-color);
+        }
+        @media(min-width: 768px) {
+            .home-services-grid {
+                grid-template-columns: 1fr 1fr; /* 2 colonne */
+            }
+        }
+        .home-service-item {
+            background: var(--bg-color);
+            padding: 3rem;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        .home-service-item:hover { background: var(--surface-color); }
+        .home-service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .home-service-link {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+
+        /* Form */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #444;
+            padding: 1rem 0;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-weight: 300;
+            font-size: 1.5rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .input-field:focus { border-color: var(--accent); }
+        .input-label {
+            position: absolute;
+            top: 0; left: 0;
+            font-family: var(--font-main);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            transform: translateY(-100%);
+            font-weight: 600;
+        }
+        .submit-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--line-color);
+            padding: 1.5rem 4rem;
+            font-family: var(--font-main);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            cursor: none;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+        /* TYPEWRITER */
+        .testimonials-wrapper {
+            margin-top: 6rem;
+            border-left: 1px solid var(--accent);
+            padding-left: 2rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .typewriter-text {
+            font-family: var(--font-main);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 200;
+            line-height: 1.5;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+        .testimonial-author {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: var(--accent);
+            margin-left: 5px;
+            vertical-align: sub;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* 
+         * NUOVA: SEZIONE CLIENTI MARQUEE 
+         */
+        .clients-section {
+            margin-top: 8rem;
+            margin-bottom: 2rem;
+            border-top: 1px solid var(--line-color);
+            padding-top: 4rem;
+            overflow: hidden;
+        }
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            margin-top: 3rem;
+        }
+        .marquee-wrapper::before, .marquee-wrapper::after {
+            content: ''; position: absolute; top:0; width: 150px; height: 100%; z-index: 2;
+            pointer-events: none;
+        }
+        .marquee-wrapper::before { left:0; background: linear-gradient(to right, var(--bg-color), transparent); }
+        .marquee-wrapper::after { right:0; background: linear-gradient(to left, var(--bg-color), transparent); }
+
+        .marquee-track {
+            display: flex;
+            gap: 4rem;
+            animation: scrollMarquee 30s linear infinite;
+            width: max-content;
+        }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        .client-logo-box {
+            font-family: var(--font-main);
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            opacity: 0.5;
+            white-space: nowrap;
+        }
+
+        /* 
+         * SEZIONE CERTIFICAZIONI
+         */
+        .cert-grid {
+            display: grid;
+            /* Default Mobile */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--line-color);
+            border: 1px solid var(--line-color);
+            margin-top: 2rem;
+        }
+        /* DESKTOP: FORCE SINGLE ROW (6 COLS) */
+        @media(min-width: 1200px) {
+            .cert-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+        
+        .cert-item {
+            background: var(--bg-color);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .cert-item:hover { background: var(--surface-color); }
+        .cert-code {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+        .cert-name {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* 
+         * NUOVA: GALLERIA SCORREVOLE SERVIZI & LIGHTBOX
+         */
+        .gallery-scroller {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px;
+            margin-top: 4rem;
+            cursor: grab;
+        }
+        .gallery-scroller:active { cursor: grabbing; }
+        .gallery-scroller img {
+            height: 400px;
+            width: auto;
+            flex-shrink: 0;
+            object-fit: cover;
+            border-radius: 2px;
+            filter: grayscale(30%);
+            transition: filter 0.3s;
+            cursor: zoom-in; /* Indicates clickability */
+        }
+        .gallery-scroller img:hover { filter: grayscale(0%); }
+        .gallery-scroller::-webkit-scrollbar { display: none; } /* Hide Scrollbar */
+
+        /* Lightbox Modal */
+        #lightboxModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 10000;
+            display: none; justify-content: center; align-items: center;
+            flex-direction: column;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        #lightboxModal.active { display: flex; opacity: 1; }
+        #lightboxImg {
+            max-width: 90%; max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        .lightbox-controls {
+            position: absolute; top: 50%; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 5vw; pointer-events: none;
+        }
+        .lb-btn {
+            pointer-events: auto; cursor: pointer;
+            color: white; font-size: 3rem; opacity: 0.5; transition: opacity 0.3s;
+            background: none; border: none; font-family: var(--font-main); font-weight: 200;
+        }
+        .lb-btn:hover { opacity: 1; color: var(--accent); }
+        .lb-close {
+            position: absolute; top: 30px; right: 30px;
+            color: white; font-size: 2rem; cursor: pointer;
+            z-index: 10001; opacity: 0.7;
+        }
+        .lb-close:hover { opacity: 1; color: var(--accent); }
+
+
+        /* Spaziatura Testi Migliorata */
+        .text-block p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* 
+         * BLOG SECTION STYLES
+         */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        @media(min-width: 900px) {
+            .blog-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        .blog-card {
+            background: var(--surface-color);
+            padding: 2rem;
+            border: 1px solid var(--line-color);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            cursor: pointer;
+        }
+        .blog-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+        .blog-date {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+            font-weight: 700;
+        }
+        .blog-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        .blog-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+        .blog-link {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-main);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: inline-block;
+            border-bottom: 1px solid transparent;
+        }
+        .blog-card:hover .blog-link {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Blog Content */
+        .blog-content-container {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .blog-content-container h3 { margin-top: 3rem; margin-bottom: 1.5rem; color: var(--accent); }
+        .blog-content-container ul { list-style: disc; margin-left: 20px; margin-bottom: 2rem; color: var(--text-muted); }
+        .blog-content-container li { margin-bottom: 0.5rem; }
+
+
+        footer {
+            border-top: 1px solid var(--line-color);
+            padding: 4rem 5vw;
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .footer-credits {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* CTA SINGLE LINE - MODIFIED */
+        .cta-single-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        @media(max-width: 768px) {
+            .cta-single-line { flex-direction: column; gap: 15px; }
+        }
+
+        /* SCROLL DOWN INDICATOR */
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            opacity: 0; animation: fadeIn 1s 4s forwards; /* Delay to appear after hero text */
+        }
+        .mouse-icon {
+            /* INCREASED SIZE AS REQUESTED */
+            width: 30px; height: 50px; 
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 25px; position: relative;
+        }
+        .mouse-wheel {
+            width: 4px; height: 8px; background: white;
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+            animation: scrollWheel 2s infinite;
+            border-radius: 2px;
+        }
+        
+        /* NEW FINGER ICON (Mobile Only) */
+        .finger-icon { display: none; width: 35px; height: 35px; animation: swipeUp 2s infinite; }
+        
+        @keyframes scrollWheel { 0% {top:8px; opacity:1;} 100% {top:25px; opacity:0;} }
+        @keyframes swipeUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+        
+        .scroll-text-lbl { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+
+        /* BACK TO TOP - CENTERED & UNIVERSAL */
+        .back-to-top {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px;
+            border: 1px solid var(--accent); background: rgba(18,17,16,0.9);
+            color: var(--accent); display: flex; justify-content: center; align-items: center;
+            border-radius: 50%; cursor: none; z-index: 20000; /* High Z-index to be on top of everything */
+            opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s, background 0.3s;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover { 
+            background: var(--accent); color: white; 
+            transform: translateX(-50%) scale(1.1); /* Keep centered on hover */
+        }
+
+        /* 
+         * =========================================
+         * MOBILE OPTIMIZATION OVERRIDES
+         * =========================================
+         */
+        @media (max-width: 900px) {
+            /* Disable Custom Cursor & Coordinates on Touch Devices */
+            .geo-coords, .cursor-cross, .depth-gauge { display: none !important; }
+            * { cursor: auto !important; } /* Restore native touch behavior */
+            
+            /* Typography Adjustments */
+            .display-text { font-size: 2.8rem; }
+            .section-title { font-size: 2rem; }
+            
+            /* Layout Adjustments */
+            section.page { padding-top: 80px; padding-bottom: 60px; }
+            .hero { height: 100dvh; } /* Dynamic Height for Mobile Browsers */
+            
+            /* Reduce Heavy Margins on Mobile */
+            div[style*="margin-top: 8rem"] { margin-top: 5rem !important; }
+            div[style*="margin-bottom: 8rem"] { margin-bottom: 5rem !important; }
+            div[style*="margin-bottom: 6rem"] { margin-bottom: 4rem !important; }
+            
+            /* Reduce Map/Video Heights */
+            .video-box, .topo-map-container, .method-video-wrapper { height: 350px !important; }
+            
+            /* Adjust Back To Top for smaller screens */
+            .back-to-top { width: 45px; height: 45px; bottom: 25px; }
+
+            /* HERO BUTTONS STACKING FIX */
+            .hero-btn-container { flex-direction: column; width: 100%; gap: 15px; }
+            .btn-hero { margin: 0; width: 100%; box-sizing: border-box; text-align: center; }
+
+            /* SCROLL INDICATOR CENTERING FIX */
+            .scroll-indicator { bottom: 20px; }
+            
+            /* SWAP MOUSE FOR FINGER ON MOBILE */
+            .mouse-icon { display: none; }
+            .finger-icon { display: block; }
+
+            /* EXPECTATIONS GRID FIX (1 COL) */
+            .expectations-grid { grid-template-columns: 1fr; }
+
+            /* FLEET HERO TEXT OVERLAP FIX */
+            .service-hero { height: auto; min-height: 60vh; padding-top: 80px; align-items: flex-end; }
+            .service-hero-content { padding-bottom: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .preloader-logo { width: 300px; } /* Resize for mobile */
+            .contact-layout { grid-template-columns: 1fr; }
+            .project-img { height: 40vh; }
+            .service-header { flex-direction: column; }
+            .service-desc { margin-left: 0; margin-top: 10px; }
+            .grid-3 { grid-template-columns: 1fr; }
+            
+            .founder-grid, .bio-layout { grid-template-columns: 1fr; gap: 3rem; }
+            .founder-img-big-wrapper { height: 400px; }
+            .bio-img-wrapper { height: 50vh; position: relative; top: 0; }
+            .method-img-wrapper { height: 300px; }
+            
+            .gallery-scroller img { height: 250px; } /* Smaller images on mobile */
+            
+            /* FOOTER SOCIAL CENTERING FIX */
+            footer { flex-direction: column; align-items: center; gap: 2rem; text-align: center; }
+            .footer-socials { justify-content: center; width: 100%; }
+            .footer-socials a { margin: 0 10px; }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <svg class="preloader-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1280 1024">
+            <defs>
+                <style>
+                .st0 { fill: #eb6737; }
+                .st1 { fill: #b26747; }
+                .st2 { fill: #f29575; }
+                </style>
+            </defs>
+            <g>
+                <path class="st2" d="M416.71,724.87h15.84l25.21,32.51v-32.51h16.8v61.51h-14.88l-26.17-33.74v33.74h-16.8v-61.51Z"/>
+                <path class="st2" d="M546.42,755.8v-.18c0-17.66,14.18-31.99,33.08-31.99s32.91,14.15,32.91,31.81v.18c0,17.66-14.18,31.99-33.08,31.99s-32.91-14.15-32.91-31.81ZM595.08,755.8v-.18c0-8.87-6.39-16.61-15.75-16.61s-15.49,7.56-15.49,16.43v.18c0,8.88,6.39,16.61,15.67,16.61s15.58-7.56,15.58-16.43Z"/>
+                <path class="st2" d="M675.51,724.87h18.99l13.92,38.93,13.92-38.93h18.64l-24.86,61.95h-15.75l-24.86-61.95Z"/>
+                <path class="st2" d="M822.46,724.43h16.37l26.08,61.95h-18.2l-4.46-10.98h-23.63l-4.38,10.98h-17.85l26.08-61.95ZM837.34,762.13l-6.83-17.49-6.91,17.49h13.74Z"/>
+            </g>
+            <path class="st1" d="M433.47,827.12h-18.38v-14.94h53.74v14.94h-18.38v46.57h-16.98v-46.57Z"/>
+            <path class="st1" d="M511.27,812.18h49.28v14.5h-32.47v9.32h29.41v13.44h-29.41v9.75h32.91v14.5h-49.71v-61.51Z"/>
+            <path class="st1" d="M604.66,812.18h28.97c9.36,0,15.84,2.46,19.96,6.68,3.59,3.52,5.43,8.26,5.43,14.32v.18c0,9.4-4.99,15.64-12.6,18.89l14.62,21.44h-19.6l-12.34-18.63h-7.44v18.63h-16.98v-61.51ZM632.84,841.7c5.78,0,9.1-2.81,9.1-7.29v-.18c0-4.83-3.5-7.29-9.19-7.29h-11.12v14.76h11.2Z"/>
+            <path class="st1" d="M702.6,812.18h28.97c9.36,0,15.84,2.46,19.96,6.68,3.59,3.52,5.43,8.26,5.43,14.32v.18c0,9.4-4.99,15.64-12.6,18.89l14.62,21.44h-19.6l-12.34-18.63h-7.44v18.63h-16.98v-61.51ZM730.78,841.7c5.78,0,9.1-2.81,9.1-7.29v-.18c0-4.83-3.5-7.29-9.19-7.29h-11.12v14.76h11.2Z"/>
+            <path class="st1" d="M820.67,811.74h16.37l26.08,61.95h-18.2l-4.46-10.98h-23.63l-4.38,10.98h-17.85l26.08-61.95ZM835.55,849.44l-6.83-17.49-6.91,17.49h13.74Z"/>
+            <rect class="st2" x="527.8" y="150.31" width="15.22" height="196.22"/>
+            <rect class="st2" x="569.64" y="150.31" width="15.22" height="196.22"/>
+            <rect class="st2" x="695.14" y="150.31" width="15.22" height="196.22"/>
+            <rect class="st2" x="736.97" y="150.31" width="15.22" height="196.22"/>
+            <polyline class="st2" points="611.47 269.55 626.69 287.29 626.69 193.94 611.47 176.14"/>
+            <polyline class="st2" points="653.31 318.19 668.53 335.92 668.53 242.57 653.31 224.78"/>
+            <g>
+                <polygon class="st0" points="539.04 366.18 531.37 366.18 527.16 379.17 543.25 379.17 539.04 366.18"/>
+                <polygon class="st0" points="580.6 366.18 572.97 366.18 568.72 379.17 584.85 379.17 580.6 366.18"/>
+                <polygon class="st0" points="622.2 366.18 614.52 366.18 610.32 379.17 626.45 379.17 622.2 366.18"/>
+                <rect class="st0" x="635.79" y="435.98" width="8.55" height="20.85"/>
+                <polygon class="st0" points="629.5 490.57 602.88 490.57 602.88 501.39 611.94 508.51 611.94 631.79 619.84 631.79 619.84 539.2 629.5 539.2 629.5 490.57"/>
+                <polygon class="st0" points="594.42 496.77 600.1 496.77 600.1 476.52 582.49 476.52 582.49 527.05 595.34 537.86 595.34 631.79 609.16 631.79 609.16 538.23 594.42 524.64 594.42 496.77"/>
+                <polygon class="st0" points="680.02 496.77 685.66 496.77 685.66 524.64 670.96 538.19 670.96 631.79 684.79 631.79 684.79 537.86 697.64 527.05 697.64 476.52 680.02 476.52 680.02 496.77"/>
+                <polygon class="st0" points="677.25 490.57 650.63 490.57 650.63 539.2 660.24 539.2 660.24 631.79 668.19 631.79 668.19 508.51 677.25 501.39 677.25 490.57"/>
+                <rect class="st0" x="622.61" y="541.98" width="34.9" height="120.88"/>
+                <polygon class="st0" points="663.94 482.9 663.94 427.02 654.09 427.02 654.09 435.98 647.11 435.98 647.11 456.83 650.63 456.83 650.63 482.9 663.94 482.9"/>
+                <polygon class="st0" points="613.37 478.6 613.37 435.98 597.19 435.98 597.19 473.75 607.31 473.75 607.31 478.6 613.37 478.6"/>
+                <polygon class="st0" points="616.14 427.02 616.14 482.9 629.5 482.9 629.5 456.83 633.01 456.83 633.01 435.98 626.03 435.98 626.03 427.02 616.14 427.02"/>
+                <polygon class="st0" points="752.6 411.48 752.6 381.95 527.53 381.95 527.53 411.48 512.14 411.48 512.14 422.49 522.54 422.49 522.54 445.04 535.02 445.04 535.02 491.5 541.67 491.5 541.67 486.78 567.05 486.78 567.05 473.75 594.42 473.75 594.42 433.21 613.37 433.21 613.37 424.24 628.81 424.24 628.81 433.21 651.32 433.21 651.32 424.24 666.71 424.24 666.71 433.21 685.66 433.21 685.66 473.75 713.08 473.75 713.08 486.78 738.45 486.78 738.45 491.5 745.11 491.5 745.11 445.04 757.59 445.04 757.59 422.49 767.99 422.49 767.99 411.48 752.6 411.48"/>
+                <rect class="st0" x="632.27" y="459.6" width="15.58" height="79.6"/>
+                <polygon class="st0" points="682.89 473.75 682.89 435.98 666.71 435.98 666.71 478.6 672.81 478.6 672.81 473.75 682.89 473.75"/>
+                <polygon class="st0" points="748.76 366.18 741.09 366.18 736.84 379.17 752.97 379.17 748.76 366.18"/>
+                <polygon class="st0" points="707.16 366.18 699.53 366.18 695.28 379.17 711.41 379.17 707.16 366.18"/>
+                <polygon class="st0" points="665.56 366.18 657.93 366.18 653.68 379.17 669.81 379.17 665.56 366.18"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Cinematic Noise Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- DEPTH GAUGE -->
+    <div class="depth-gauge">
+        <div class="gauge-line"></div>
+        <div class="gauge-marker" style="top: 0%"><span>0m</span></div>
+        <div class="gauge-marker" style="top: 25%"><span>-10m</span></div>
+        <div class="gauge-marker" style="top: 50%"><span>-30m</span></div>
+        <div class="gauge-marker" style="top: 75%"><span>-60m</span></div>
+        <div class="gauge-marker" style="top: 100%"><span>-100m</span></div>
+
+        <div class="current-depth-indicator" id="depthIndicator">
+            <span class="depth-val" id="depthText">0.0m</span>
+            <div class="depth-arrow"></div>
+        </div>
+    </div>
+
+
+    <!-- COORDINATE GPS -->
+    <div class="geo-coords">43° 31' 36" N  10° 40' 54" E</div>
+
+    <!-- CURSORE CROSSHAIR -->
+    <div class="cursor-cross"></div>
+
+    <!-- BACK TO TOP BUTTON -->
+    <div class="back-to-top" id="scrollTopBtn" onclick="scrollToTop()">↑</div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" onclick="route(event, 'home')" class="logo">NOVA<span>TERRA</span></a>
+        <div class="menu-toggle" onclick="toggleMenu()">Menu</div>
+    </nav>
+
+    <!-- Fullscreen Menu -->
+    <div class="nav-overlay" id="navOverlay">
+        <ul class="nav-links">
+            <li><a href="#" onclick="route(event, 'home')">Home</a></li>
+            <li><a href="#" onclick="route(event, 'chi-siamo')">Chi Siamo</a></li>
+            <li><a href="#" onclick="route(event, 'servizi')">Servizi</a></li>
+            <li><a href="#" onclick="route(event, 'mezzi')">Parco Mezzi</a></li>
+            <li><a href="#" onclick="route(event, 'lavori')">Realizzazioni</a></li> <!-- RENAMED -->
+            <li><a href="#" onclick="route(event, 'blog')">Notizie & Blog</a></li>
+            <li><a href="#" onclick="route(event, 'contatti')">Contatti</a></li>
+        </ul>
+    </div>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightboxModal">
+        <div class="lb-close" onclick="closeLightbox()">✕</div>
+        <img id="lightboxImg" src="" alt="Zoomed">
+        <div class="lightbox-controls">
+            <button class="lb-btn" onclick="changeImage(-1)">&larr;</button>
+            <button class="lb-btn" onclick="changeImage(1)">&rarr;</button>
+        </div>
+    </div>
+
+    <!-- PAGE: HOME -->
+    <section id="home" class="page active">
+        <!-- Hero (Reverted to Image with Parallax) -->
+        <div class="hero">
+            <div class="hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=2800&auto=format&fit=crop');"></div>
+            <div class="hero-content">
+                <span class="subtitle">Est. 2023 - Terricciola, Toscana</span>
+                <h1 class="display-text">PLASMARE<br><i style="font-weight:200; color:white;">LA TERRA</i>.</h1>
+                <p style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.1rem;">
+                    Dalla Valdera a tutta la provincia di Pisa, uniamo ingegneria operativa e rispetto del paesaggio.
+                </p>
+                <!-- HERO BUTTONS CONTAINER (MODIFIED FOR MOBILE STACKING) -->
+                <div class="hero-btn-container">
+                    <a href="#" onclick="route(event, 'contatti')" class="btn-hero">RICHIEDI SOPRALLUOGO</a>
+                    <a href="#" onclick="route(event, 'lavori')" class="btn-hero">ESPLORA PROGETTI</a> <!-- RENAMED -->
+                </div>
+            </div>
+            
+            <!-- SCROLL INDICATOR -->
+            <div class="scroll-indicator">
+                <!-- Desktop Mouse -->
+                <div class="mouse-icon">
+                    <div class="mouse-wheel"></div>
+                </div>
+                <!-- Mobile Finger (SVG) -->
+                <svg class="finger-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C13.1046 2 14 2.89543 14 4V14H15V10C15 8.89543 15.8954 8 17 8C18.1046 8 19 8.89543 19 10V16C19 19.3137 16.3137 22 13 22H11C7.68629 22 5 19.3137 5 16V9C5 7.89543 5.89543 7 7 7C8.10457 7 9 7.89543 9 9V4C9 2.89543 9.89543 2 11 2H12Z" stroke="white" stroke-width="1.5"/>
+                </svg>
+                <span class="scroll-text-lbl">SCROLL</span>
+            </div>
+        </div>
+
+        <!-- Home Content Container -->
+        <div class="container" style="padding-top: 4rem; padding-bottom: 4rem;">
+            
+            <div class="grid-2" style="margin-bottom: 4rem;">
+                <div>
+                    <span class="subtitle">Novaterra in Breve</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">L'EVOLUZIONE DEL<br>MOVIMENTO TERRA.</h2>
+                </div>
+                <div>
+                    <p style="font-size: 1.1rem; color: var(--text-main);">
+                        Siamo un'azienda giovane ma con radici profonde. 
+                        Operiamo a Terricciola, Peccioli, Ponsacco e in tutta la Valdera. 
+                        Portiamo nel settore privato la stessa precisione e sicurezza che abbiamo imparato nei grandi cantieri industriali.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- SEZIONE HOME: RICCARDO "FEATURE" -->
+            <div class="founder-home-feature">
+                <div class="founder-grid inverse-layout">
+                    <div class="founder-img-big-wrapper parallax-wrapper">
+                         <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop" class="parallax-img" data-speed="0.1" alt="Riccardo Toncelli">
+                    </div>
+                    <div>
+                        <span class="subtitle">Il Volto</span>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">RICCARDO<br>TONCELLI.</h2>
+                        <p style="margin-bottom: 2rem; font-size: 1.1rem;">
+                            "Il movimento terra non è solo scavare. È capire cosa c'è sotto e cosa ci sarà sopra."
+                        </p>
+                        <p style="margin-bottom: 2rem;">
+                            Fondatore e Direttore Tecnico. Cresciuto sui mezzi fin da bambino, formato in cantieri industriali complessi. Oggi guida Novaterra con una visione chiara: unire la potenza dei mezzi moderni alla precisione dell'ingegneria.
+                        </p>
+                        <a href="#" onclick="route(event, 'chi-siamo')" class="btn-minimal" style="font-weight: 700;">CONTINUA A LEGGERE &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUOVA SEZIONE: LAVORIAMO CON (INSERITA QUI - SENZA ANIMAZIONE PER SICUREZZA) -->
+            <div style="margin-top: 8rem; margin-bottom: 6rem; border-top: 1px solid var(--line-color); padding-top: 4rem;">
+                <!-- Titolo Centrato per coerenza con le altre griglie -->
+                <div style="text-align: center; max-width: 900px; margin: 0 auto 4rem auto;">
+                    <span class="subtitle">Target</span>
+                    <h2 class="section-title">Lavoriamo con chi progetta,<br>decide e vive i luoghi.</h2>
+                    <p style="font-size: 1.1rem; margin-top: 1rem;">Novaterra è pensata per tecnici, privati ed enti pubblici che cercano un’impresa di movimento terra organizzata, presente e affidabile.</p>
+                </div>
+                
+                <div class="grid-3">
+                    <!-- Card 1 -->
+                    <div class="info-card">
+                        <div class="card-icon">◩</div>
+                        <h3 style="margin-bottom:1rem;">Tecnici: ingegneri,<br>architetti, geometri.</h3>
+                        <p>Lavoriamo fianco a fianco con studi tecnici e professionisti che hanno bisogno di un’impresa di movimento terra precisa, puntuale e autonoma.<br><br>
+                        Ci occupiamo di sopralluoghi congiunti, verifica delle quote, lettura e ottimizzazione dei computi, gestione terre e rocce da scavo, fino alla consegna di un cantiere ordinato e documentabile.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="info-card">
+                        <div class="card-icon">⌂</div>
+                        <h3 style="margin-bottom:1rem;">Privati e<br>aziende agricole.</h3>
+                        <p>Aiutiamo chi vuole costruire, ampliare o sistemare: case, vialetti, piazzali, accessi, piccoli laghi, vigneti, terreni agricoli.<br><br>
+                        Spieghiamo il lavoro in modo semplice, ci occupiamo di scavi, sbancamenti, sistemazione del terreno e cura del verde, lasciando il cantiere pulito e pronto per le fasi successive.</p>
+                    </div>
+                    <!-- Card 3 (ICONA AGGIORNATA A ◫) -->
+                    <div class="info-card">
+                        <div class="card-icon">◫</div>
+                        <h3 style="margin-bottom:1rem;">Enti pubblici,<br>consorzi, amministrazioni.</h3>
+                        <p>Siamo organizzati per lavorare con comuni, province, consorzi di bonifica e altre realtà pubbliche.<br><br>
+                        Gestiamo manutenzione di strade bianche, fossi e argini, piccoli interventi idrogeologici, sistemazioni di versanti e aree verdi, con attenzione a sicurezza, procedure e rispetto dei tempi.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- FINE NUOVA SEZIONE LAVORIAMO CON -->
+
+            <!-- SEZIONE: METODO (4 CARDS) -->
+            <div style="margin-top: 8rem; padding-top: 4rem; border-top: 1px solid var(--line-color);">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 4rem auto;">
+                    <span class="subtitle">Il Processo</span>
+                    <h2 class="section-title">Un metodo chiaro,<br>per lavori che funzionano.</h2>
+                    <p style="font-size: 1.1rem; margin-top: 1rem;">Novaterra è un’impresa moderna, organizzata e affidabile. Seguiamo ogni progetto con una procedura precisa e trasparente.</p>
+                </div>
+                
+                <div class="method-grid">
+                    <!-- Step 1 -->
+                    <div class="method-card">
+                        <span class="method-step">STEP 1</span>
+                        <div class="method-icon">⌖</div>
+                        <h3>Analisi & Sopralluogo Tecnico</h3>
+                        <p style="margin-top: 1rem; font-size: 1rem;">Dal primo contatto all'analisi sul campo. Valutiamo terreno, pendenze e accessi per definire subito priorità e fattibilità.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="method-card">
+                        <span class="method-step">STEP 2</span>
+                        <div class="method-icon">∑</div>
+                        <h3>Computo e Ottimizzazione</h3>
+                        <p style="margin-top: 1rem; font-size: 1rem;">Verifichiamo il metrico e identifichiamo varianti che riducono costi superflui. Abbiamo ottenuto <span style="color:var(--accent)">risparmi fino a 100.000 €</span> in un singolo progetto.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="method-card">
+                        <span class="method-step">STEP 3</span>
+                        <div class="method-icon">⚙</div>
+                        <h3>Esecuzione Controllata</h3>
+                        <p style="margin-top: 1rem; font-size: 1rem;">Macchinari di proprietà, sicurezza rigorosa e procedure chiare. Riccardo dirige personalmente le operazioni in cantiere.</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="method-card">
+                        <span class="method-step">STEP 4</span>
+                        <div class="method-icon">✓</div>
+                        <h3>Verifica e Consegna</h3>
+                        <p style="margin-top: 1rem; font-size: 1rem;">Controllo quote con laser, ripristino finale e pulizia. Consegniamo il lavoro solo quando è perfetto, senza sorprese.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications Section -->
+            <div style="margin-top: 8rem; padding-top: 4rem; border-top: 1px solid var(--line-color);">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                    <span class="subtitle">Standard & Qualità</span>
+                    <h2 class="section-title">Certificazioni e Sicurezza</h2>
+                    <p style="margin-top: 1.5rem; font-size: 1.1rem;">
+                        Per lavorare con tecnici, enti pubblici e grandi clienti, servono standard documentati. Novaterra struttura il proprio sistema operativo sulle certificazioni più importanti del settore: sicurezza, qualità, ambiente e qualificazione per lavori pubblici.
+                    </p>
+                </div>
+
+                <div class="cert-grid">
+                    <!-- Items -->
+                    <div class="cert-item"><span class="cert-code">ISO 45001</span><span class="cert-name">Sicurezza sul Lavoro</span></div>
+                    <div class="cert-item"><span class="cert-code">ISO 9001</span><span class="cert-name">Gestione Qualità</span></div>
+                    <div class="cert-item"><span class="cert-code">ISO 14001</span><span class="cert-name">Gestione Ambientale</span></div>
+                    <div class="cert-item"><span class="cert-code">SOA</span><span class="cert-name">OS1 / OS21 / OS23</span></div>
+                    <div class="cert-item"><span class="cert-code">ALBO GESTORI</span><span class="cert-name">Cat. 2-BIS / 4 (Terre e Rocce)</span></div>
+                    <div class="cert-item"><span class="cert-code">FORESTALE</span><span class="cert-name">Patentino Operatore Macchine</span></div>
+                </div>
+            </div>
+
+            <!-- NUOVA SEZIONE: COSA ASPETTARTI DA NOI -->
+            <div style="margin-top: 8rem;">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                    <span class="subtitle">Standard Operativo</span>
+                    <h2 class="section-title">Cosa aspettarti da noi.</h2>
+                </div>
+                
+                <div class="expectations-grid">
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Risposte Rapide</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Precisione Assoluta</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Organizzazione</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Sicurezza Totale</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Metodo Tecnico</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Affidabilità Documentale</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Dialogo con i Tecnici</span></div>
+                    <div class="expectation-item"><span class="check-icon">✓</span> <span class="exp-text">Gestione Complessa</span></div>
+                </div>
+            </div>
+
+            <!-- I 3 Pilastri (ORA CON TITOLO ALLINEATO CENTRALE PER COERENZA) -->
+            <div style="margin-top: 8rem; margin-bottom: 6rem;">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                    <span class="subtitle">Asset</span>
+                    <h2 class="section-title">Le Fondamenta.</h2>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="info-card">
+                        <div class="card-icon">01</div>
+                        <h3 style="margin-bottom:1rem;">Esperienza Vera</h3>
+                        <p>Cresciuti sui mezzi fin da bambini, formati in aziende leader come Deferco. Conosciamo il terreno toscano metro per metro.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon">02</div>
+                        <h3 style="margin-bottom:1rem;">Metodo & Pulizia</h3>
+                        <p>Il cantiere non deve essere caos. Ordine, sicurezza e pulizia finale sono parte integrante del nostro servizio.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon">03</div>
+                        <h3 style="margin-bottom:1rem;">Tecnologia</h3>
+                        <p>Parco mezzi di proprietà costantemente rinnovato: escavatori precisi, camion 4 assi moderni e livelli laser.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+        <!-- END CONTAINER PRIMA DELL'IMMAGINE FULL WIDTH -->
+
+        <!-- NUOVA IMMAGINE PARALLAX HOME (FULL WIDTH - ALTEZZA RIDOTTA) -->
+        <div style="width: 100%; height: 45vh; overflow: hidden; position: relative; margin-top: 8rem; margin-bottom: 8rem;">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800" class="parallax-img" data-speed="0.2" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%);" alt="Panoramica Lavoro">
+        </div>
+
+        <!-- RIAPERTURA CONTAINER PER IL RESTO -->
+        <div class="container">
+
+            <!-- Anteprima Servizi (Home) AGGIORNATA AI 6 SERVIZI SU GRIGLIA -->
+            <div>
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                    <span class="subtitle">Cosa Facciamo</span>
+                    <h2 class="section-title">Ingegneria del Paesaggio</h2>
+                </div>
+                
+                <div class="home-services-grid">
+                    <div class="home-service-item" onclick="route(event, 'servizio-movimento')">
+                        <span class="home-service-title">01 / Movimento Terra</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                    <div class="home-service-item" onclick="route(event, 'servizio-strade')">
+                        <span class="home-service-title">02 / Strade & Piazzali</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                    <div class="home-service-item" onclick="route(event, 'servizio-demolizioni')">
+                        <span class="home-service-title">03 / Demolizioni</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                    <div class="home-service-item" onclick="route(event, 'servizio-forestale')">
+                        <span class="home-service-title">04 / Forestale & Verde</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                    <div class="home-service-item" onclick="route(event, 'servizio-idrogeologico')">
+                        <span class="home-service-title">05 / Idrogeologico</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                    <div class="home-service-item" onclick="route(event, 'servizio-bacini')">
+                        <span class="home-service-title">06 / Bacini & Laghi</span>
+                        <span class="home-service-link">APPROFONDISCI &rarr;</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE: DICONO DI NOI -->
+            <div style="margin-top: 8rem;">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 0 auto;">
+                    <span class="subtitle">Feedback</span>
+                    <h2 class="section-title">Dicono di Noi.</h2>
+                </div>
+                <div class="testimonials-wrapper">
+                    <p class="typewriter-text"><span id="typewriter-target"></span><span class="cursor-blink"></span></p>
+                    <span class="testimonial-author" id="typewriter-author"></span>
+                </div>
+            </div>
+
+            <!-- NUOVA SEZIONE: CLIENTI (MARQUEE) -->
+            <div class="clients-section">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <span class="subtitle">Fiducia</span>
+                    <h2 class="section-title">Clienti & Partner</h2>
+                </div>
+                
+                <div class="marquee-wrapper">
+                    <div class="marquee-track">
+                        <!-- Duplicate content for seamless loop -->
+                        <span class="client-logo-box">STUDIO TECNICO ROSSI</span>
+                        <span class="client-logo-box">CONSORZIO BONIFICA</span>
+                        <span class="client-logo-box">TENUTA SAN GUIDO</span>
+                        <span class="client-logo-box">EDILIZIA MODERNA SRL</span>
+                        <span class="client-logo-box">AGRARIA VALDERA</span>
+                        <span class="client-logo-box">COMUNE DI TERRICCIOLA</span>
+                        <span class="client-logo-box">STUDIO ARCH. BIANCHI</span>
+                        <!-- Duplicate set -->
+                        <span class="client-logo-box">STUDIO TECNICO ROSSI</span>
+                        <span class="client-logo-box">CONSORZIO BONIFICA</span>
+                        <span class="client-logo-box">TENUTA SAN GUIDO</span>
+                        <span class="client-logo-box">EDILIZIA MODERNA SRL</span>
+                        <span class="client-logo-box">AGRARIA VALDERA</span>
+                        <span class="client-logo-box">COMUNE DI TERRICCIOLA</span>
+                        <span class="client-logo-box">STUDIO ARCH. BIANCHI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOME CTA FINALE (ONLY BUTTON) -->
+            <div class="cta-single-line">
+                <a href="#" onclick="route(event, 'contatti')" class="btn-minimal" style="border: 1px solid var(--accent); padding: 1.2rem 2.5rem; color: var(--accent);">CONTATTACI ORA</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PAGE: CHI SIAMO -->
+    <section id="chi-siamo" class="page">
+        <div class="container">
+            <span class="subtitle">La Nostra Storia</span>
+            <h2 class="display-text" style="margin-bottom: 4rem;">RADICI PROFONDE.<br><i style="font-weight:200; color:white;">VISIONE MODERNA.</i></h2>
+            
+            <!-- Grid Bio -->
+            <div class="bio-layout">
+                <div class="bio-img-wrapper parallax-wrapper">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop" class="parallax-img" data-speed="0.05" alt="Direttore di Cantiere Novaterra">
+                </div>
+                <div style="padding-top: 2rem;">
+                    <h3 style="margin-bottom: 3rem; font-size: 2.5rem; line-height: 1.2;">Riccardo Toncelli,<br><span style="color:var(--text-muted); font-weight:300;">Direttore Tecnico</span></h3>
+                    
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem; color: var(--text-main);">
+                        Il movimento terra non è un mestiere che si improvvisa. È qualcosa che ti entra nelle mani e negli occhi molto prima di diventare un lavoro.
+                        Sono nato nel 1993 a Terricciola, nel cuore della Valdera, e da bambino passavo più tempo sui mezzi che in casa. A 4 anni ero già sul sedile del trattore di famiglia, con mio padre accanto che mi insegnava a “sentire” il motore e a rispettare la terra su cui passavamo.
+                    </p>
+                    <p style="margin-bottom: 2rem;">
+                        Crescendo ho trasformato quel gioco in una professione. Ho lavorato per anni in aziende strutturate di movimento terra e lavori industriali, tra cui Deferco, seguendo cantieri impegnativi: sbancamenti, bonifiche, impianti per biomasse, strade poderali, infrastrutture per l’industria e l’agricoltura. In quel periodo ho capito che la differenza non la fa solo la potenza delle macchine, ma il metodo: sicurezza, organizzazione, rispetto dei tempi e dei costi.
+                    </p>
+                    <p style="margin-bottom: 2rem;">
+                        Nel 2023 decido di fare il passo successivo e nasce Novaterra, con sede a Terricciola. Un’impresa giovane, ma con radici profonde nel territorio toscano. L’obiettivo è chiaro: portare nel mondo dei cantieri privati, agricoli e residenziali lo stesso livello di precisione, pulizia e affidabilità che ho visto nei grandi lavori industriali.
+                    </p>
+                    <p style="margin-bottom: 2rem;">
+                        Oggi coordino personalmente ogni progetto: dai sopralluoghi sul campo allo studio del terreno, fino all’organizzazione dei mezzi e dei collaboratori. Che si tratti di scavi, sbancamenti, laghi artificiali, sistemazione di argini, demolizioni o cura del verde, per me ogni intervento è un pezzo di paesaggio che cambia forma e deve funzionare bene per molti anni.
+                    </p>
+                    <p>
+                        Novaterra è questo: movimento terra in Toscana fatto con testa, cuore e macchine moderne. Un’impresa snella, flessibile, che parla la lingua dei tecnici ma rimane sempre vicina alle persone e ai loro progetti.
+                    </p>
+                </div>
+            </div>
+
+            <!-- VIDEO PANORAMICO (Al posto della foto) -->
+            <div class="video-presentation">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                    <span class="subtitle">Vision</span>
+                    <h2 class="section-title">Il nostro metodo in azione.</h2>
+                </div>
+                <!-- Video Container senza RevealFX -->
+                <div class="method-video-wrapper">
+                     <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%);">
+                        <source src="https://videos.pexels.com/video-files/2882566/2882566-uhd_2560_1440_24fps.mp4" type="video/mp4">
+                     </video>
+                </div>
+            </div>
+
+            <!-- NUOVO TITOLO TIMELINE -->
+            <div style="text-align: center; margin-bottom: 4rem; margin-top: 4rem;">
+                <span class="subtitle">Le Tappe</span>
+                <h2 class="section-title">EVOLUZIONE TEMPORALE.</h2>
+            </div>
+
+            <!-- TIMELINE ANIMATA -->
+            <div class="timeline-section reveal-fx">
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Linea Base Grigia (ora visibile) -->
+                    <div class="timeline-line"></div>
+                    <!-- Linea Arancione Animata -->
+                    <div class="timeline-progress-bar" id="timelineProgress"></div>
+
+                    <!-- STEP 1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="year-label">1993</span>
+                        <h3>Le Origini</h3>
+                        <p style="margin-top: 0.5rem;">Nasco a Terricciola, nel cuore della Valdera. La mia infanzia è passata tra i campi, i trattori e i mezzi agricoli di famiglia. Qui nasce la passione per i motori, per la terra e per il lavoro all’aria aperta.</p>
+                    </div>
+                    
+                    <!-- STEP 2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="year-label">2010</span>
+                        <h3>Gli anni di cantiere</h3>
+                        <p style="margin-top: 0.5rem;">Entro nel mondo del lavoro come operatore di mezzi da movimento terra. Negli anni collaboro con diverse realtà del settore, tra cui Deferco, lavorando su cantieri industriali, agricoli e forestali: sbancamenti, strade poderali, taglio boschi, piazzali, bacini idrici, bonifiche. Imparo sul campo l’importanza di sicurezza, organizzazione e lavoro di squadra.</p>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <span class="year-label">2023</span>
+                        <h3>Nasce Novaterra</h3>
+                        <p style="margin-top: 0.5rem;">Apro la mia partita IVA e nasce Novaterra a Terricciola. L’idea è semplice e ambiziosa: portare lo standard dei grandi cantieri e delle aziende strutturate dentro i lavori privati, agricoli e residenziali della Toscana, con un’attenzione maniacale per metodo, pulizia e rispetto del paesaggio.</p>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div class="timeline-item" style="padding-bottom: 0;">
+                        <div class="timeline-dot"></div>
+                        <span class="year-label">2025</span>
+                        <h3>Oggi</h3>
+                        <p style="margin-top: 0.5rem;">Novaterra cresce: il parco mezzi si amplia con un nuovo camion 4 assi e macchine sempre più moderne; collaboro con una rete di professionisti e artigiani di fiducia. Lavoriamo in Valdera e provincia di Pisa su scavi, laghi, argini, strade, demolizioni e cura del verde. L’obiettivo dei prossimi anni è trasformare l’attività in una società strutturata, capace di diventare azienda leader in Toscana.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA DOPO TIMELINE (SINGLE LINE - TITLE REMOVED) -->
+            <div class="cta-single-line">
+                <a href="#" onclick="route(event, 'contatti')" class="btn-minimal" style="border: 1px solid var(--accent); padding: 1.2rem 2.5rem; color: var(--accent);">RICHIEDI UN PREVENTIVO</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PAGE: SERVIZI -->
+    <section id="servizi" class="page">
+        <!-- Nuova Hero Image per Pagina Servizi -->
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2800&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <span class="subtitle" style="color:white;">Panoramica</span>
+                <h2 class="display-text" style="color:white; margin:0;">SOLUZIONI<br><span style="color:var(--accent)">COMPLETE</span>.</h2>
+            </div>
+        </div>
+
+        <div class="container">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto 4rem auto;">
+                <span class="subtitle">Cosa Facciamo</span>
+                <h2 class="section-title">Ingegneria del Paesaggio</h2>
+            </div>
+            
+            <ul class="services-list">
+                <!-- 1. Movimento Terra -->
+                <li class="service-item" onclick="route(event, 'servizio-movimento')">
+                    <div class="service-header">
+                        <span class="service-num">01</span>
+                        <span class="service-title"><span class="service-symbol">▧</span> Movimento terra / Sbancamenti</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+                <!-- 2. Strade e Piazzali -->
+                <li class="service-item" onclick="route(event, 'servizio-strade')">
+                    <div class="service-header">
+                        <span class="service-num">02</span>
+                        <span class="service-title"><span class="service-symbol">☰</span> Realizzazione strade e piazzali</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+                <!-- 3. Demolizioni -->
+                <li class="service-item" onclick="route(event, 'servizio-demolizioni')">
+                    <div class="service-header">
+                        <span class="service-num">03</span>
+                        <span class="service-title"><span class="service-symbol">✕</span> Demolizioni</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+                <!-- 4. Forestale -->
+                <li class="service-item" onclick="route(event, 'servizio-forestale')">
+                    <div class="service-header">
+                        <span class="service-num">04</span>
+                        <span class="service-title"><span class="service-symbol">↟</span> Forestale / Verde / Abbattimenti</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+                <!-- 5. Idrogeologico -->
+                <li class="service-item" onclick="route(event, 'servizio-idrogeologico')">
+                    <div class="service-header">
+                        <span class="service-num">05</span>
+                        <span class="service-title"><span class="service-symbol">≈</span> Sistemazioni Idrogeologiche</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+                <!-- 6. Bacini -->
+                <li class="service-item" onclick="route(event, 'servizio-bacini')">
+                    <div class="service-header">
+                        <span class="service-num">06</span>
+                        <span class="service-title"><span class="service-symbol">◉</span> Bacini idrici + Consolidamenti</span>
+                        <a href="#" class="service-link">DETTAGLI &rarr;</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 1: MOVIMENTO TERRA -->
+    <section id="servizio-movimento" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 01</span>
+                <h2 class="display-text" style="color:white; margin:0;">MOVIMENTO TERRA<br><span style="color:var(--accent)">E SBANCAMENTI</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        La base di ogni costruzione solida è uno scavo eseguito a regola d'arte.
+                    </p>
+                    <p>
+                        Eseguiamo scavi a sezione obbligata per fondazioni, sbancamenti di massa per livellamento piazzali e scavi in trincea.
+                        La nostra esperienza ci permette di operare su terreni complessi, argillosi o rocciosi, tipici della Valdera, garantendo quote precise grazie alla tecnologia laser.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Interventi Tipici</h3>
+                    <ul>
+                        <li>• Scavi di fondazione a sezione obbligata</li>
+                        <li>• Sbancamenti di massa</li>
+                        <li>• Livellamento terreni agricoli e civili</li>
+                        <li>• Scavi in trincea per sottoservizi</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200" alt="Scavo 1">
+                <img src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=1200" alt="Scavo 2">
+                <img src="https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=1200" alt="Scavo 3">
+                <img src="https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=1200" alt="Scavo 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 2: STRADE -->
+    <section id="servizio-strade" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1596525626296-6e2bb77651a0?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 02</span>
+                <h2 class="display-text" style="color:white; margin:0;">STRADE E<br><span style="color:var(--accent)">PIAZZALI</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        Creiamo le connessioni che rendono un territorio vivibile e produttivo.
+                    </p>
+                    <p>
+                        Realizziamo infrastrutture viarie complete: dalla sagomatura del fondo alla stesura di stabilizzato e asfaltature.
+                        Siamo specializzati nel rifacimento di strade bianche poderali, garantendo il corretto deflusso delle acque meteoriche per una durata nel tempo.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Interventi Tipici</h3>
+                    <ul>
+                        <li>• Strade bianche e poderali</li>
+                        <li>• Asfaltature e pavimentazioni</li>
+                        <li>• Piazzali industriali e parcheggi</li>
+                        <li>• Urbanizzazioni primarie</li>
+                    </ul>
+                </div>
+            </div>
+
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=1200" alt="Strada 1">
+                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1200" alt="Strada 2">
+                <img src="https://images.unsplash.com/photo-1544642080-3889c45ef537?q=80&w=1200" alt="Strada 3">
+                <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200" alt="Strada 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 3: DEMOLIZIONI -->
+    <section id="servizio-demolizioni" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 03</span>
+                <h2 class="display-text" style="color:white; margin:0;">DEMOLIZIONI<br><span style="color:var(--accent)">CONTROLLATE</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        Decostruire per ricostruire. Interveniamo su edifici civili e industriali con precisione chirurgica.
+                    </p>
+                    <p>
+                        Utilizziamo pinze idrauliche e frantumatori per minimizzare polveri e vibrazioni.
+                        Fondamentale è la gestione dei materiali di risulta: separiamo ferro, legno, plastica e inerti direttamente in cantiere per un corretto smaltimento e riciclo.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Specifiche Tecniche</h3>
+                    <ul>
+                        <li>• Demolizione meccanica edifici</li>
+                        <li>• Strip-out (demolizione selettiva)</li>
+                        <li>• Frantumazione e deferrizzazione</li>
+                        <li>• Smaltimento materiali autorizzato</li>
+                    </ul>
+                </div>
+            </div>
+
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1574360778004-945657805625?q=80&w=1200" alt="Demolizione 1">
+                <img src="https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=1200" alt="Demolizione 2">
+                <img src="https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?q=80&w=1200" alt="Demolizione 3">
+                <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1200" alt="Demolizione 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 4: FORESTALE -->
+    <section id="servizio-forestale" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1444858291040-58f7e3a350bf?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 04</span>
+                <h2 class="display-text" style="color:white; margin:0;">FORESTALE<br><span style="color:var(--accent)">E VERDE</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        Cura del patrimonio verde e manutenzione del territorio agricolo.
+                    </p>
+                    <p>
+                        Disponiamo di trinciatrici forestali pesanti per la pulizia di terreni incolti, rovi e sottobosco. Eseguiamo abbattimenti controllati di alberature pericolose e manutenzione ordinaria di aree verdi estese.
+                        Un servizio essenziale per la prevenzione incendi e la fruibilità dei fondi agricoli.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Interventi Tipici</h3>
+                    <ul>
+                        <li>• Pulizia boschi e terreni incolti</li>
+                        <li>• Trinciatura argini e fossi</li>
+                        <li>• Abbattimento alberi alto fusto</li>
+                        <li>• Manutenzione verde agricolo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200" alt="Forestale 1">
+                <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1200" alt="Forestale 2">
+                <img src="https://images.unsplash.com/photo-1621236378699-8597faf6a176?q=80&w=1200" alt="Forestale 3">
+                <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200" alt="Forestale 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 5: IDROGEOLOGICO -->
+    <section id="servizio-idrogeologico" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1599940824399-b87987ced72a?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 05</span>
+                <h2 class="display-text" style="color:white; margin:0;">SISTEMAZIONI<br><span style="color:var(--accent)">IDROGEOLOGICHE</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        Difendere la terra dall'acqua. Interventi essenziali per la sicurezza del territorio.
+                    </p>
+                    <p>
+                        Realizziamo scogliere in massi ciclopici per la difesa spondale e il contenimento di frane. Ci occupiamo della profilatura di fossi e canali di scolo per garantire il corretto deflusso delle acque, prevenendo allagamenti ed erosione.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Interventi Tipici</h3>
+                    <ul>
+                        <li>• Scogliere di contenimento</li>
+                        <li>• Regimazione acque superficiali</li>
+                        <li>• Pulizia fossi e canali</li>
+                        <li>• Ingegneria naturalistica</li>
+                    </ul>
+                </div>
+            </div>
+
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?q=80&w=1200" alt="Idro 1">
+                <img src="https://images.unsplash.com/photo-1574360778004-945657805625?q=80&w=1200" alt="Idro 2">
+                <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1200" alt="Idro 3">
+                <img src="https://images.unsplash.com/photo-1599940824399-b87987ced72a?q=80&w=1200" alt="Idro 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL PAGE 6: BACINI -->
+    <section id="servizio-bacini" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2800&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="goBack(event)" class="btn-back" style="color:white; border-color:white;">&larr; Torna Indietro</a>
+                <span class="subtitle" style="color:white;">Servizio 06</span>
+                <h2 class="display-text" style="color:white; margin:0;">BACINI IDRICI<br><span style="color:var(--accent)">E CONSOLIDAMENTI</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid-2 text-block">
+                <div>
+                    <p style="font-size:1.2rem; color:white; margin-bottom:2rem;">
+                        Creazione di riserve idriche strategiche e messa in sicurezza dei versanti.
+                    </p>
+                    <p>
+                        Progettiamo e realizziamo laghi artificiali per irrigazione o scopo ornamentale, curando l'impermeabilizzazione e le opere di presa.
+                        Interveniamo su versanti instabili con opere di consolidamento come palificate in legno e terre armate, integrando le strutture nel paesaggio circostante.
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3 style="margin-bottom:1rem; color:var(--accent);">Specifiche Tecniche</h3>
+                    <ul>
+                        <li>• Scavo e modellazione laghi</li>
+                        <li>• Palificate in legno e pietrame</li>
+                        <li>• Terre armate e rinverdimento</li>
+                        <li>• Consolidamento versanti in frana</li>
+                    </ul>
+                </div>
+            </div>
+
+            <span class="subtitle" style="margin-top:4rem;">Galleria Lavori</span>
+            <div class="gallery-scroller">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200" alt="Bacino 1">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200" alt="Bacino 2">
+                <img src="https://images.unsplash.com/photo-1497250681960-ef04efc2904c?q=80&w=1200" alt="Bacino 3">
+                <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1200" alt="Bacino 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE: PARCO MEZZI (REVAMPED) -->
+    <section id="mezzi" class="page">
+        <div class="service-hero">
+            <!-- UPDATED FLEET IMAGE -->
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2800&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <span class="subtitle" style="color:white;">La Flotta</span>
+                <h2 class="display-text" style="color:white; margin:0;">IL MEZZO GIUSTO<br><span style="color:var(--accent)">PER OGNI TERRENO</span>.</h2>
+                <p style="color:white; margin-top:2rem; max-width:600px; font-size:1.1rem;">
+                    Novaterra lavora con un parco mezzi completo, versatile e sempre disponibile.
+                    Dagli escavatori compatti per lavorare in spazi stretti, alle macchine pesanti per grandi sbancamenti e opere idrogeologiche: scegliamo ogni mezzo in base al progetto, al terreno e alle esigenze tecniche del cliente.
+                </p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <!-- SEZIONE 1: VANTAGGIO NOVATERRA -->
+            <div style="margin-bottom:6rem; border-bottom:1px solid var(--line-color); padding-bottom:4rem;">
+                <div class="grid-2">
+                    <div>
+                        <h3 class="section-title">Accesso totale. Nessun limite.</h3>
+                        <p style="font-size:1.1rem; line-height:1.8;">
+                            Grazie a una rete strutturata di fornitori e partner tecnici di fiducia, Novaterra può disporre rapidamente di qualsiasi mezzo di movimento terra, in qualsiasi periodo dell’anno.
+                            Questo significa possibilità di affrontare scavi complessi, sbancamenti profondi, demolizioni, opere idrauliche e forestali con tempi rapidi di mobilitazione e costi ottimizzati.
+                        </p>
+                    </div>
+                    <div style="padding-left:2rem; border-left:1px solid var(--accent);">
+                        <p style="font-size:1.2rem; color:var(--text-main); font-weight:600;">
+                            Dal miniescavatore da 15 quintali all’escavatore da 350 quintali.<br>
+                            Dal bobcat alla pala gommata.<br>
+                            Dal camion 4 assi ai mezzi speciali forestali.<br>
+                            <br>
+                            <span style="color:var(--accent)">Tutto ciò che serve, quando serve.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 2: CATEGORIE MEZZI -->
+            <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem auto;">
+                <span class="subtitle">Categorie</span>
+                <h2 class="section-title">Le macchine che utilizziamo</h2>
+                <p>Una panoramica delle principali categorie, con esempi di utilizzo.</p>
+            </div>
+
+            <div class="fleet-grid">
+                <!-- 1 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">⟁</div> 
+                    <h3>Escavatori Compatti</h3>
+                    <span class="fleet-spec">1 – 8 Tonnellate</span>
+                    <ul class="fleet-list">
+                        <li>Cantieri con accessi stretti</li>
+                        <li>Scavi per fondazioni leggere</li>
+                        <li>Urbanizzazioni e posa tubature</li>
+                        <li>Lavori in spazi residenziali</li>
+                    </ul>
+                </div>
+                <!-- 2 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">◼</div>
+                    <h3>Escavatori Medi e Grandi</h3>
+                    <span class="fleet-spec">12 – 35 Tonnellate</span>
+                    <ul class="fleet-list">
+                        <li>Sbancamenti e scavi profondi</li>
+                        <li>Modellazioni di terreno</li>
+                        <li>Argini, fossi, bacini idrici</li>
+                        <li>Demolizioni controllate</li>
+                    </ul>
+                </div>
+                <!-- 3 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">◪</div>
+                    <h3>Pale Gommate</h3>
+                    <span class="fleet-spec">Articolate</span>
+                    <ul class="fleet-list">
+                        <li>Movimento grandi volumi</li>
+                        <li>Gestione piazzali</li>
+                        <li>Carico materiali di scavo</li>
+                        <li>Lavori stradali</li>
+                    </ul>
+                </div>
+                <!-- 4 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">◈</div>
+                    <h3>Minipale Cingolate</h3>
+                    <span class="fleet-spec">Skid Steer</span>
+                    <ul class="fleet-list">
+                        <li>Manutenzione strade bianche</li>
+                        <li>Forestale leggero</li>
+                        <li>Pulizia piccoli piazzali</li>
+                        <li>Livellamenti di fino</li>
+                    </ul>
+                </div>
+                <!-- 5 (ICONA AGGIORNATA) -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">❐</div> <!-- Geometric Box/Truck -->
+                    <h3>Camion 3 e 4 Assi</h3>
+                    <span class="fleet-spec">Logistica</span>
+                    <ul class="fleet-list">
+                        <li>Trasporto materiali</li>
+                        <li>Gestione terre e rocce da scavo</li>
+                        <li>Rifornimento cantieri</li>
+                        <li>Movimentazione inerti</li>
+                    </ul>
+                </div>
+                <!-- 6 (ICONA AGGIORNATA) -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">↟</div> <!-- Geometric Tree -->
+                    <h3>Mezzi Forestali</h3>
+                    <span class="fleet-spec">Speciali</span>
+                    <ul class="fleet-list">
+                        <li>Abbattimenti controllati</li>
+                        <li>Pulizia boschi e trinciature</li>
+                        <li>Lavori in forte pendenza</li>
+                        <li>Manutenzione verde su larga scala</li>
+                    </ul>
+                </div>
+                <!-- 7 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">⚙</div>
+                    <h3>Attrezzature Tecniche</h3>
+                    <span class="fleet-spec">Attachments</span>
+                    <ul class="fleet-list">
+                        <li>Martelli idraulici</li>
+                        <li>Benne inclinabili e grigliate</li>
+                        <li>Pinze da demolizione</li>
+                        <li>Trivelle e Trenchers</li>
+                    </ul>
+                </div>
+                <!-- 8 -->
+                <div class="fleet-item">
+                    <div class="fleet-icon">◎</div>
+                    <h3>Rulli Compattatori</h3>
+                    <span class="fleet-spec">Vibranti</span>
+                    <ul class="fleet-list">
+                        <li>Compattazione sottofondi</li>
+                        <li>Strade bianche e asfalto</li>
+                        <li>Piazzali industriali</li>
+                        <li>Finiture di precisione</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEZIONE 3: METODO DI SCELTA -->
+            <div style="margin-top:6rem; background:var(--surface-color); padding:4rem; border:1px solid var(--line-color);">
+                <div class="grid-2">
+                    <div>
+                        <h3 class="section-title" style="margin-bottom:1rem;">Non scegliamo una macchina.<br>Scegliamo una soluzione.</h3>
+                    </div>
+                    <div>
+                        <p style="font-size:1.1rem; margin-bottom:1.5rem;">
+                            Ogni terreno è diverso. Ogni progetto richiede un mix specifico di potenza, precisione, peso, ingombro e resa operativa.
+                        </p>
+                        <p style="margin-bottom:1.5rem;">
+                            Per questo analizziamo accessi, pendenze, natura del terreno, profondità dello scavo e volumi da movimentare. E solo dopo scegliamo i mezzi ideali.
+                        </p>
+                        <p style="color:var(--accent); font-weight:700;">
+                            È così che lavori complessi diventano semplici, sicuri ed efficienti.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 4: CTA -->
+            <div style="text-align: center; margin-top: 6rem; padding-bottom: 4rem;">
+                <h3 style="font-size:1.5rem; margin-bottom:2rem;">Parla con noi: ti consigliamo i mezzi giusti per il tuo lavoro.</h3>
+                <a href="#" onclick="route(event, 'contatti')" class="btn-minimal" style="border: 1px solid var(--accent); padding: 1.2rem 3rem; color: var(--accent);">RICHIEDI SOPRALLUOGO</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PAGE: LAVORI (Cliccabili) -->
+    <section id="lavori" class="page">
+        <div class="container">
+            <span class="subtitle">Case Studies</span>
+            <h2 class="section-title">Realizzazioni</h2> <!-- RENAMED -->
+
+            <!-- Project 1 -->
+            <div class="project-item" onclick="route(event, 'progetto-1')">
+                <div class="parallax-wrapper">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700&auto=format&fit=crop" class="project-img parallax-img" data-speed="0.1" alt="Villa in collina">
+                </div>
+                <div class="project-info">
+                    <div>
+                        <h3>Nuova Residenza "Il Poggio"</h3>
+                        <p>Scavo di fondazione complesso su terreno in forte pendenza (30%). Realizzazione di palificata di contenimento e viabilità di cantiere.</p>
+                    </div>
+                    <span class="project-meta">VEDI PROGETTO &rarr;</span>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-item" onclick="route(event, 'progetto-2')">
+                <div class="parallax-wrapper">
+                    <img src="https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=2700&auto=format&fit=crop" class="project-img parallax-img" data-speed="0.1" alt="Strada Forestale">
+                </div>
+                <div class="project-info">
+                    <div>
+                        <h3>Infrastruttura Vitivinicola</h3>
+                        <p>Rifacimento di 2km di strada poderale per accesso mezzi pesanti. Stesura stabilizzato, rullatura e creazione canaline di scolo acque.</p>
+                    </div>
+                    <span class="project-meta">VEDI PROGETTO &rarr;</span>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-item" onclick="route(event, 'progetto-3')">
+                <div class="parallax-wrapper">
+                    <img src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=2700&auto=format&fit=crop" class="project-img parallax-img" data-speed="0.1" alt="Scavo Industriale">
+                </div>
+                <div class="project-info">
+                    <div>
+                        <h3>Urbanizzazione Area Industriale</h3>
+                        <p>Sbancamento area 5000mq. Posa dorsali fognarie profonde 3m e preparazione massicciata per asfaltatura piazzale logistico.</p>
+                    </div>
+                    <span class="project-meta">VEDI PROGETTO &rarr;</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- NEW PAGE: PROGETTO 1 DETTAGLIO -->
+    <section id="progetto-1" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'lavori')" class="btn-back" style="color:white; border-color:white;">&larr; Torna ai Progetti</a>
+                <span class="subtitle" style="color:white;">Case Study</span>
+                <h2 class="display-text" style="color:white; margin:0;">IL POGGIO.<br><span style="color:var(--accent)">RESIDENZA</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="project-detail-layout">
+                <div>
+                    <h3 style="margin-bottom:1rem; font-size:1.8rem;">La Sfida</h3>
+                    <p>Realizzare uno scavo di fondazione su un pendio argilloso con pendenza del 30%, garantendo la stabilità del fronte di scavo e la sicurezza degli operatori.</p>
+                </div>
+                <div>
+                    <div class="project-specs">
+                        <div><span class="spec-label">Cliente</span><span class="spec-value">Privato</span></div>
+                        <div><span class="spec-label">Luogo</span><span class="spec-value">Terricciola</span></div>
+                        <div><span class="spec-label">Anno</span><span class="spec-value">2024</span></div>
+                        <div><span class="spec-label">Servizio</span><span class="spec-value">Scavi</span></div>
+                    </div>
+                    <p style="margin-top:2rem;">Abbiamo operato realizzando dapprima una pista di accesso temporanea stabilizzata per i mezzi pesanti. Successivamente, lo scavo è stato eseguito "a gradoni" per evitare smottamenti, con l'ausilio di un escavatore 140q dotato di braccio triplice articolazione. La terra di risulta è stata reimpiegata parzialmente per il modellamento del giardino a valle.</p>
+                </div>
+            </div>
+
+            <span class="subtitle">Rilievo Topografico</span>
+            <div class="topo-map-container">
+                <canvas id="canvas-topo-1" class="topo-canvas"></canvas>
+                <div class="map-overlay-ui">
+                    <div class="map-data-readout">ELEV: 145m // SLOPE: 30% // SOIL: CLAY</div>
+                </div>
+            </div>
+
+            <span class="subtitle">Galleria</span>
+            <div class="project-gallery">
+                <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200" class="gallery-img" alt="Dettaglio scavo">
+                <img src="https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=1200" class="gallery-img" alt="Mezzo in azione">
+            </div>
+
+            <span class="subtitle">Video Cantiere</span>
+            <div class="video-box" style="margin-bottom:6rem;"><div class="play-btn-overlay"></div></div>
+        </div>
+    </section>
+
+    <!-- NEW PAGE: PROGETTO 2 DETTAGLIO -->
+    <section id="progetto-2" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'lavori')" class="btn-back" style="color:white; border-color:white;">&larr; Torna ai Progetti</a>
+                <span class="subtitle" style="color:white;">Case Study</span>
+                <h2 class="display-text" style="color:white; margin:0;">TENUTA<br><span style="color:var(--accent)">VITIVINICOLA</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="project-detail-layout">
+                <div><h3 style="margin-bottom:1rem; font-size:1.8rem;">La Sfida</h3><p>Rendere accessibile un vigneto storico a mezzi di raccolta automatizzati, rifacendo 2km di viabilità sterrata compromessa.</p></div>
+                <div>
+                    <div class="project-specs">
+                        <div><span class="spec-label">Cliente</span><span class="spec-value">Azienda Agricola</span></div>
+                        <div><span class="spec-label">Luogo</span><span class="spec-value">Valdera</span></div>
+                        <div><span class="spec-label">Anno</span><span class="spec-value">2023</span></div>
+                        <div><span class="spec-label">Servizio</span><span class="spec-value">Infrastrutture</span></div>
+                    </div>
+                    <p style="margin-top:2rem;">L'intervento ha previsto la scarifica del fondo esistente, la risagomatura della pendenza "a schiena d'asino" per il deflusso acque e la stesura di 20cm di stabilizzato calcareo, compattato con rullo vibrante da 120q.</p>
+                </div>
+            </div>
+            
+            <span class="subtitle">Rilievo Topografico</span>
+            <div class="topo-map-container"><canvas id="canvas-topo-2" class="topo-canvas"></canvas><div class="map-overlay-ui"><div class="map-data-readout">LEN: 2.1km // WIDTH: 4.5m // DRAINAGE: ACTIVE</div></div></div>
+
+            <span class="subtitle">Galleria</span>
+            <div class="project-gallery">
+                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1200" class="gallery-img" alt="Strada finita">
+                <img src="https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=1200" class="gallery-img" alt="Rullo compattatore">
+            </div>
+            <span class="subtitle">Video Cantiere</span><div class="video-box" style="margin-bottom:6rem;"><div class="play-btn-overlay"></div></div>
+        </div>
+    </section>
+
+    <!-- NEW PAGE: PROGETTO 3 DETTAGLIO -->
+    <section id="progetto-3" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'lavori')" class="btn-back" style="color:white; border-color:white;">&larr; Torna ai Progetti</a>
+                <span class="subtitle" style="color:white;">Case Study</span>
+                <h2 class="display-text" style="color:white; margin:0;">AREA<br><span style="color:var(--accent)">INDUSTRIALE</span>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="project-detail-layout">
+                <div><h3 style="margin-bottom:1rem; font-size:1.8rem;">La Sfida</h3><p>Preparazione di un'area di 5000mq per la costruzione di un nuovo polo logistico, con bonifica ordigni bellici e posa sottoservizi profondi.</p></div>
+                <div>
+                    <div class="project-specs">
+                        <div><span class="spec-label">Cliente</span><span class="spec-value">Logistics SpA</span></div>
+                        <div><span class="spec-label">Luogo</span><span class="spec-value">Pontedera</span></div>
+                        <div><span class="spec-label">Anno</span><span class="spec-value">2023</span></div>
+                        <div><span class="spec-label">Servizio</span><span class="spec-value">Urbanizzazione</span></div>
+                    </div>
+                    <p style="margin-top:2rem;">Sbancamento di massa con tecnologia GPS 3D per raggiungere la quota di progetto con tolleranza +/- 1cm. Scavo in trincea blindata per posa condotte fognarie diametro 800mm a 3 metri di profondità.</p>
+                </div>
+            </div>
+
+            <span class="subtitle">Rilievo Topografico</span>
+            <div class="topo-map-container"><canvas id="canvas-topo-3" class="topo-canvas"></canvas><div class="map-overlay-ui"><div class="map-data-readout">AREA: 5000mq // DEPTH: -3.5m // GPS: LOCK</div></div></div>
+
+            <span class="subtitle">Galleria</span>
+            <div class="project-gallery">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1200" class="gallery-img" alt="Scavo trincea">
+                <img src="https://images.unsplash.com/photo-1578320339908-a70c97805178?q=80&w=1200" class="gallery-img" alt="Posa tubazioni">
+            </div>
+            <span class="subtitle">Video Cantiere</span><div class="video-box" style="margin-bottom:6rem;"><div class="play-btn-overlay"></div></div>
+        </div>
+    </section>
+
+    <!-- NEW PAGE: BLOG (List) -->
+    <section id="blog" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2700&auto=format&fit=crop');"></div>
+            <div class="service-hero-content">
+                <span class="subtitle" style="color:white;">Aggiornamenti</span>
+                <h2 class="display-text" style="color:white; margin:0;">NOTIZIE &<br><i style="font-weight:200; color:var(--accent);">INSIGHT</i>.</h2>
+            </div>
+        </div>
+        <div class="container">
+            
+            <div class="blog-grid">
+                <!-- Articolo 1 -->
+                <div class="blog-card" onclick="route(event, 'art-1')">
+                    <div>
+                        <span class="blog-date">Gennaio 2025</span>
+                        <h3 class="blog-title">Ristrutturazioni 2025: le detrazioni per il movimento terra.</h3>
+                        <p class="blog-excerpt">
+                            Con le novità fiscali, molti clienti si chiedono se gli incentivi coprano anche scavi e sistemazioni. Ecco una panoramica delle agevolazioni applicabili.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+
+                <!-- Articolo 2 -->
+                <div class="blog-card" onclick="route(event, 'art-2')">
+                    <div>
+                        <span class="blog-date">Febbraio 2025</span>
+                        <h3 class="blog-title">Incentivi Imprese 2025: macchinari e credito d’imposta.</h3>
+                        <p class="blog-excerpt">
+                            Guida alle agevolazioni per l'acquisto di beni strumentali nel settore movimento terra. ZES, industria 4.0 e nuove opportunità.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+
+                <!-- Articolo 3 -->
+                <div class="blog-card" onclick="route(event, 'art-3')">
+                    <div>
+                        <span class="blog-date">Marzo 2025</span>
+                        <h3 class="blog-title">Sopralluogo Tecnico: perché è l'investimento migliore.</h3>
+                        <p class="blog-excerpt">
+                            Evitare errori di quota e smottamenti inizia prima di accendere i motori. L'importanza dell'analisi preliminare e del computo.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+
+                <!-- Articolo 4 -->
+                <div class="blog-card" onclick="route(event, 'art-4')">
+                    <div>
+                        <span class="blog-date">Aprile 2025</span>
+                        <h3 class="blog-title">Vigneti in Collina: preparare il terreno in Toscana.</h3>
+                        <p class="blog-excerpt">
+                            Sbancamenti, terrazzamenti e drenaggi per impianti vitivinicoli di qualità. Come operiamo a Terricciola e in Valdera rispettando il paesaggio.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+
+                <!-- Articolo 5 -->
+                <div class="blog-card" onclick="route(event, 'art-5')">
+                    <div>
+                        <span class="blog-date">Maggio 2025</span>
+                        <h3 class="blog-title">Sistemazioni Idrauliche e Norme Post-Alluvione.</h3>
+                        <p class="blog-excerpt">
+                            Consolidamento argini e pulizia corsi d'acqua sono diventati prioritari. Le best practice per la sicurezza idrogeologica del territorio.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+
+                <!-- Articolo 6 -->
+                <div class="blog-card" onclick="route(event, 'art-6')">
+                    <div>
+                        <span class="blog-date">Giugno 2025</span>
+                        <h3 class="blog-title">Edilizia 2025: impatto dei bonus sui cantieri.</h3>
+                        <p class="blog-excerpt">
+                            Come le modifiche al Superbonus e Sismabonus influenzano la fase di scavo e fondazione. Un punto di vista tecnico per imprese e privati.
+                        </p>
+                    </div>
+                    <span class="blog-link">LEGGI TUTTO &rarr;</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BLOG ARTICLE PAGES (SINGLE) -->
+    
+    <!-- Art 1 -->
+    <section id="art-1" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Normative</span>
+                <h2 class="display-text" style="color:white; margin:0;">RISTRUTTURAZIONI<br><span style="color:var(--accent)">2025</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>Con le recenti modifiche alla legge di bilancio, il panorama delle detrazioni fiscali per l'edilizia ha subito importanti variazioni. Per chi si appresta a iniziare lavori di scavo, sistemazione esterna o movimento terra propedeutici a una ristrutturazione, è fondamentale capire cosa è ancora detraibile.</p>
+            <h3>Detrazioni Edilizie e Bonus Casa</h3>
+            <p>Il classico bonus ristrutturazioni al 50% è stato confermato, ma con massimali rivisti. Questo bonus copre spesso anche le opere di "sistemazione a verde" e le opere accessorie se inserite in un titolo abilitativo (CILA/SCIA) più ampio. Gli scavi per le fondazioni di un ampliamento o il rifacimento di fognature e sottoservizi rientrano pienamente in queste casistiche.</p>
+            <h3>Sismabonus e Consolidamenti</h3>
+            <p>Se il movimento terra riguarda il miglioramento sismico (es. consolidamento di versanti franosi a ridosso dell'abitazione, micropali, scogliere), le aliquote possono essere più vantaggiose. Novaterra collabora con ingegneri strutturisti per fornire tutta la documentazione necessaria a certificare l'intervento.</p>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Cantiere ristrutturazione"></div>
+            <p>In conclusione, pur essendosi ridotte le aliquote "shock" del 110%, lo spazio per recuperare parte dell'investimento sui lavori di terra esiste ed è concreto, a patto di muoversi con progetti chiari e fatture tracciabili.</p>
+        </div>
+    </section>
+
+    <!-- Art 2 -->
+    <section id="art-2" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1574360778004-945657805625?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Business</span>
+                <h2 class="display-text" style="color:white; margin:0;">INCENTIVI<br><span style="color:var(--accent)">IMPRESE 2025</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>Il settore del movimento terra richiede investimenti costanti in tecnologia e macchinari. Per il 2025, il piano Transizione 5.0 e i residui di Industria 4.0 offrono ancora spunti interessanti per chi vuole rinnovare il parco mezzi.</p>
+            <h3>Credito d'Imposta Beni Strumentali</h3>
+            <p>Per escavatori, pale e macchine operatrici dotate di sistemi di interconnessione (GPS, telemetria, controllo remoto), è possibile accedere a crediti d'imposta che riducono significativamente il costo d'acquisto. Novaterra ha investito in una flotta interconnessa proprio sfruttando queste leve, garantendo al cliente finale maggiore precisione e velocità.</p>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Macchinario moderno"></div>
+            <p>Attenzione anche ai bandi regionali e alle agevolazioni per le ZES (Zone Economiche Speciali) se applicabili, che possono cumulare benefici per le micro e piccole imprese del settore edile e agricolo.</p>
+        </div>
+    </section>
+
+    <!-- Art 3 -->
+    <section id="art-3" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1455165814004-1126a7199f9b?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Metodo</span>
+                <h2 class="display-text" style="color:white; margin:0;">SOPRALLUOGO<br><span style="color:var(--accent)">TECNICO</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>Spesso si tende a chiedere "quanto costa uno scavo al metro cubo?" senza aver visto il cantiere. Questo è l'errore numero uno. Il sopralluogo tecnico non è una formalità, è la base operativa di Novaterra.</p>
+            <h3>Cosa analizziamo</h3>
+            <ul>
+                <li><strong>Accessibilità:</strong> Ci passa un 4 assi o serve un mezzo piccolo?</li>
+                <li><strong>Geologia superficiale:</strong> È terra vegetale, argilla compatta o roccia?</li>
+                <li><strong>Quote e Pendenze:</strong> Usiamo livelli laser fin dal primo incontro per capire i volumi reali di sterro e riporto.</li>
+            </ul>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Tecnico in cantiere"></div>
+            <p>Un sopralluogo accurato permette di fornire un preventivo "a corpo" bloccato, evitando le spiacevoli sorprese degli extra a fine lavori. È una garanzia per il cliente e per noi.</p>
+        </div>
+    </section>
+
+    <!-- Art 4 -->
+    <section id="art-4" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Agricoltura</span>
+                <h2 class="display-text" style="color:white; margin:0;">VIGNETI IN<br><span style="color:var(--accent)">COLLINA</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>La Valdera e le colline di Pisa sono terra di vino. Preparare un terreno per un nuovo impianto vitivinicolo richiede una sensibilità particolare, diversa dallo scavo edile.</p>
+            <h3>Scasso e Drenaggio</h3>
+            <p>Lo scasso profondo (fino a 80-100cm) serve a rompere la suola di lavorazione e arieggiare il terreno. Ma ancora più importante è la regimazione delle acque: creare pendenze e fosse di guardia che impediscano all'acqua di lavare via il terreno fertile durante i temporali, proteggendo le barbatelle.</p>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1595245862276-249cb7372994?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Vigneto toscano"></div>
+            <p>Novaterra opera con rispetto del paesaggio, realizzando terrazzamenti che si integrano con la morfologia della collina, pronti per ospitare vigneti di eccellenza.</p>
+        </div>
+    </section>
+
+    <!-- Art 5 -->
+    <section id="art-5" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1461887036734-6c3e622b947b?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Sicurezza</span>
+                <h2 class="display-text" style="color:white; margin:0;">NORME<br><span style="color:var(--accent)">IDRAULICHE</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>Gli eventi climatici estremi ci impongono una nuova attenzione verso fossi, canali e argini. La manutenzione non è più opzionale, è un obbligo di legge e morale.</p>
+            <h3>Interventi Prioritari</h3>
+            <p>La pulizia dell'alveo da vegetazione infestante e la riprofilatura delle sponde sono i primi passi. Dove l'erosione è avanzata, interveniamo con scogliere in massi ciclopici o gabbionate, tecniche che stabilizzano la sponda permettendo comunque il drenaggio.</p>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1584972687312-6eb343997cc0?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Argine fiume"></div>
+            <p>Lavoriamo spesso con consorzi di bonifica e privati confinanti con corsi d'acqua, garantendo interventi rapidi e conformi alle normative ambientali vigenti.</p>
+        </div>
+    </section>
+
+    <!-- Art 6 -->
+    <section id="art-6" class="page">
+        <div class="service-hero">
+            <div class="service-hero-bg parallax-img" data-speed="0.5" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2700');"></div>
+            <div class="service-hero-content">
+                <a href="#" onclick="route(event, 'blog')" class="btn-back" style="color:white; border-color:white;">&larr; Torna alle Notizie</a>
+                <span class="subtitle" style="color:white;">Mercato</span>
+                <h2 class="display-text" style="color:white; margin:0;">EDILIZIA<br><span style="color:var(--accent)">E SCAVI</span>.</h2>
+            </div>
+        </div>
+        <div class="container blog-content-container">
+            <p>Il 2025 segna un ritorno alla normalità dopo l'euforia del Superbonus. Questo significa cantieri più selezionati, clienti più attenti al budget e una richiesta maggiore di qualità.</p>
+            <h3>Impatto sul Movimento Terra</h3>
+            <p>Meno cappotti termici frettolosi, più ristrutturazioni strutturali e nuove costruzioni mirate (demolizione e ricostruzione). In questo scenario, lo scavo e la fondazione tornano centrali. Un errore in questa fase costa caro.</p>
+            <div style="margin-top:2rem; margin-bottom:2rem;"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200" style="width:100%; border-radius:2px;" alt="Cantiere edile"></div>
+            <p>Novaterra si posiziona come partner tecnico per le imprese edili che cercano subappaltatori affidabili per la gestione della "parte sporca" del cantiere, garantendo pulizia e precisione millimetrica.</p>
+        </div>
+    </section>
+
+    <!-- PAGE: CONTATTI -->
+    <section id="contatti" class="page">
+        <div class="container">
+            <div class="contact-layout">
+                <div>
+                    <span class="subtitle">Parliamone</span>
+                    <h2 class="display-text">INIZIA IL<br><i style="font-weight:200; color:white;">PROGETTO</i>.</h2>
+                    <div style="margin-top: 4rem;">
+                        <p><strong>Novaterra</strong> di Riccardo Toncelli</p>
+                        <p style="margin-top: 1rem; color: var(--text-main);">Via G. Galilei 61, Terricciola (PI)</p>
+                        <!-- ADDED NAME ABOVE PHONE -->
+                        <span style="display:block; font-size: 0.8rem; color: var(--accent); margin-top: 1.5rem; letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase;">Riccardo Toncelli</span>
+                        <!-- Updated Elegant Phone Button -->
+                        <a href="tel:+393513081920" class="btn-contact-phone">+39 351 308 19 20</a>
+                        <p style="margin-top: 0.5rem;"><a href="mailto:info@novaterra.work" class="btn-minimal">info@novaterra.work</a></p>
+                    </div>
+                </div>
+
+                <div>
+                    <form id="contactForm" onsubmit="handleForm(event)">
+                        <div class="input-group">
+                            <input type="text" id="name" class="input-field" placeholder=" " required>
+                            <label class="input-label">Nome / Azienda</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" id="email" class="input-field" placeholder=" " required>
+                            <label class="input-label">Email</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="details" class="input-field" placeholder=" " required>
+                            <label class="input-label">Dettagli Progetto</label>
+                        </div>
+                        <button type="submit" class="submit-btn">INVIA RICHIESTA</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MAPPA INTERATTIVA (LEAFLET) -->
+            <div style="margin-top: 6rem; margin-bottom: 6rem;">
+                <span class="subtitle">Dove Siamo</span>
+                <div id="map" style="width: 100%; height: 450px; border: 1px solid var(--line-color); margin-top: 2rem; filter: grayscale(100%) invert(90%) contrast(120%);"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            &copy; 2025 Novaterra. P.IVA 02488820503.
+        </div>
+        
+        <div class="footer-credits">
+            Sito realizzato da A&T Studio - Mauro Toncelli / Anna Gallucci
+        </div>
+
+        <div class="footer-socials">
+            <a href="#" style="color: inherit; text-decoration: none; margin-left: 20px;">Instagram</a>
+            <a href="#" style="color: inherit; text-decoration: none; margin-left: 20px;">Linkedin</a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ----------------------------------------------------
+        // 0. LENIS SMOOTH SCROLL INIT
+        // ----------------------------------------------------
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical', 
+            gestureDirection: 'vertical', 
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        // ----------------------------------------------------
+        // GAME LOOP CENTRALIZZATO (PERFORMANCE OPTIMIZATION)
+        // ----------------------------------------------------
+        function raf(time) {
+            lenis.raf(time);
+            updateDepthGauge(); 
+            updateTimelineProgress();
+            updateCursor();
+            handleParallax(); // Parallax inside RAF
+            
+            // Map animation logic handled separately via internal RAF but could be here
+            requestAnimationFrame(raf);
+        }
+        
+        // ----------------------------------------------------
+        // 1. PRELOADER & CINEMATIC ENTRY LOGIC
+        // ----------------------------------------------------
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const heroContent = document.querySelector('.hero-content');
+            
+            // Blocca scroll finché c'è il preloader
+            lenis.stop();
+            document.body.style.overflow = 'hidden';
+
+            // 3.5s totali per il Preloader (Disegno SVG)
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                lenis.start(); // Sblocca scroll
+                
+                // Start Main Loop
+                requestAnimationFrame(raf);
+                
+                // 1.5s dopo che il preloader è sparito, facciamo entrare il testo
+                setTimeout(() => {
+                    if(heroContent) heroContent.classList.add('visible');
+                }, 1000); 
+
+            }, 3500); 
+        });
+
+        // ----------------------------------------------------
+        // 2. CURSORE STABILE
+        // ----------------------------------------------------
+        const cursorCross = document.querySelector('.cursor-cross');
+        const coordsDiv = document.querySelector('.geo-coords');
+        
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Update GPS Coordinates visually
+            coordsDiv.innerText = `43° 31' ${(mouseY % 60).toString().padStart(2,'0')}" N  10° 40' ${(mouseX % 60).toString().padStart(2,'0')}" E`;
+        });
+
+        function updateCursor() {
+            const ease = 0.4; // SNAPPIER CURSOR
+            cursorX += (mouseX - cursorX) * ease;
+            cursorY += (mouseY - cursorY) * ease;
+            cursorCross.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+        }
+
+        document.querySelectorAll('a, button, .menu-toggle, .service-item, .project-item, .info-card, .gallery-img, .method-card, .home-service-item, .expectation-item, .blog-card, .btn-hero, .cert-item, .btn-contact-phone, .back-to-top').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorCross.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursorCross.classList.remove('hovered'));
+        });
+
+        // ----------------------------------------------------
+        // 3. DEPTH GAUGE LOGIC & SCROLL TOP BTN
+        // ----------------------------------------------------
+        const depthIndicator = document.getElementById('depthIndicator');
+        const depthText = document.getElementById('depthText');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const maxDepth = 100;
+
+        function updateDepthGauge() {
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            if(scrollTotal <= 0) return;
+            
+            let scrollProgress = window.scrollY / scrollTotal;
+            if(scrollProgress < 0) scrollProgress = 0;
+            if(scrollProgress > 1) scrollProgress = 1;
+            
+            depthIndicator.style.top = `${scrollProgress * 100}%`;
+            const currentDepth = (scrollProgress * maxDepth).toFixed(1);
+            depthText.innerText = `-${currentDepth}m`;
+
+            // BACK TO TOP VISIBILITY
+            // Set threshold to 300 to ensure it appears on shorter pages
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        }
+
+        function scrollToTop() {
+            lenis.scrollTo(0);
+        }
+
+        // ----------------------------------------------------
+        // 3.5 TIMELINE PROGRESS LOGIC (DEBUGGATA)
+        // ----------------------------------------------------
+        function updateTimelineProgress() {
+            const timelineContainer = document.getElementById('timelineContainer');
+            const timelineProgress = document.getElementById('timelineProgress');
+            const timelineDots = document.querySelectorAll('.timeline-dot');
+            
+            // Se non siamo nella pagina Chi Siamo o l'elemento non è visibile, usciamo
+            if(!timelineContainer || timelineContainer.offsetParent === null) return;
+
+            const rect = timelineContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Calcola quanto della timeline è stato scrollato
+            // Inizia quando la cima della timeline entra a 70% schermo
+            let startOffset = windowHeight * 0.7; 
+            let relativeY = startOffset - rect.top;
+            let progress = relativeY / rect.height;
+
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+
+            if(timelineProgress) {
+                timelineProgress.style.height = `${progress * 100}%`;
+            }
+
+            // Illuminiamo i pallini quando la linea ci passa sopra
+            timelineDots.forEach(dot => {
+                const dotRect = dot.getBoundingClientRect();
+                
+                // Posizione relativa del dot nel container
+                const dotRelativeY = dotRect.top - rect.top;
+                const currentLineHeight = rect.height * progress;
+
+                // Adjust for dot center
+                if (currentLineHeight >= dotRelativeY) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // DEBUG: Forziamo la visibilità della sezione se per caso il Reveal FX ha fallito
+            const section = timelineContainer.closest('.timeline-section');
+            if(section && getComputedStyle(section).opacity === '0' && progress > 0.1) {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }
+        }
+
+
+        // ----------------------------------------------------
+        // 4. ROUTING & NAVIGATION
+        // ----------------------------------------------------
+        
+        let previousPageId = 'home'; // Smart Back Logic Tracker
+
+        function route(event, pageId) {
+            if(event) event.preventDefault();
+            
+            // Update Previous Page only if we are moving forward (not backing)
+            const activePage = document.querySelector('.page.active');
+            if (activePage && activePage.id !== pageId) {
+                previousPageId = activePage.id;
+            }
+
+            const navOverlay = document.getElementById('navOverlay');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if(navOverlay.classList.contains('active')) {
+                navOverlay.classList.remove('active');
+                menuToggle.innerText = "Menu";
+            }
+
+            const pages = document.querySelectorAll('.page');
+            const targetPage = document.getElementById(pageId);
+            
+            pages.forEach(p => {
+                if(p.classList.contains('active')) {
+                    p.style.opacity = '0';
+                    setTimeout(() => {
+                        p.classList.remove('active');
+                        p.style.display = 'none';
+                    }, 500);
+                }
+            });
+
+            setTimeout(() => {
+                targetPage.style.display = 'block';
+                targetPage.classList.add('active');
+                
+                lenis.scrollTo(0, { immediate: true });
+                
+                setTimeout(() => {
+                    targetPage.style.opacity = '1';
+                    refreshAnimations();
+                    
+                    // INIT MAP IF CONTACT PAGE
+                    if(pageId === 'contatti') initMap();
+
+                }, 50);
+
+                // Init Map for projects if needed
+                if(pageId.includes('progetto')) {
+                    const canvasId = `canvas-topo-${pageId.split('-')[1]}`;
+                    if(!maps[canvasId]) { 
+                        maps[canvasId] = new TopoMap(canvasId); 
+                        animateMap(canvasId);
+                    }
+                }
+            }, 500);
+        }
+
+        // SMART GO BACK FUNCTION
+        function goBack(event) {
+            // Se la pagina precedente è home, torniamo a home.
+            // Se è servizi, torniamo a servizi.
+            // Se è indefinita o altro, default a servizi.
+            let target = 'servizi';
+            if(previousPageId === 'home') target = 'home';
+            
+            route(event, target);
+        }
+
+        function toggleMenu() {
+            const navOverlay = document.getElementById('navOverlay');
+            const toggleBtn = document.querySelector('.menu-toggle');
+            
+            if (navOverlay.classList.contains('active')) {
+                navOverlay.classList.remove('active');
+                toggleBtn.innerText = "Menu";
+            } else {
+                navOverlay.classList.add('active');
+                toggleBtn.innerText = "Chiudi";
+            }
+        }
+
+        function handleForm(e) {
+            e.preventDefault();
+            const btn = document.querySelector('.submit-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "ATTENDI...";
+            setTimeout(() => {
+                btn.innerText = "MESSAGGIO INVIATO";
+                btn.style.borderColor = "green";
+                btn.style.color = "green";
+                document.getElementById('contactForm').reset();
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.borderColor = "var(--line-color)";
+                    btn.style.color = "var(--text-main)";
+                }, 3000);
+            }, 1500);
+        }
+
+        // ----------------------------------------------------
+        // 5. TYPEWRITER (Dicono di Noi) - UPDATED LOGIC
+        // ----------------------------------------------------
+        const testimonials = [
+            { text: "Mai visto un cantiere così pulito. Hanno risolto un problema di drenaggio che avevamo da anni.", author: "Marco R. - Architetto" },
+            { text: "Riccardo e il suo team hanno trasformato il nostro terreno in pendenza in un giardino vivibile. Consigliatissimi.", author: "Elena B. - Privato" },
+            { text: "Professionalità industriale applicata al residenziale. Scavi precisi al millimetro.", author: "Studio Tecnico V." }
+        ];
+        let tIndex = 0;
+        let charIndex = 0;
+        const typeSpeed = 50; 
+        const pauseDelay = 3000; 
+
+        function typeWriterEffect() {
+            const currentItem = testimonials[tIndex];
+            const textElement = document.getElementById('typewriter-target');
+            const authorElement = document.getElementById('typewriter-author');
+            
+            if (!textElement) return;
+
+            // Typing phase
+            if (charIndex < currentItem.text.length) {
+                textElement.innerText = currentItem.text.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeWriterEffect, typeSpeed);
+            } 
+            // Finished typing phase
+            else {
+                authorElement.innerText = currentItem.author;
+                authorElement.style.opacity = '1';
+                
+                // Wait and switch instantly
+                setTimeout(() => {
+                    tIndex = (tIndex + 1) % testimonials.length;
+                    charIndex = 0;
+                    textElement.innerText = "";
+                    authorElement.style.opacity = '0';
+                    typeWriterEffect();
+                }, pauseDelay);
+            }
+        }
+
+        // ----------------------------------------------------
+        // 6. ANIMAZIONI REVEAL & PARALLASSE
+        // ----------------------------------------------------
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        function refreshAnimations() {
+            document.querySelectorAll('h1, h2, h3, p, .info-card, .service-item, .fleet-item, .project-info, .home-profile-preview, .video-box, .timeline-section, .method-img-wrapper, .method-card, .home-service-item, .expectation-item, .blog-card, .cert-item').forEach(el => {
+                if(!el.classList.contains('reveal-fx')) {
+                    el.classList.add('reveal-fx');
+                    revealObserver.observe(el);
+                }
+            });
+        }
+
+        function handleParallax() {
+            // FIXED LOGIC: Calcola posizione relativa alla viewport, non allo scroll totale
+            const windowHeight = window.innerHeight;
+            const images = document.querySelectorAll('.parallax-img');
+            
+            images.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                
+                // Se l'immagine è visibile nel viewport
+                if(rect.top < windowHeight && rect.bottom > 0) {
+                    const speed = img.getAttribute('data-speed') || 0.1;
+                    
+                    // Calcola offset dal centro dello schermo
+                    // Quando l'immagine è al centro, offset = 0
+                    const distanceFromCenter = rect.top + (rect.height / 2) - (windowHeight / 2);
+                    
+                    const yPos = distanceFromCenter * speed; 
+                    
+                    // Applica trasformazione
+                    img.style.transform = `scale(1.1) translateY(${yPos}px)`;
+                }
+            });
+        }
+
+        // ----------------------------------------------------
+        // 7. TOPO MAP GENERATOR (Procedural Canvas Animation)
+        // ----------------------------------------------------
+        const maps = {};
+        class TopoMap {
+            constructor(id) {
+                this.canvas = document.getElementById(id);
+                if(!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.width = this.canvas.offsetWidth;
+                this.height = this.canvas.offsetHeight;
+                this.canvas.width = this.width; this.canvas.height = this.height;
+                this.time = 0;
+                this.lines = [];
+                this.init();
+            }
+            init() {
+                // Genera linee "topografiche" simulate usando onde sinusoidali
+                for(let i=0; i<15; i++) {
+                    this.lines.push({
+                        y: (this.height / 15) * i + 20,
+                        amplitude: 20 + Math.random() * 30,
+                        speed: 0.002 + Math.random() * 0.004,
+                        offset: Math.random() * Math.PI * 2,
+                        color: Math.random() > 0.8 ? '#cd5c2f' : 'rgba(255,255,255,0.15)'
+                    });
+                }
+            }
+            draw() {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                this.time += 1;
+                
+                // Draw Grid
+                this.ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+                this.ctx.lineWidth = 1;
+                this.ctx.beginPath();
+                for(let x=0; x<this.width; x+=40) { this.ctx.moveTo(x,0); this.ctx.lineTo(x,this.height); }
+                for(let y=0; y<this.height; y+=40) { this.ctx.moveTo(0,y); this.ctx.lineTo(this.width,y); }
+                this.ctx.stroke();
+
+                // Draw Topo Lines
+                this.lines.forEach((line, index) => {
+                    this.ctx.beginPath();
+                    this.ctx.strokeStyle = line.color;
+                    this.ctx.lineWidth = line.color.includes('cd5c2f') ? 2 : 1;
+                    
+                    for (let x = 0; x <= this.width; x += 10) {
+                        // Math magic per curve organiche
+                        const y = line.y + Math.sin(x * 0.01 + this.time * line.speed + line.offset) * line.amplitude 
+                                         + Math.cos(x * 0.03 - this.time * line.speed) * (line.amplitude * 0.5);
+                        if (x === 0) this.ctx.moveTo(x, y);
+                        else this.ctx.lineTo(x, y);
+                    }
+                    this.ctx.stroke();
+                });
+
+                // Scan Line
+                const scanX = (this.time * 2) % this.width;
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = 'rgba(205, 92, 47, 0.5)';
+                this.ctx.lineWidth = 1;
+                this.ctx.moveTo(scanX, 0);
+                this.ctx.lineTo(scanX, this.height);
+                this.ctx.stroke();
+            }
+        }
+
+        function animateMap(id) {
+            if(maps[id]) { maps[id].draw(); requestAnimationFrame(() => animateMap(id)); }
+        }
+
+        // ----------------------------------------------------
+        // 8. LIGHTBOX LOGIC FOR GALLERIES (Both Services & Projects)
+        // ----------------------------------------------------
+        let currentImgIndex = 0;
+        let currentGalleryImages = [];
+        const modal = document.getElementById('lightboxModal');
+        const modalImg = document.getElementById('lightboxImg');
+
+        function setupGalleries() {
+            // Seleziona SIA le gallerie servizi (.gallery-scroller) CHE le gallerie progetti (.project-gallery)
+            const galleryContainers = document.querySelectorAll('.gallery-scroller, .project-gallery');
+
+            galleryContainers.forEach(container => {
+                const images = Array.from(container.querySelectorAll('img'));
+                images.forEach((img, index) => {
+                    img.style.cursor = 'zoom-in'; 
+                    img.addEventListener('click', () => {
+                        currentGalleryImages = images;
+                        currentImgIndex = index;
+                        openLightbox();
+                    });
+                });
+            });
+        }
+
+        function openLightbox() {
+            if(currentGalleryImages.length === 0) return;
+            modalImg.src = currentGalleryImages[currentImgIndex].src;
+            modal.classList.add('active');
+            lenis.stop(); // Stop scroll behind modal
+        }
+
+        function closeLightbox() {
+            modal.classList.remove('active');
+            lenis.start();
+        }
+
+        function changeImage(dir) {
+            currentImgIndex += dir;
+            if(currentImgIndex < 0) currentImgIndex = currentGalleryImages.length - 1;
+            if(currentImgIndex >= currentGalleryImages.length) currentImgIndex = 0;
+            modalImg.src = currentGalleryImages[currentImgIndex].src;
+        }
+
+        // Close on clicking outside image
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) closeLightbox();
+        });
+
+        // Keyboard Nav
+        document.addEventListener('keydown', (e) => {
+            if(!modal.classList.contains('active')) return;
+            if(e.key === 'Escape') closeLightbox();
+            if(e.key === 'ArrowLeft') changeImage(-1);
+            if(e.key === 'ArrowRight') changeImage(1);
+        });
+
+        // ----------------------------------------------------
+        // 9. LEAFLET MAP INIT
+        // ----------------------------------------------------
+        let leafletMap = null;
+        function initMap() {
+            if(leafletMap) return; // already inited
+            
+            // Coord Terricciola: 43.525, 10.678
+            setTimeout(() => {
+                leafletMap = L.map('map', {
+                    scrollWheelZoom: false
+                }).setView([43.525, 10.678], 13);
+
+                // Dark Tile Layer (CartoDB Dark Matter)
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap &copy; CartoDB',
+                    subdomains: 'abcd',
+                    maxZoom: 19
+                }).addTo(leafletMap);
+
+                // Custom Icon
+                const customIcon = L.divIcon({
+                    className: 'custom-pin',
+                    html: '<div style="background-color: #cd5c2f; width: 15px; height: 15px; border-radius: 50%; border: 2px solid white;"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                L.marker([43.525, 10.678], { icon: customIcon }).addTo(leafletMap)
+                    .bindPopup('<b>Novaterra Sede</b><br>Via G. Galilei 61, Terricciola').openPopup();
+                
+                // Force resize
+                leafletMap.invalidateSize();
+            }, 100);
+        }
+
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', () => {
+            typeWriterEffect();
+            refreshAnimations();
+            setupGalleries();
+            // Main loop starts inside load event to sync with lenis
+        });
+
+    </script>
+</body>
+</html>

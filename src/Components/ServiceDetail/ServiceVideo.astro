@@ -1,0 +1,74 @@
+---
+// src/Components/ServiceDetail/ServiceVideo.astro
+interface Props {
+  title: string;
+  embedUrl?: string;
+  mp4Url?: string;
+  thumbnail?: string;
+}
+
+const { title, embedUrl, mp4Url, thumbnail } = Astro.props;
+---
+
+<div class="video-section">
+  <span class="subtitle">{title}</span>
+  
+  {embedUrl && (
+    <div class="video-embed">
+      <iframe 
+        src={embedUrl}
+        title={title}
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+  )}
+  
+  {mp4Url && !embedUrl && (
+    <div class="video-player">
+      <video 
+        controls
+        poster={thumbnail}
+        preload="metadata"
+      >
+        <source src={mp4Url} type="video/mp4" />
+        Il tuo browser non supporta il tag video.
+      </video>
+    </div>
+  )}
+</div>
+
+<style>
+  .video-section {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  
+  .video-section .subtitle {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  
+  .video-embed,
+  .video-player {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .video-embed iframe,
+  .video-player video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
+
+
+

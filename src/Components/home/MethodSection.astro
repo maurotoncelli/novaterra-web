@@ -1,0 +1,38 @@
+---
+import { methodSteps } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section class="container mx-auto px-[5vw] mt-32 pt-16 border-t border-white/10 relative z-10">
+    
+    <!-- HEADER DELLA SEZIONE -->
+    <SectionHeader 
+        subtitle="Il Processo" 
+        title="Un metodo chiaro,<br>per lavori che funzionano."
+    >
+        <!-- QUESTO È IL TESTO CHE MANCAVA -->
+        <p class="mt-6 text-nova-text text-[1.1rem] font-light leading-[1.7]">
+            Novaterra è un’impresa moderna, organizzata e affidabile. Seguiamo ogni progetto con una procedura precisa e trasparente.
+        </p>
+    </SectionHeader>
+
+    <!-- GRIGLIA STEP (Stile tecnico, gap 1px) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
+        {methodSteps.map((item) => (
+            <div class="bg-nova-bg p-10 hover:bg-nova-surface transition-colors duration-300 flex flex-col h-full">
+                
+                <!-- Step Label -->
+                <span class="text-nova-accent text-[0.8rem] font-bold tracking-[0.1em] mb-4 block">{item.step}</span>
+                
+                <!-- Icona -->
+                <div class="text-[2rem] text-nova-text mb-6 font-[200]">{item.icon}</div>
+                
+                <!-- Titolo -->
+                <h3 class="text-[1.5rem] font-bold text-white mb-4 leading-tight">{item.title}</h3>
+                
+                <!-- Descrizione (set:html per il testo colorato dei 100k) -->
+                <p class="text-nova-muted text-[1rem] leading-[1.7] font-light" set:html={item.desc}></p>
+            </div>
+        ))}
+    </div>
+</section>

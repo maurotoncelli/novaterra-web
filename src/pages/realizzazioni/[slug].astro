@@ -1,0 +1,224 @@
+---
+// src/pages/realizzazioni/[slug].astro
+// Dynamic routing per progetti singoli
+
+import Layout from '../../layouts/Layout.astro';
+import ProjectHero from '../../Components/Projects/ProjectHero.astro';
+import ProjectSpecs from '../../Components/Projects/ProjectSpecs.astro';
+import TopographicSection from '../../Components/Projects/TopographicSection.astro';
+import ProjectVideo from '../../Components/Projects/ProjectVideo.astro';
+import ServiceGalleryScroller from '../../Components/ServiceDetail/ServiceGalleryScroller.astro';
+import { getAllProjectSlugs, getProjectBySlug } from '../../lib/projectsRepository';
+
+// getStaticPaths genera tutte le pagine progetti
+export async function getStaticPaths() {
+  const slugs = getAllProjectSlugs();
+  
+  return slugs.map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = getProjectBySlug(slug!);
+
+// 404 se progetto non trovato
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+const pageTitle = `${project.title} | Realizzazioni Novaterra`;
+const pageDescription = project.excerpt;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  
+  <article class="project-page">
+    
+    <!-- Hero -->
+    <ProjectHero 
+      title={project.hero.title}
+      subtitle={project.hero.subtitle}
+      image={project.hero.image}
+      backLink="/realizzazioni"
+    />
+    
+    <!-- Contenuto Principale -->
+    <div class="container">
+      
+      <!-- La Sfida + Specs + Soluzione -->
+      <div class="project-detail-layout">
+        
+        <!-- Colonna Sinistra: La Sfida -->
+        <div class="challenge-section">
+          <h2 class="section-subtitle">{project.challenge.title}</h2>
+          <p class="challenge-description">{project.challenge.description}</p>
+        </div>
+        
+        <!-- Colonna Destra: Specs + Soluzione -->
+        <div class="solution-section">
+          <ProjectSpecs 
+            client={project.specs.client}
+            location={project.specs.location}
+            year={project.specs.year}
+            service={project.specs.service}
+          />
+          <p class="solution-description">{project.solution.description}</p>
+        </div>
+        
+      </div>
+      
+      <!-- Rilievo Topografico (opzionale) -->
+      {project.topographic && (
+        <TopographicSection 
+          title={project.topographic.title}
+          image={project.topographic.image}
+          dataReadout={project.topographic.dataReadout}
+        />
+      )}
+      
+      <!-- Galleria -->
+      <span class="subtitle">Galleria</span>
+      <ServiceGalleryScroller images={project.gallery} />
+      
+      <!-- Video Cantiere (SEMPRE presente) -->
+      <span class="subtitle">Video Cantiere</span>
+      <ProjectVideo 
+        videoType={project.video.type}
+        videoUrl={project.video.url}
+        thumbnail={project.video.thumbnail}
+        title={project.video.title}
+      />
+      
+      <!-- CTA Bottom -->
+      <div class="project-cta">
+        <a href="/realizzazioni" class="cta-button">
+          ← TORNA A TUTTI I PROGETTI
+        </a>
+      </div>
+      
+    </div>
+    
+  </article>
+
+</Layout>
+
+<style>
+  .project-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 6rem 5vw;
+    width: 100%;
+  }
+  
+  .project-detail-layout {
+    display: grid;
+    gap: 4rem;
+    margin-bottom: 6rem;
+  }
+  
+  .challenge-section {
+    /* Colonna sinistra (più stretta) */
+  }
+  
+  .section-subtitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--nova-text);
+    margin-bottom: 1rem;
+  }
+  
+  .challenge-description {
+    font-size: 1.05rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+  }
+  
+  .solution-section {
+    /* Colonna destra (più larga) */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .solution-description {
+    font-size: 1.05rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+    margin-top: 2rem;
+  }
+  
+  .subtitle {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--nova-accent);
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    font-weight: 700;
+  }
+  
+  .project-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-top: 3rem;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--nova-text);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    border-color: var(--nova-accent);
+    color: var(--nova-accent);
+    transform: translateX(-5px);
+  }
+  
+  @media (min-width: 769px) {
+    .project-detail-layout {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .project-detail-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    
+    .section-subtitle {
+      font-size: 1.5rem;
+    }
+    
+    .challenge-description,
+    .solution-description {
+      font-size: 1rem;
+    }
+    
+    .solution-description {
+      margin-top: 1.5rem;
+    }
+    
+    .container {
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+

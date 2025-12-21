@@ -1,0 +1,121 @@
+---
+// src/Components/Blog/ArticleContent.astro
+interface Props {
+  paragraphs: string[];
+  sections?: Array<{
+    title: string;
+    content: string | string[];
+    image?: {
+      src: string;
+      alt: string;
+    };
+  }>;
+}
+
+const { paragraphs, sections = [] } = Astro.props;
+---
+
+<div class="article-content">
+  
+  <!-- Paragrafi iniziali -->
+  {paragraphs.map((p) => (
+    <p set:html={p}></p>
+  ))}
+  
+  <!-- Sezioni con sottotitoli -->
+  {sections.map((section) => (
+    <div class="content-section">
+      <h2 class="section-subtitle">{section.title}</h2>
+      
+      {Array.isArray(section.content) ? (
+        section.content.some(item => item.includes('<strong>')) ? (
+          <ul class="content-list">
+            {section.content.map((item) => (
+              <li set:html={item}></li>
+            ))}
+          </ul>
+        ) : (
+          section.content.map((paragraph) => (
+            <p set:html={paragraph}></p>
+          ))
+        )
+      ) : (
+        <p set:html={section.content}></p>
+      )}
+      
+      {section.image && (
+        <div class="content-image">
+          <img src={section.image.src} alt={section.image.alt} loading="lazy" />
+        </div>
+      )}
+    </div>
+  ))}
+  
+</div>
+
+<style>
+  .article-content {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--nova-muted);
+  }
+  
+  .article-content > p {
+    margin-bottom: 1.5rem;
+  }
+  
+  .content-section {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--nova-accent);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+  
+  .content-list {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: 2rem;
+    color: var(--nova-muted);
+  }
+  
+  .content-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.8;
+  }
+  
+  .content-list li :global(strong) {
+    color: var(--nova-text);
+    font-weight: 600;
+  }
+  
+  .content-image {
+    margin: 2rem 0;
+  }
+  
+  .content-image img {
+    width: 100%;
+    border-radius: 2px;
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .article-content {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    
+    .section-subtitle {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+

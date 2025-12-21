@@ -1,0 +1,63 @@
+---
+// src/Components/Contact/ContactInfo.astro
+import { contactInfo } from '../../data/contactData';
+---
+
+<div class="contact-info-wrapper">
+  <span class="subtitle">{contactInfo.subtitle}</span>
+  <h1 class="display-text">
+    {contactInfo.title.main}<br>
+    <i class="font-extralight text-white italic">{contactInfo.title.accent}</i>.
+  </h1>
+  
+  <div class="contact-details">
+    <p class="font-bold text-white">
+      {contactInfo.company.name} <span class="font-normal">{contactInfo.company.owner}</span>
+    </p>
+    <p class="text-nova-text" style="margin-top: 1rem; color: var(--nova-text);">
+      {contactInfo.address.street}, {contactInfo.address.city}
+    </p>
+    
+    <!-- Nome contatto -->
+    <span class="contact-person-name">
+      {contactInfo.contactPerson}
+    </span>
+    
+    <!-- Telefono (pulsante grande) -->
+    <a href={contactInfo.phone.href} class="btn-contact-phone">
+      {contactInfo.phone.display}
+    </a>
+    
+    <!-- Email -->
+    <p style="margin-top: 0.5rem;">
+      <a href={contactInfo.email.href} class="btn-minimal">
+        {contactInfo.email.display}
+      </a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .contact-info-wrapper {
+    width: 100%;
+  }
+  
+  .display-text {
+    margin-bottom: 0;
+    line-height: 1;
+  }
+  
+  .contact-details {
+    margin-top: 4rem;
+  }
+  
+  .contact-person-name {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--nova-accent);
+    margin-top: 1.5rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+</style>

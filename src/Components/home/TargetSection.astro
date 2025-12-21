@@ -1,0 +1,35 @@
+---
+import { targets } from '../../data/homeContent';
+import SectionHeader from '../ui/SectionHeader.astro';
+---
+
+<section class="container mx-auto px-[5vw] mt-32 mb-24 pt-16 border-t border-white/10 relative z-10">
+    
+    <!-- HEADER DELLA SEZIONE -->
+    <SectionHeader 
+        subtitle="Target" 
+        title="Lavoriamo con chi progetta,<br>decide e vive i luoghi."
+    >
+        <!-- Testo introduttivo -->
+        <p class="mt-6 text-nova-text text-[1.1rem] font-light leading-[1.7]">
+            Novaterra è pensata per tecnici, privati ed enti pubblici che cercano un’impresa organizzata.
+        </p>
+    </SectionHeader>
+
+    <!-- GRIGLIA DELLE CARD -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {targets.map((item) => (
+            <div class="bg-nova-surface p-10 border border-white/10 hover:border-nova-accent hover:-translate-y-2 transition-all duration-300 group reveal-fx">
+                
+                <!-- Icona -->
+                <div class="text-[2rem] text-nova-accent mb-6 font-thin">{item.icon}</div>
+                
+                <!-- Titolo (con set:html per leggere i <br>) -->
+                <h3 class="text-[1.5rem] font-bold text-white mb-4 leading-[1.2] tracking-tight" set:html={item.title}></h3>
+                
+                <!-- Descrizione (con set:html per leggere formattazione) -->
+                <p class="text-nova-muted leading-[1.7] font-light" set:html={item.desc}></p>
+            </div>
+        ))}
+    </div>
+</section>

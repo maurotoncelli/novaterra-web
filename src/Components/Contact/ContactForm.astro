@@ -1,0 +1,112 @@
+---
+// src/Components/Contact/ContactForm.astro
+import { formConfig } from '../../data/contactData';
+---
+
+<div class="form-wrapper">
+  <form id="contact-form" class="contact-form">
+    {formConfig.fields.map((field) => (
+      <div class="input-group">
+        <input
+          type={field.type}
+          id={field.id}
+          name={field.id}
+          class="input-field"
+          placeholder=" "
+          required={field.required}
+        />
+        <label for={field.id} class="input-label">{field.label}</label>
+      </div>
+    ))}
+
+    <div class="consent">
+      <label class="consent-row">
+        <input id="privacy-consent" name="privacyConsent" type="checkbox" required />
+        <span class="consent-text">
+          Ho letto e accetto la <a class="consent-link" href="/privacy-policy">Privacy Policy</a>.
+          I dati verranno usati per rispondere alla richiesta e, se applicabile, per analisi statistiche (Google Analytics) e comunicazioni informative/marketing.
+          <strong>Non vendiamo i dati a terzi</strong>.
+        </span>
+      </label>
+    </div>
+    
+    <button type="submit" class="submit-btn">
+      {formConfig.submitButton.text}
+    </button>
+  </form>
+</div>
+
+<style>
+  .form-wrapper {
+    width: 100%;
+    padding-top: 0;
+  }
+  
+  .contact-form {
+    width: 100%;
+  }
+  
+  .input-group {
+    margin-bottom: 2rem;
+  }
+
+  .consent {
+    margin-top: 1.25rem;
+    margin-bottom: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .consent-row {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 14px;
+    align-items: start;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .consent-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    accent-color: var(--nova-accent);
+  }
+
+  .consent-text {
+    color: var(--nova-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .consent-link {
+    color: var(--nova-text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+
+  .consent-link:hover {
+    color: var(--nova-accent);
+    border-color: rgba(205, 92, 47, 0.65);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      console.log('Form submitted:', data);
+      
+      // Feedback successo (simulato)
+      alert('Richiesta inviata con successo! Ti contatteremo al più presto.');
+      form.reset();
+    });
+  }
+</script>

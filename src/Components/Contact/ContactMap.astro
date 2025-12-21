@@ -1,0 +1,54 @@
+---
+// src/Components/Contact/ContactMap.astro
+import { contactInfo } from '../../data/contactData';
+---
+
+<div class="map-wrapper">
+  <span class="subtitle">{contactInfo.map.title}</span>
+  <div 
+    id="contact-map" 
+    class="contact-map"
+  ></div>
+</div>
+
+<style>
+  .map-wrapper {
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+    width: 100%;
+  }
+  
+  .contact-map {
+    width: 100%;
+    height: 450px;
+    border: 1px solid var(--nova-line);
+    margin-top: 2rem;
+    filter: grayscale(100%) invert(90%) contrast(120%);
+  }
+</style>
+
+<script define:vars={{ coordinates: contactInfo.map.coordinates }}>
+  // Inizializza mappa Leaflet quando disponibile
+  function initContactMap() {
+    if (typeof L !== 'undefined') {
+      const map = L.map('contact-map').setView([coordinates.lat, coordinates.lng], coordinates.zoom);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+      
+      L.marker([coordinates.lat, coordinates.lng]).addTo(map);
+    } else {
+      // Retry se Leaflet non è ancora caricato
+      setTimeout(initContactMap, 100);
+    }
+  }
+  
+  // Avvia dopo che il DOM è pronto
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactMap);
+  } else {
+    initContactMap();
+  }
+</script>
+

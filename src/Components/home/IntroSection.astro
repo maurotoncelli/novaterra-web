@@ -1,0 +1,50 @@
+---
+// src/Components/home/IntroSection.astro
+import { introData } from '../../data/homeContent';
+---
+
+<section class="container mx-auto px-[5vw] pt-16 pb-16 relative z-10">
+    
+    <!-- 1. INTRODUZIONE -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32 reveal-fx">
+        <div>
+            <span class="block text-nova-accent text-[0.85rem] font-bold tracking-[0.2em] uppercase mb-4">{introData.shortIntro.subtitle}</span>
+            <h2 class="text-[2.5rem] font-bold leading-[1.1] text-white tracking-tight" set:html={introData.shortIntro.title} />
+        </div>
+        <div>
+            <p class="text-[1.1rem] text-nova-text leading-[1.7] font-light">
+                {introData.shortIntro.desc}
+            </p>
+        </div>
+    </div>
+
+    <!-- 2. FOUNDER FEATURE -->
+    <div class="border-t border-white/10 mt-16 pt-16 reveal-fx">
+        <div class="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-20 items-center">
+            <!-- Immagine -->
+            <div class="relative h-[500px] w-full overflow-hidden rounded-sm group">
+                <img 
+                    src={introData.founder.image} 
+                    alt="Riccardo Toncelli" 
+                    class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                />
+            </div>
+            
+            <!-- Testo -->
+            <div>
+                <span class="block text-nova-accent text-[0.85rem] font-bold tracking-[0.2em] uppercase mb-4">{introData.founder.subtitle}</span>
+                <h2 class="text-[2.5rem] font-bold leading-[1.1] text-white mb-8 tracking-tight" set:html={introData.founder.title} />
+                <p class="text-[1.1rem] text-white italic mb-8 leading-[1.7]">
+                    {introData.founder.quote}
+                </p>
+                <p class="text-[1rem] text-nova-muted leading-[1.7] mb-8 font-light">
+                    {introData.founder.desc}
+                </p>
+                <a href={introData.founder.cta.link} class="inline-block text-[0.9rem] uppercase tracking-[0.2em] font-bold text-white border-b border-white/30 pb-1 hover:text-nova-accent hover:border-nova-accent transition-colors">
+                    {introData.founder.cta.text} &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+</section>

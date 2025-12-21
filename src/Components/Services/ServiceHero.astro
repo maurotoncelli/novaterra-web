@@ -1,0 +1,13 @@
+---
+// src/Components/Services/ServiceHero.astro
+import { servicesHero } from '../../data/servicesData';
+import PageHero from '../Ui/PageHero.astro';
+---
+
+<PageHero
+  subtitle={servicesHero.subtitle}
+  title={servicesHero.title}
+  image={servicesHero.image}
+  accentItalic={true}
+/>
+

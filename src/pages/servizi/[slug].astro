@@ -1,0 +1,210 @@
+---
+// src/pages/servizi/[slug].astro
+// Dynamic routing per pagine dettaglio servizi
+
+import Layout from '../../layouts/Layout.astro';
+import ServiceDetailHero from '../../Components/ServiceDetail/ServiceDetailHero.astro';
+import ServiceTextGrid from '../../Components/ServiceDetail/ServiceTextGrid.astro';
+import ServiceInfoCard from '../../Components/ServiceDetail/ServiceInfoCard.astro';
+import ServiceGalleryScroller from '../../Components/ServiceDetail/ServiceGalleryScroller.astro';
+import ServiceVideo from '../../Components/ServiceDetail/ServiceVideo.astro';
+import { getAllServiceSlugs, getServiceBySlug } from '../../lib/servicesRepository';
+
+// getStaticPaths genera tutte le pagine servizi
+export async function getStaticPaths() {
+  const slugs = getAllServiceSlugs();
+  
+  return slugs.map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const service = getServiceBySlug(slug!);
+
+// 404 se servizio non trovato
+if (!service) {
+  return Astro.redirect('/404');
+}
+
+const pageTitle = `${service.hero.title.main} ${service.hero.title.accent} | Novaterra`;
+const pageDescription = service.content.introParagraph;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  
+  <div class="service-detail-page">
+    
+    <!-- Hero -->
+    <ServiceDetailHero 
+      title={service.hero.title}
+      subtitle={service.hero.subtitle}
+      image={service.hero.image}
+      backLink={service.hero.backLink}
+    />
+    
+    <!-- Container principale -->
+    <div class="container">
+      
+      <!-- Grid Testo + Info Card -->
+      <ServiceTextGrid 
+        introParagraph={service.content.introParagraph}
+        bodyParagraph={service.content.bodyParagraph}
+      >
+        <ServiceInfoCard 
+          title={service.infoCard.title}
+          items={service.infoCard.items}
+          headingLevel="h2"
+        />
+      </ServiceTextGrid>
+      
+      <!-- Gallery Scroller con Lightbox -->
+      <ServiceGalleryScroller 
+        title={service.gallery.title}
+        images={service.gallery.images}
+      />
+      
+      <!-- Video Placeholder (sempre visibile sotto gallery) -->
+      {service.video ? (
+        <ServiceVideo 
+          title={service.video.title}
+          embedUrl={service.video.embedUrl}
+          mp4Url={service.video.mp4Url}
+          thumbnail={service.video.thumbnail}
+        />
+      ) : (
+        <div class="video-placeholder">
+          <span class="subtitle">Video Presentazione</span>
+          <div class="placeholder-box">
+            <div class="placeholder-icon">🎬</div>
+            <p class="placeholder-text">Video disponibile prossimamente</p>
+          </div>
+        </div>
+      )}
+      
+      <!-- CTA (opzionale) -->
+      {service.cta && (
+        <div class="cta-section">
+          <a href={service.cta.link} class="cta-button">
+            {service.cta.text}
+          </a>
+        </div>
+      )}
+      
+    </div>
+    
+  </div>
+
+</Layout>
+
+<style>
+  .service-detail-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 6rem 5vw;
+    width: 100%;
+  }
+  
+  .cta-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    border: 1px solid var(--nova-accent);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background: var(--nova-accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .video-placeholder {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  
+  .video-placeholder .subtitle {
+    display: block;
+    margin-bottom: 2rem;
+  }
+  
+  .placeholder-box {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .placeholder-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.02) 20px
+    );
+  }
+  
+  .placeholder-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    font-size: 4rem;
+    opacity: 0.3;
+  }
+  
+  .placeholder-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    color: var(--nova-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding-bottom: 4rem;
+    }
+    
+    .placeholder-icon {
+      font-size: 3rem;
+    }
+    
+    .placeholder-text {
+      font-size: 0.8rem;
+    }
+  }
+</style>
+

@@ -1,0 +1,101 @@
+---
+// src/Components/About/BioSection.astro
+import { founderBio } from '../../data/aboutData';
+---
+
+<div class="bio-layout">
+  <!-- Foto con parallax -->
+  <div class="bio-img-wrapper parallax-wrapper">
+    <img 
+      src={founderBio.image.src} 
+      alt={founderBio.image.alt}
+      class="parallax-img"
+      data-speed="0.05"
+    />
+  </div>
+  
+  <!-- Biografia -->
+  <div class="bio-content">
+    <h2 class="bio-title">
+      {founderBio.name},<br>
+      <span class="bio-role">{founderBio.role}</span>
+    </h2>
+    
+    {founderBio.bio.map((paragraph) => (
+      <p class="bio-paragraph">{paragraph}</p>
+    ))}
+  </div>
+</div>
+
+<style>
+  .bio-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+  }
+  
+  .bio-img-wrapper {
+    position: sticky;
+    top: calc(var(--navbar-height) + 2rem);
+    height: 70vh;
+    overflow: hidden;
+    align-self: start;
+  }
+  
+  .parallax-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+  }
+  
+  .bio-content {
+    padding-top: 2rem;
+  }
+  
+  .bio-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+    color: var(--nova-text);
+  }
+  
+  .bio-role {
+    color: var(--nova-muted);
+    font-weight: 300;
+  }
+  
+  .bio-paragraph {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: var(--nova-text);
+    line-height: 1.8;
+  }
+  
+  .bio-paragraph:first-of-type {
+    color: var(--nova-text);
+  }
+  
+  .bio-paragraph:not(:first-of-type) {
+    color: var(--nova-muted);
+  }
+  
+  @media (max-width: 768px) {
+    .bio-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    
+    .bio-img-wrapper {
+      position: relative;
+      top: 0;
+      height: 50vh;
+    }
+  }
+</style>
+
+
+

@@ -1,0 +1,96 @@
+---
+// src/Components/Fleet/FleetHero.astro
+import { fleetHero } from '../../data/fleetData';
+---
+
+<div class="service-hero">
+  <div 
+    class="service-hero-bg parallax-img" 
+    data-speed="0.5"
+    style={`background-image: url('${fleetHero.image}');`}
+  ></div>
+  
+  <div class="service-hero-content">
+    <span class="subtitle text-white">{fleetHero.subtitle}</span>
+    <h1 class="display-text text-white m-0">
+      {fleetHero.title.main}<br>
+      <span class="text-nova-accent">{fleetHero.title.accent}</span>.
+    </h1>
+    <p class="hero-description">{fleetHero.description}</p>
+  </div>
+</div>
+
+<style>
+  .service-hero {
+    position: relative;
+    width: 100%;
+    height: 55vh;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 6rem;
+  }
+  
+  .service-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.4) contrast(1.1);
+    z-index: 1;
+  }
+  
+  .service-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    width: 100%;
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 3rem 5vw;
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .text-nova-accent {
+    color: var(--nova-accent);
+  }
+  
+  .m-0 {
+    margin: 0;
+  }
+  
+  .hero-description {
+    color: white;
+    margin-top: 2rem;
+    max-width: 600px;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  @media (max-width: 768px) {
+    .service-hero {
+      height: auto;
+      min-height: 60vh;
+      padding-top: 80px;
+      margin-bottom: 4rem;
+    }
+    
+    .service-hero-content {
+      padding-bottom: 3rem;
+    }
+    
+    .hero-description {
+      font-size: 1rem;
+    }
+  }
+</style>
+

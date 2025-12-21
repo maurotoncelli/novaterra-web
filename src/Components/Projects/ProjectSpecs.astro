@@ -1,0 +1,82 @@
+---
+// src/Components/Projects/ProjectSpecs.astro
+interface Props {
+  client: string;
+  location: string;
+  year: string;
+  service: string;
+}
+
+const { client, location, year, service } = Astro.props;
+---
+
+<div class="project-specs">
+  <div class="spec-item">
+    <span class="spec-label">Cliente</span>
+    <span class="spec-value">{client}</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-label">Luogo</span>
+    <span class="spec-value">{location}</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-label">Anno</span>
+    <span class="spec-value">{year}</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-label">Servizio</span>
+    <span class="spec-value">{service}</span>
+  </div>
+</div>
+
+<style>
+  .project-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 2rem;
+  }
+  
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .spec-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--nova-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  
+  .spec-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--nova-text);
+  }
+  
+  @media (min-width: 769px) {
+    .project-specs {
+      grid-template-columns: repeat(4, 1fr);
+      grid-column: span 2;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .project-specs {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+    
+    .spec-value {
+      font-size: 1rem;
+    }
+  }
+</style>
+

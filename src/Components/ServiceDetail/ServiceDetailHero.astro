@@ -1,0 +1,112 @@
+---
+// src/Components/ServiceDetail/ServiceDetailHero.astro
+interface Props {
+  title: {
+    main: string;
+    accent: string;
+  };
+  subtitle: string;
+  image: string;
+  backLink: string;
+}
+
+const { title, subtitle, image, backLink } = Astro.props;
+---
+
+<div class="service-detail-hero">
+  <div 
+    class="service-hero-bg parallax-img" 
+    data-speed="0.5"
+    style={`background-image: url('${image}');`}
+  ></div>
+  
+  <div class="service-hero-content">
+    <a href={backLink} class="btn-back">
+      ← Torna Indietro
+    </a>
+    <span class="subtitle text-white">{subtitle}</span>
+    <h1 class="display-text text-white m-0">
+      {title.main}
+      {title.accent && <><br /><span class="text-nova-accent">{title.accent}</span>.</>}
+    </h1>
+  </div>
+</div>
+
+<style>
+  .service-detail-hero {
+    position: relative;
+    width: 100%;
+    height: 55vh;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 6rem;
+  }
+  
+  .service-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.4) contrast(1.1);
+    z-index: 1;
+  }
+  
+  .service-hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 3rem 5vw;
+  }
+  
+  .btn-back {
+    display: inline-block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .btn-back:hover {
+    color: var(--nova-accent);
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .text-nova-accent {
+    color: var(--nova-accent);
+  }
+  
+  .m-0 {
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .service-detail-hero {
+      height: auto;
+      min-height: 60vh;
+      padding-top: 80px;
+      margin-bottom: 4rem;
+    }
+    
+    .service-hero-content {
+      padding-bottom: 3rem;
+    }
+  }
+</style>
+

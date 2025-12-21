@@ -1,0 +1,128 @@
+---
+// src/Components/Ui/PageHero.astro
+interface Props {
+  subtitle: string;
+  title: {
+    main: string;
+    accent: string;
+  };
+  image: string;
+  accentItalic?: boolean;
+  description?: string;
+  parallaxSpeed?: number;
+}
+
+const { subtitle, title, image, accentItalic = true, description, parallaxSpeed = 0.5 } = Astro.props;
+---
+
+<div class="page-hero" data-parallax-section="hero">
+  <div
+    class="page-hero-bg parallax-img"
+    data-speed={String(parallaxSpeed)}
+    data-parallax-dir="up"
+    style={`background-image: url('${image}');`}
+  ></div>
+
+  <div class="page-hero-content">
+    <span class="subtitle text-white">{subtitle}</span>
+    <h1 class="display-text text-white m-0">
+      {title.main}<br />
+      {accentItalic ? (
+        <em class="font-extralight italic text-nova-accent">{title.accent}</em>
+      ) : (
+        <span class="text-nova-accent">{title.accent}</span>
+      )}
+      .
+    </h1>
+    {description && <p class="page-hero-desc">{description}</p>}
+  </div>
+</div>
+
+<style>
+  .page-hero {
+    position: relative;
+    width: 100%;
+    /* IMPORTANT:
+      - avoid fixed heights on desktop (they clip long hero content like Fleet description)
+      - keep a strong presence with a responsive min-height
+    */
+    height: auto;
+    min-height: clamp(520px, 62vh, 760px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    /* Allow parallax to reveal a bit of site background (demo-like) */
+    background: var(--nova-bg);
+    /* Keep hero text safely below fixed navbar while cover still goes behind it */
+    padding-top: calc(var(--navbar-height) + 1.25rem);
+    margin-bottom: 6rem;
+  }
+
+  /* Dark overlay matching site hue (prevents pure-black bands during reveal) */
+  .page-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 17, 16, 0.4);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.4) contrast(1.1);
+    z-index: 1;
+    transform: scale(1.1);
+    will-change: transform;
+  }
+
+  .page-hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 3rem 5vw;
+  }
+
+  .page-hero-desc {
+    color: white;
+    margin-top: 2rem;
+    max-width: 600px;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .text-white { color: white; }
+  .text-nova-accent { color: var(--nova-accent); }
+  .m-0 { margin: 0; }
+  .font-extralight { font-weight: 200; }
+  .italic { font-style: italic; }
+
+  @media (max-width: 768px) {
+    .page-hero {
+      height: auto;
+      min-height: 60vh;
+      padding-top: calc(var(--navbar-height) + 1rem);
+      margin-bottom: 4rem;
+    }
+
+    .page-hero-content {
+      padding-bottom: 3rem;
+    }
+
+    .page-hero-desc {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+

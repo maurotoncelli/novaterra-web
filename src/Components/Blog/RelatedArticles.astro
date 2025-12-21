@@ -1,0 +1,112 @@
+---
+// src/Components/Blog/RelatedArticles.astro
+// Mostra articoli correlati (stessa categoria o altri)
+
+import BlogCard from './BlogCard.astro';
+import { getAllPosts } from '../../lib/blogRepository';
+import type { BlogPost, BlogCategory } from '../../data/blogData';
+
+interface Props {
+  currentSlug: string;
+  currentCategory: BlogCategory;
+  maxItems?: number;
+}
+
+const { currentSlug, currentCategory, maxItems = 3 } = Astro.props;
+
+// Ottieni tutti i post
+const allPosts = getAllPosts();
+
+// Filtra: escludi articolo corrente
+const otherPosts = allPosts.filter(post => post.slug !== currentSlug);
+
+// Priorità: stessa categoria
+const sameCategoryPosts = otherPosts.filter(post => post.category === currentCategory);
+
+// Se non ci sono abbastanza della stessa categoria, aggiungi altri
+let relatedPosts: BlogPost[] = [];
+
+if (sameCategoryPosts.length >= maxItems) {
+  // Prendi i primi N della stessa categoria
+  relatedPosts = sameCategoryPosts.slice(0, maxItems);
+} else {
+  // Prendi tutti della stessa categoria + altri random
+  relatedPosts = [
+    ...sameCategoryPosts,
+    ...otherPosts
+      .filter(post => post.category !== currentCategory)
+      .slice(0, maxItems - sameCategoryPosts.length)
+  ];
+}
+
+// Se ancora non abbastanza (es. solo 1 articolo totale), mostra quello che c'è
+relatedPosts = relatedPosts.slice(0, maxItems);
+---
+
+{relatedPosts.length > 0 && (
+  <section class="related-articles">
+    <div class="related-header">
+      <h2 class="related-title">Potrebbe interessarti anche</h2>
+    </div>
+    
+    <div class="related-grid">
+      {relatedPosts.map((post) => (
+        <BlogCard post={post} />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-articles {
+    width: 100%;
+    margin-top: 6rem;
+    padding-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .related-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  .related-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 600;
+    color: var(--nova-text);
+    letter-spacing: -0.01em;
+  }
+  
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .related-articles {
+      margin-top: 4rem;
+      padding-top: 3rem;
+    }
+    
+    .related-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1201px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+
+

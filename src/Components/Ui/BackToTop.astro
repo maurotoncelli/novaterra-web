@@ -1,0 +1,73 @@
+---
+// src/Components/Ui/BackToTop.astro
+// Global "back to top" button. Behavior is wired in src/scripts/site.ts
+---
+
+<button
+  id="back-to-top"
+  class="back-to-top"
+  type="button"
+  aria-label="Torna su"
+  title="Torna su"
+>
+  <span class="arrow" aria-hidden="true">↑</span>
+</button>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: clamp(18px, 3.5vw, 32px);
+    left: 50%;
+    z-index: 99998; /* above page content, below nav overlay (100001+) */
+
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+
+    display: grid;
+    place-items: center;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    /* Avoid "pop" artifacts on some browsers when backdrop-filter kicks in */
+    /* backdrop-filter: blur(10px); */
+
+    color: var(--nova-text);
+    cursor: pointer;
+
+    /* Smooth, progressive reveal driven by JS via --btt-progress (0..1) */
+    --btt-progress: 0;
+    opacity: var(--btt-progress);
+    transform: translate(-50%, calc((1 - var(--btt-progress)) * 18px));
+    pointer-events: none;
+    transition:
+      opacity 180ms linear,
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 260ms ease,
+      background 260ms ease;
+  }
+
+  .back-to-top.is-visible {
+    pointer-events: auto;
+  }
+
+  .back-to-top:hover {
+    border-color: rgba(205, 92, 47, 0.55);
+    background: rgba(205, 92, 47, 0.14);
+  }
+
+  .arrow {
+    font-size: 18px;
+    line-height: 1;
+    transform: translateY(-1px);
+    color: var(--nova-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+      transition: none;
+    }
+  }
+</style>
+
+

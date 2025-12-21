@@ -1,0 +1,153 @@
+---
+// src/Components/Projects/ProjectVideo.astro
+interface Props {
+  videoType: "youtube" | "vimeo" | "mp4";
+  videoUrl: string;
+  thumbnail?: string;
+  title?: string;
+}
+
+const { videoType, videoUrl, thumbnail, title = "Video Cantiere" } = Astro.props;
+
+// Converti URL in embed URL per YouTube/Vimeo
+let embedUrl: string | undefined;
+
+if (videoType === "youtube") {
+  // Da https://www.youtube.com/watch?v=VIDEO_ID a https://www.youtube.com/embed/VIDEO_ID
+  const youtubeId = videoUrl.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^\/&?]+)/)?.[1];
+  embedUrl = youtubeId ? `https://www.youtube.com/embed/${youtubeId}` : videoUrl;
+} else if (videoType === "vimeo") {
+  // Da https://vimeo.com/VIDEO_ID a https://player.vimeo.com/video/VIDEO_ID
+  const vimeoId = videoUrl.match(/vimeo\.com\/(\d+)/)?.[1];
+  embedUrl = vimeoId ? `https://player.vimeo.com/video/${vimeoId}` : videoUrl;
+} else if (videoType === "mp4") {
+  // MP4 diretto
+  embedUrl = undefined;
+}
+---
+
+<div class="project-video-section">
+  
+  {(videoType === "youtube" || videoType === "vimeo") && embedUrl && (
+    <div class="video-embed">
+      <iframe 
+        src={embedUrl}
+        title={title}
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+  )}
+  
+  {videoType === "mp4" && (
+    <div class="video-player">
+      <video 
+        controls
+        poster={thumbnail}
+        preload="metadata"
+      >
+        <source src={videoUrl} type="video/mp4" />
+        Il tuo browser non supporta il tag video.
+      </video>
+    </div>
+  )}
+  
+  {!embedUrl && videoType !== "mp4" && (
+    <div class="video-placeholder">
+      <div class="placeholder-content">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <p>Video Cantiere</p>
+        <span class="placeholder-hint">Il video verrà caricato dal cliente tramite WordPress</span>
+      </div>
+    </div>
+  )}
+  
+</div>
+
+<style>
+  .project-video-section {
+    width: 100%;
+    margin-bottom: 4rem;
+  }
+  
+  .video-embed,
+  .video-player,
+  .video-placeholder {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+  
+  .video-embed iframe,
+  .video-player video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  }
+  
+  .placeholder-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--nova-muted);
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .placeholder-content svg {
+    color: var(--nova-accent);
+    opacity: 0.5;
+  }
+  
+  .placeholder-content p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .placeholder-hint {
+    font-size: 0.85rem;
+    color: var(--nova-muted);
+    opacity: 0.7;
+  }
+  
+  @media (max-width: 768px) {
+    .project-video-section {
+      margin-bottom: 3rem;
+    }
+    
+    .placeholder-content svg {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .placeholder-content p {
+      font-size: 1rem;
+    }
+    
+    .placeholder-hint {
+      font-size: 0.75rem;
+    }
+  }
+</style>
+
+
+
