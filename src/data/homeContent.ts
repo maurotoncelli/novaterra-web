@@ -7,7 +7,7 @@ export const heroData = {
     titleAccent: "LA TERRA",
     description: "Dalla Valdera a tutta la provincia di Pisa, uniamo ingegneria operativa e rispetto del paesaggio.",
     primaryCTA: { text: "Richiedi Sopralluogo", link: "/contatti" },
-    secondaryCTA: { text: "Esplora Progetti", link: "/lavori" },
+    secondaryCTA: { text: "Esplora Progetti", link: "/realizzazioni" },
     bgImage: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=2800&auto=format&fit=crop"
 };
 
@@ -127,7 +127,7 @@ export const menuLinks = [
     { label: 'Chi Siamo', link: '/chi-siamo' },
     { label: 'Servizi', link: '/servizi' },
     { label: 'Parco Mezzi', link: '/parco-mezzi' },
-    { label: 'Realizzazioni', link: '/lavori' },
+    { label: 'Realizzazioni', link: '/realizzazioni' },
     { label: 'Notizie & Blog', link: '/blog' },
     { label: 'Contatti', link: '/contatti' }
 ];

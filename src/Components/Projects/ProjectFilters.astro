@@ -12,6 +12,12 @@ const categories = Object.entries(projectCategories);
 
 <div class="project-filters">
   <span class="filters-label">Filtra per servizio:</span>
+  <!-- Mobile: dropdown (1 riga) -->
+  <select class="filters-select" aria-label="Filtra progetti" data-filters-select>
+    {categories.map(([key, label]) => (
+      <option value={key} selected={activeCategory === key}>{label}</option>
+    ))}
+  </select>
   <div class="filters-buttons">
     {categories.map(([key, label]) => (
       <button 
@@ -47,6 +53,18 @@ const categories = Object.entries(projectCategories);
     gap: 1rem;
     flex-wrap: wrap;
   }
+
+  .filters-select {
+    display: none;
+    width: 100%;
+    max-width: 420px;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(18, 17, 16, 0.55);
+    color: var(--nova-text);
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
   
   .filter-btn {
     padding: 0.5rem 1.25rem;
@@ -76,49 +94,58 @@ const categories = Object.entries(projectCategories);
     .project-filters {
       gap: 1rem;
     }
-    
-    .filters-buttons {
-      flex-direction: column;
-    }
-    
-    .filter-btn {
-      width: 100%;
-      text-align: center;
-    }
+
+    /* Mobile: use dropdown, hide full button grid */
+    .filters-select { display: block; }
+    .filters-buttons { display: none; }
   }
 </style>
 
 <script>
   // Gestione filtri client-side
-  const filterButtons = document.querySelectorAll('.filter-btn');
+  const filterButtons = Array.from(document.querySelectorAll('.project-filters .filter-btn'));
+  const select = document.querySelector('[data-filters-select]');
   const projectCards = document.querySelectorAll('.project-item');
-  
+
+  function applyFilter(category) {
+    // Update active state on buttons (desktop)
+    filterButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-category') === category));
+
+    // Filter cards
+    projectCards.forEach(card => {
+      const cardCategory = card.getAttribute('data-category');
+      
+      if (category === 'tutti' || cardCategory === category) {
+        card.style.display = 'block';
+        // Fade in animation
+        card.style.opacity = '0';
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.3s ease';
+          card.style.opacity = '1';
+        }, 10);
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Notify page-level empty-state handler
+    window.dispatchEvent(new CustomEvent('projects:filter-changed'));
+  }
+
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       const category = button.getAttribute('data-category');
-      
-      // Update active state
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      
-      // Filter cards
-      projectCards.forEach(card => {
-        const cardCategory = card.getAttribute('data-category');
-        
-        if (category === 'tutti' || cardCategory === category) {
-          card.style.display = 'block';
-          // Fade in animation
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.3s ease';
-            card.style.opacity = '1';
-          }, 10);
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      applyFilter(category);
+      if (select) select.value = category;
     });
   });
+
+  if (select) {
+    select.addEventListener('change', (e) => {
+      const category = e.target.value;
+      applyFilter(category);
+    });
+  }
 </script>
 
 

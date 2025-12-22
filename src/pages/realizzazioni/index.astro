@@ -70,11 +70,8 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
   }
   
   // Observer per filtri (collegato a ProjectFilters.astro)
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      setTimeout(checkEmptyState, 100);
-    });
+  window.addEventListener('projects:filter-changed', () => {
+    setTimeout(checkEmptyState, 100);
   });
 </script>
 
