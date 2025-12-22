@@ -31,39 +31,47 @@ function initAnimations() {
       }
     );
   });
+}
 
-  // Parallax images
-  document.querySelectorAll<HTMLElement>('.parallax-img').forEach((img) => {
-    const speedRaw = img.getAttribute('data-speed');
-    const speed = speedRaw ? Number.parseFloat(speedRaw) : 0.5;
-    // Stronger parallax to match the demo feel.
-    // Example: 0.5 -> ~40%, 0.3 -> ~30%, 0.8 -> ~54%
-    const amount = Math.max(28, Math.min(58, Math.round(20 + speed * 40)));
+// Parallax handler (ported from reference.html):
+// yPos = distanceFromCenter * speed; transform = scale(1.1) translateY(yPos)
+function handleParallax() {
+  const windowHeight = window.innerHeight || 0;
+  if (!windowHeight) return;
 
-    const dir = img.getAttribute('data-parallax-dir');
-    const sign = dir === 'up' ? -1 : 1;
+  const images = document.querySelectorAll<HTMLElement>('.parallax-img');
+  images.forEach((img) => {
+    const rect = img.getBoundingClientRect();
 
-    // For hero sections, use the hero container as trigger (more consistent than absolute wrappers)
-    const heroTrigger = img.closest('[data-parallax-section="hero"]') as HTMLElement | null;
-    const trigger = heroTrigger ?? img.parentElement ?? undefined;
-    const start = heroTrigger ? 'top top' : 'top bottom';
-    const end = heroTrigger ? 'bottom top' : 'bottom top';
-    gsap.to(img, {
-      y: `${sign * amount}%`,
-      ease: 'none',
-      scrollTrigger: {
-        trigger,
-        start,
-        end,
-        scrub: 1,
-      },
-    });
+    // If visible in viewport
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      const speedAttr = img.getAttribute('data-speed');
+      const speed = speedAttr ? Number.parseFloat(speedAttr) : 0.1;
+
+      const distanceFromCenter = rect.top + rect.height / 2 - windowHeight / 2;
+
+      // Default direction matches reference.html.
+      // If explicitly set to "down", invert movement.
+      const dir = img.getAttribute('data-parallax-dir');
+      const sign = dir === 'down' ? -1 : 1;
+
+      const yPos = distanceFromCenter * speed * sign;
+
+      img.style.transform = `scale(1.1) translateY(${yPos}px)`;
+    }
   });
 }
 
 function initCursorAndCoords() {
+  // Avoid double init (in case of re-hydration / repeated script execution)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const w = window as any;
+  if (w.__novaCursorCoordsInited) return;
+  w.__novaCursorCoordsInited = true;
+
   const cursor = document.querySelector<HTMLElement>('.cursor-cross');
   const gps = document.getElementById('gps-coords') as HTMLElement | null;
+  if (gps) gps.style.opacity = '1';
 
   // base ~ Toscana (come demo), variazioni piccole
   const baseLat = 43 + 31 / 60 + 36 / 3600;
@@ -161,8 +169,14 @@ export function initSite() {
   const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
   let started = false;
 
+  // Cursor + GPS coords should work even before the preloader ends.
+  // This also guarantees the coords are visible on desktop as soon as JS loads.
+  initCursorAndCoords();
+
   function raf(time: number) {
     lenis.raf(time);
+    // Keep parallax synced with Lenis RAF (same approach as reference.html)
+    handleParallax();
     requestAnimationFrame(raf);
   }
 
@@ -181,7 +195,6 @@ export function initSite() {
 
     requestAnimationFrame(raf);
     initAnimations();
-    initCursorAndCoords();
     initBackToTop(lenis);
   }
 
