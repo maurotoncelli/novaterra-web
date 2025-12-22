@@ -1,8 +1,4 @@
 import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 function formatDMS(value: number) {
   const deg = Math.floor(value);
@@ -12,25 +8,22 @@ function formatDMS(value: number) {
   return `${deg}° ${String(min).padStart(2, '0')}' ${String(sec).padStart(2, '0')}"`;
 }
 
-function initAnimations() {
-  // Reveal sections
-  document.querySelectorAll<HTMLElement>('.reveal-fx').forEach((el) => {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
-        },
+function initRevealFx() {
+  const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal-fx'));
+  if (!els.length) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        (entry.target as HTMLElement).classList.add('is-visible');
+        io.unobserve(entry.target);
       }
-    );
-  });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -10% 0px' }
+  );
+
+  for (const el of els) io.observe(el);
 }
 
 // Parallax handler (ported from reference.html):
@@ -168,6 +161,7 @@ export function initSite() {
   // Initialize Lenis
   const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
   let started = false;
+  let rafStarted = false;
 
   // Cursor + GPS coords should work even before the preloader ends.
   // This also guarantees the coords are visible on desktop as soon as JS loads.
@@ -177,6 +171,12 @@ export function initSite() {
     lenis.raf(time);
     // Keep parallax synced with Lenis RAF (same approach as reference.html)
     handleParallax();
+    requestAnimationFrame(raf);
+  }
+
+  // Always run the RAF loop so parallax stays responsive even if the "start" path is delayed.
+  if (!rafStarted) {
+    rafStarted = true;
     requestAnimationFrame(raf);
   }
 
@@ -193,8 +193,8 @@ export function initSite() {
     const gps = document.getElementById('gps-coords') as HTMLElement | null;
     if (gps) gps.style.opacity = '1';
 
-    requestAnimationFrame(raf);
-    initAnimations();
+    // Reveal effect (reference-like): IntersectionObserver + CSS
+    initRevealFx();
     initBackToTop(lenis);
   }
 

@@ -4,6 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------
+ * Reveal FX (reference-like)
+ * Elements start hidden and fade/slide in when `.is-visible` is added.
+ * ------------------------------------------------------------ */
+.reveal-fx {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+    transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-fx.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @layer base {
   :root {
     --nova-bg: #121110;

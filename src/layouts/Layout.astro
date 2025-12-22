@@ -7,7 +7,7 @@ import Navbar from '../Components/Navbar.astro';
 import Preloader from '../Components/Ui/Preloader.astro';
 import BackToTop from '../Components/Ui/BackToTop.astro';
 import Analytics from '../Components/Ui/Analytics.astro';
-import CookieBanner from '../Components/Ui/CookieBanner.astro';
+import siteScriptUrl from '../scripts/site.ts?url';
 
 interface Props {
 	title: string;
@@ -60,7 +60,6 @@ const {
 		
 		<BackToTop />
 		
-		<CookieBanner />
 		<Footer />
 
 		<!-- Ensure hero reveals start right after the preloader ends, even if the main site script fails -->
@@ -88,9 +87,7 @@ const {
 			})();
 		</script>
 <!-- Bundle site script via Vite so it works in production/Netlify -->
-<script type="module">
-	import "../scripts/site.ts";
-</script>
+<script type="module" src={siteScriptUrl}></script>
 
 <style is:global>
 			.noise-overlay {
