@@ -7,7 +7,6 @@ import Navbar from '../Components/Navbar.astro';
 import Preloader from '../Components/Ui/Preloader.astro';
 import BackToTop from '../Components/Ui/BackToTop.astro';
 import Analytics from '../Components/Ui/Analytics.astro';
-import siteScriptUrl from '../scripts/site.ts?url';
 
 interface Props {
 	title: string;
@@ -66,8 +65,10 @@ const {
 		<BackToTop />
 		
 		<Footer />
-<!-- Bundle & load site script in production (avoid /src/* paths which 404 on Netlify) -->
-<script type="module" src={siteScriptUrl}></script>
+<!-- Bundle site script (Vite) so it works in production/Netlify -->
+<script type="module">
+	import "/src/scripts/site.ts";
+</script>
 
 <style is:global>
 			.noise-overlay {
