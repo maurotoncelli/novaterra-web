@@ -44,9 +44,9 @@ function handleParallax() {
       const distanceFromCenter = rect.top + rect.height / 2 - windowHeight / 2;
 
       // Default direction matches reference.html.
-      // If explicitly set to "down", invert movement.
+      // If explicitly set, honor "up"/"down" (back-compat with the previous GSAP implementation).
       const dir = img.getAttribute('data-parallax-dir');
-      const sign = dir === 'down' ? -1 : 1;
+      const sign = dir === 'up' ? -1 : 1;
 
       const yPos = distanceFromCenter * speed * sign;
 
