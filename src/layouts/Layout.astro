@@ -62,6 +62,31 @@ const {
 		
 		<CookieBanner />
 		<Footer />
+
+		<!-- Ensure hero reveals start right after the preloader ends, even if the main site script fails -->
+		<script is:inline>
+			(() => {
+				const html = document.documentElement;
+				const preloader = document.getElementById('preloader');
+
+				// No preloader on this page -> ready immediately
+				if (!preloader) {
+					html.classList.add('site-ready');
+					return;
+				}
+
+				// If already hidden (e.g. cached navigation), mark ready immediately
+				if (preloader.classList.contains('hidden')) {
+					html.classList.add('site-ready');
+					return;
+				}
+
+				// Sync with preloader timing (3.5s) + a tiny buffer for the fade-out
+				window.setTimeout(() => {
+					html.classList.add('site-ready');
+				}, 3600);
+			})();
+		</script>
 <!-- Bundle site script via Vite so it works in production/Netlify -->
 <script type="module">
 	import "../scripts/site.ts";
