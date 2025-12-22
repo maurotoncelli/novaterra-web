@@ -7,7 +7,6 @@ import Navbar from '../Components/Navbar.astro';
 import Preloader from '../Components/Ui/Preloader.astro';
 import BackToTop from '../Components/Ui/BackToTop.astro';
 import Analytics from '../Components/Ui/Analytics.astro';
-import siteScriptUrl from '../scripts/site.ts?url';
 
 interface Props {
 	title: string;
@@ -30,6 +29,7 @@ const {
 	canonical,
 	robots,
 } = Astro.props;
+
 ---
 
 <!doctype html>
@@ -86,8 +86,10 @@ const {
 				}, 3600);
 			})();
 		</script>
-<!-- Bundle site script via Vite so it works in production/Netlify -->
-<script type="module" src={siteScriptUrl}></script>
+<!-- Bundle site script via Astro/Vite (DO NOT inline). This generates a real /_astro/*.js asset. -->
+<script>
+	import "../scripts/site.ts";
+</script>
 
 <style is:global>
 			.noise-overlay {
