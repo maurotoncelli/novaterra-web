@@ -215,3 +215,8 @@
 
 /* Reliability: never hide native cursor */
 html, body { cursor: auto !important; }
+
+/* Touch devices: hide custom cursor (it can get "stuck" at the last tap position) */
+@media (hover: none), (pointer: coarse) {
+  .cursor-cross { display: none !important; }
+}

@@ -62,6 +62,17 @@ function initCursorAndCoords() {
   if (w.__novaCursorCoordsInited) return;
   w.__novaCursorCoordsInited = true;
 
+  // Touch devices: don't show/track the custom cursor (it can appear stuck after taps).
+  try {
+    if (window.matchMedia?.('(hover: none), (pointer: coarse)')?.matches) {
+      const cursorEl = document.querySelector<HTMLElement>('.cursor-cross');
+      if (cursorEl) cursorEl.style.display = 'none';
+      return;
+    }
+  } catch {
+    // ignore
+  }
+
   const cursor = document.querySelector<HTMLElement>('.cursor-cross');
   const gps = document.getElementById('gps-coords') as HTMLElement | null;
   if (gps) gps.style.opacity = '1';
