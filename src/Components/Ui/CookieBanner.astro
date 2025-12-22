@@ -1,0 +1,124 @@
+---
+// src/Components/Ui/CookieBanner.astro
+// Minimal cookie banner (no dependency on site.ts) using localStorage.
+const STORAGE_KEY = 'nova_cookie_consent_v1';
+---
+
+<div class="cookie-banner" data-cookie-banner>
+  <div class="cookie-inner">
+    <p class="cookie-text">
+      Usiamo cookie tecnici e, se configurato, analytics per migliorare l’esperienza.
+      <a class="cookie-link" href="/privacy-policy">Leggi la Privacy Policy</a>.
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn" type="button" data-cookie-accept>Accetta</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const KEY = 'nova_cookie_consent_v1';
+    const banner = document.querySelector('[data-cookie-banner]');
+    if (!banner) return;
+
+    try {
+      if (localStorage.getItem(KEY) === 'accepted') {
+        banner.remove();
+        return;
+      }
+    } catch {}
+
+    const btn = banner.querySelector('[data-cookie-accept]');
+    btn?.addEventListener('click', () => {
+      try { localStorage.setItem(KEY, 'accepted'); } catch {}
+      banner.classList.add('is-hidden');
+      window.setTimeout(() => banner.remove(), 300);
+    });
+  })();
+</script>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 999999;
+  }
+
+  .cookie-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(18, 17, 16, 0.82);
+    backdrop-filter: blur(10px);
+  }
+
+  .cookie-text {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .cookie-link {
+    color: var(--nova-accent);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .cookie-link:hover {
+    text-decoration: underline;
+  }
+
+  .cookie-actions {
+    flex: 0 0 auto;
+  }
+
+  .cookie-btn {
+    padding: 0.75rem 1.05rem;
+    border: 1px solid rgba(235, 103, 55, 0.75);
+    background: transparent;
+    color: var(--nova-accent);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .cookie-btn:hover {
+    background: var(--nova-accent);
+    color: white;
+    border-color: var(--nova-accent);
+  }
+
+  .cookie-banner.is-hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 250ms ease, transform 250ms ease;
+    pointer-events: none;
+  }
+
+  @media (max-width: 760px) {
+    .cookie-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .cookie-actions {
+      width: 100%;
+    }
+    .cookie-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+

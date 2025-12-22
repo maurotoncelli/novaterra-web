@@ -7,6 +7,7 @@ import Navbar from '../Components/Navbar.astro';
 import Preloader from '../Components/Ui/Preloader.astro';
 import BackToTop from '../Components/Ui/BackToTop.astro';
 import Analytics from '../Components/Ui/Analytics.astro';
+import CookieBanner from '../Components/Ui/CookieBanner.astro';
 
 interface Props {
 	title: string;
@@ -59,6 +60,7 @@ const {
 		
 		<BackToTop />
 		
+		<CookieBanner />
 		<Footer />
 <!-- Bundle site script via Vite so it works in production/Netlify -->
 <script type="module">
