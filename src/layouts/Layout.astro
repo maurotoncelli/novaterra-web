@@ -29,8 +29,6 @@ const {
 	canonical,
 	robots,
 } = Astro.props;
-
-const siteScriptUrl = Astro.resolve('../scripts/site.ts');
 ---
 
 <!doctype html>
@@ -62,8 +60,10 @@ const siteScriptUrl = Astro.resolve('../scripts/site.ts');
 		<BackToTop />
 		
 		<Footer />
-<!-- Bundle site script via Astro/Vite so it works in production/Netlify -->
-<script type="module" src={siteScriptUrl}></script>
+<!-- Bundle site script via Vite so it works in production/Netlify -->
+<script type="module">
+	import "../scripts/site.ts";
+</script>
 
 <style is:global>
 			.noise-overlay {
