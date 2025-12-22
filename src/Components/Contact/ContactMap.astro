@@ -1,6 +1,7 @@
 ---
 // src/Components/Contact/ContactMap.astro
 import { contactInfo } from '../../data/contactData';
+import 'leaflet/dist/leaflet.css';
 ---
 
 <div class="map-wrapper">
@@ -27,26 +28,31 @@ import { contactInfo } from '../../data/contactData';
   }
 </style>
 
-<script define:vars={{ coordinates: contactInfo.map.coordinates }}>
-  // Inizializza mappa Leaflet quando disponibile
+<script define:vars={{ coordinates: contactInfo.map.coordinates }} type="module">
+  import L from 'leaflet';
+
   function initContactMap() {
-    if (typeof L !== 'undefined') {
-      const map = L.map('contact-map').setView([coordinates.lat, coordinates.lng], coordinates.zoom);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-      
-      L.marker([coordinates.lat, coordinates.lng]).addTo(map);
-    } else {
-      // Retry se Leaflet non è ancora caricato
-      setTimeout(initContactMap, 100);
-    }
+    const el = document.getElementById('contact-map');
+    if (!el) return;
+
+    const map = L.map(el).setView([coordinates.lat, coordinates.lng], coordinates.zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Use a circle marker to avoid external icon asset issues in build.
+    L.circleMarker([coordinates.lat, coordinates.lng], {
+      radius: 8,
+      color: '#eb6737',
+      weight: 2,
+      fillColor: '#eb6737',
+      fillOpacity: 0.9,
+    }).addTo(map);
   }
-  
-  // Avvia dopo che il DOM è pronto
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initContactMap);
+    document.addEventListener('DOMContentLoaded', initContactMap, { once: true });
   } else {
     initContactMap();
   }

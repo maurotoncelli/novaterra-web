@@ -29,6 +29,8 @@ const {
 	canonical,
 	robots,
 } = Astro.props;
+
+const siteScriptUrl = Astro.resolve('../scripts/site.ts');
 ---
 
 <!doctype html>
@@ -44,11 +46,6 @@ const {
 		<Analytics />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		
-		<!-- Leaflet CSS per mappa -->
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-		<!-- Leaflet JS per mappa -->
-		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 	</head>
 	<body class="bg-nova-bg text-nova-text font-sans antialiased overflow-x-hidden selection:bg-nova-accent selection:text-white">
 		
@@ -65,10 +62,8 @@ const {
 		<BackToTop />
 		
 		<Footer />
-<!-- Bundle site script (Vite) so it works in production/Netlify -->
-<script type="module">
-	import "/src/scripts/site.ts";
-</script>
+<!-- Bundle site script via Astro/Vite so it works in production/Netlify -->
+<script type="module" src={siteScriptUrl}></script>
 
 <style is:global>
 			.noise-overlay {
