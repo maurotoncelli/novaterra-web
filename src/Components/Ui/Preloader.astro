@@ -51,6 +51,24 @@
 </div>
 
 <style>
+    /* Fallback: auto-dismiss preloader even if site JS doesn't run (e.g. script blocked/cached/error). */
+    #preloader {
+        animation: preloaderAutoDismiss 0.8s ease-out 3.5s forwards;
+    }
+
+    @keyframes preloaderAutoDismiss {
+        0% {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        100% {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+    }
+
     .preloader-logo path, 
     .preloader-logo rect, 
     .preloader-logo polygon, 
