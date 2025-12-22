@@ -159,6 +159,7 @@ function initBackToTop(lenis: Lenis) {
 export function initSite() {
   // Initialize Lenis
   const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+  let started = false;
 
   function raf(time: number) {
     lenis.raf(time);
@@ -166,6 +167,9 @@ export function initSite() {
   }
 
   function start() {
+    if (started) return;
+    started = true;
+
     // Mark site ready so hero animations can start AFTER preloader
     document.documentElement.classList.add('site-ready');
 
@@ -181,27 +185,53 @@ export function initSite() {
     initBackToTop(lenis);
   }
 
-  // Preloader Logic (solo se presente)
-  window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if (!preloader) {
-      start();
-      return;
-    }
+  // Preloader logic
+  // IMPORTANT: don't rely on `window.load` because it waits for external assets (e.g. unpkg Leaflet),
+  // which can hang and keep the preloader stuck forever in production.
+  const preloader = document.getElementById('preloader');
+  if (!preloader) {
+    start();
+    return;
+  }
 
-    // Blocca scroll e Lenis durante il preloader
-    lenis.stop();
-    document.body.style.overflow = 'hidden';
+  // Block scroll & Lenis while preloader is visible
+  lenis.stop();
+  document.body.style.overflow = 'hidden';
 
-    setTimeout(() => {
-      preloader.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-      start();
-    }, 3500);
-  });
+  let dismissed = false;
+  function dismissPreloader() {
+    if (dismissed) return;
+    dismissed = true;
+    preloader.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    start();
+  }
+
+  // Normal dismissal (keeps the intended animation timing)
+  setTimeout(dismissPreloader, 3500);
+  // Safety net: if something blocks timers/events, ensure we never stay stuck.
+  setTimeout(dismissPreloader, 8000);
 }
 
-// Auto-init
-initSite();
+function boot() {
+  try {
+    initSite();
+  } catch (e) {
+    // Last-resort fallback: never leave the preloader blocking the page
+    const preloader = document.getElementById('preloader');
+    if (preloader) preloader.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    document.documentElement.classList.add('site-ready');
+    // eslint-disable-next-line no-console
+    console.error('[site] init failed', e);
+  }
+}
+
+// Auto-init on DOM ready (avoid waiting for slow/blocked external assets)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot, { once: true });
+} else {
+  boot();
+}
 
 
