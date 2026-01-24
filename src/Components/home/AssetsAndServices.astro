@@ -1,7 +1,6 @@
 ---
-import { assets, homeEmotionalStrips, homeEmotionalStripHeightVh, homeServices } from '../../data/homeContent';
+import { assets } from '../../data/homeContent';
 import SectionHeader from '../Ui/SectionHeader.astro';
-import FullBleedImage from '../Ui/FullBleedImage.astro';
 ---
 
 <!-- 1. ASSETS (3 Pilastri) -->
@@ -17,33 +16,6 @@ import FullBleedImage from '../Ui/FullBleedImage.astro';
                 <h3 class="text-[1.3rem] font-bold text-white mb-4 leading-tight">{asset.title}</h3>
                 <p class="text-nova-muted font-light leading-[1.7]">{asset.desc}</p>
             </div>
-        ))}
-    </div>
-</section>
-
-<!-- 2. IMMAGINE PARALLAX FULL WIDTH -->
-<FullBleedImage
-    src={homeEmotionalStrips.landscapeEngineering.src}
-    alt={homeEmotionalStrips.landscapeEngineering.alt}
-    heightVh={homeEmotionalStripHeightVh}
-/>
-
-<!-- 3. SERVIZI GRID -->
-<section class="container mx-auto px-[5vw] pb-16 relative z-10">
-    
-    <!-- Header Standard -->
-    <SectionHeader subtitle="Cosa Facciamo" title="Ingegneria del Paesaggio" />
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
-        {homeServices.map(srv => (
-            <a href={`/servizi#${srv.id}`} class="bg-nova-bg p-12 hover:bg-nova-surface transition-colors duration-300 group block">
-                <span class="text-[1.5rem] font-bold text-white group-hover:text-nova-accent transition-colors block mb-2 leading-tight">
-                    {srv.num} / {srv.title}
-                </span>
-                <span class="text-[0.75rem] font-bold tracking-[0.1em] text-nova-muted group-hover:text-white transition-colors uppercase">
-                    APPROFONDISCI &rarr;
-                </span>
-            </a>
         ))}
     </div>
 </section>

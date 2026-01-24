@@ -1,0 +1,133 @@
+---
+// src/Components/Ui/DepthGauge.astro
+// Decorative scroll depth gauge (ported from reference.html)
+interface Props {
+  /** Maximum depth shown on the gauge (in meters) */
+  maxDepth?: number;
+  /** Hide on small screens (match demo behavior) */
+  hideOnMobile?: boolean;
+}
+
+const { maxDepth = 100, hideOnMobile = true } = Astro.props;
+---
+
+<div
+  class={`depth-gauge ${hideOnMobile ? 'depth-gauge--hide-mobile' : ''}`}
+  aria-hidden="true"
+  data-max-depth={String(maxDepth)}
+>
+  <div class="gauge-line"></div>
+
+  <!-- Static markers (match demo feel) -->
+  <div class="gauge-marker" style="top: 0%"><span>0m</span></div>
+  <div class="gauge-marker" style="top: 25%"><span>-10m</span></div>
+  <div class="gauge-marker" style="top: 50%"><span>-30m</span></div>
+  <div class="gauge-marker" style="top: 75%"><span>-60m</span></div>
+  <div class="gauge-marker" style="top: 100%"><span>-{maxDepth}m</span></div>
+
+  <div class="current-depth-indicator" id="depthIndicator">
+    <span class="depth-val" id="depthText">0.0m</span>
+    <div class="depth-arrow"></div>
+  </div>
+</div>
+
+<style>
+  .depth-gauge {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    height: 60vh;
+    /* JS-driven fade in/out (keeps hero clean at top) */
+    opacity: var(--dg-opacity, 0);
+    transform: translate3d(var(--dg-shift, 0px), -50%, 0);
+    width: 44px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+    mix-blend-mode: exclusion;
+    transition: opacity 650ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1)),
+      transform 650ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1));
+  }
+
+  .gauge-line {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .gauge-marker {
+    position: absolute;
+    right: 0;
+    width: 10px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .gauge-marker span {
+    position: absolute;
+    right: 15px;
+    top: -6px;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.28);
+    font-family: 'Manrope', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
+
+  .current-depth-indicator {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transform: translateY(-50%);
+    transition: top 0.1s linear;
+  }
+
+  .depth-val {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--nova-accent);
+    margin-right: 10px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 10px rgba(205, 92, 47, 0.18);
+  }
+
+  .depth-arrow {
+    width: 15px;
+    height: 2px;
+    background: var(--nova-accent);
+    position: relative;
+  }
+
+  .depth-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 6px;
+    height: 6px;
+    background: var(--nova-accent);
+    border-radius: 50%;
+  }
+
+  @media (max-width: 768px) {
+    .depth-gauge--hide-mobile {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .depth-gauge {
+      transition: none !important;
+    }
+  }
+</style>
+

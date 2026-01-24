@@ -9,6 +9,7 @@ import MethodSection from '../Components/home/MethodSection.astro';
 import Certifications from '../Components/home/Certifications.astro';
 import Expectations from '../Components/home/Expectations.astro';
 import AssetsAndServices from '../Components/home/AssetsAndServices.astro';
+import HomeServices from '../Components/home/HomeServices.astro';
 import Testimonials from '../Components/home/Testimonials.astro';
 import ClientsMarquee from '../Components/home/ClientsMarquee.astro';
 import FullBleedImage from '../Components/Ui/FullBleedImage.astro';
@@ -21,6 +22,16 @@ import { homeEmotionalStrips, homeEmotionalStripHeightVh } from '../data/homeCon
 
 	<!-- CONTENUTI -->
 	<IntroSection />
+
+	<!-- Emotional full-width image (between Riccardo intro and services) -->
+	<FullBleedImage
+		src={homeEmotionalStrips.landscapeEngineering.src}
+		alt={homeEmotionalStrips.landscapeEngineering.alt}
+		heightVh={homeEmotionalStripHeightVh}
+	/>
+
+	<HomeServices />
+
 	<TargetSection />
 
 	<!-- Emotional full-width image (above “Il Processo”) -->

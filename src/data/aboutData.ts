@@ -6,7 +6,11 @@ export const aboutHero = {
   title: {
     main: "RADICI PROFONDE.",
     accent: "VISIONE MODERNA", // Corsivo/peso leggero
-  }
+  },
+  image: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?q=80&w=2800&auto=format&fit=crop",
+  parallaxSpeed: 0.5,
+  description:
+    "Dal 1993 a oggi: esperienza vera, metodo operativo e rispetto del paesaggio toscano."
 };
 
 export const founderBio = {
@@ -17,15 +21,9 @@ export const founderBio = {
     alt: "Direttore di Cantiere Novaterra"
   },
   bio: [
-    "Il movimento terra non è un mestiere che si improvvisa. È qualcosa che ti entra nelle mani e negli occhi molto prima di diventare un lavoro. Sono nato nel 1993 a Terricciola, nel cuore della Valdera, e da bambino passavo più tempo sui mezzi che in casa. A 4 anni ero già sul sedile del trattore di famiglia, con mio padre accanto che mi insegnava a 'sentire' il motore e a rispettare la terra su cui passavamo.",
-    
-    "Crescendo ho trasformato quel gioco in una professione. Ho lavorato per anni in aziende strutturate di movimento terra e lavori industriali, tra cui Deferco, seguendo cantieri impegnativi: sbancamenti, bonifiche, impianti per biomasse, strade poderali, infrastrutture per l'industria e l'agricoltura. In quel periodo ho capito che la differenza non la fa solo la potenza delle macchine, ma il metodo: sicurezza, organizzazione, rispetto dei tempi e dei costi.",
-    
-    "Nel 2023 decido di fare il passo successivo e nasce Novaterra, con sede a Terricciola. Un'impresa giovane, ma con radici profonde nel territorio toscano. L'obiettivo è chiaro: portare nel mondo dei cantieri privati, agricoli e residenziali lo stesso livello di precisione, pulizia e affidabilità che ho visto nei grandi lavori industriali.",
-    
-    "Oggi coordino personalmente ogni progetto: dai sopralluoghi sul campo allo studio del terreno, fino all'organizzazione dei mezzi e dei collaboratori. Che si tratti di scavi, sbancamenti, laghi artificiali, sistemazione di argini, demolizioni o cura del verde, per me ogni intervento è un pezzo di paesaggio che cambia forma e deve funzionare bene per molti anni.",
-    
-    "Novaterra è questo: movimento terra in Toscana fatto con testa, cuore e macchine moderne. Un'impresa snella, flessibile, che parla la lingua dei tecnici ma rimane sempre vicina alle persone e ai loro progetti."
+    "Sono nato nel 1993 a Terricciola, nel cuore della Valdera. Da bambino ero già sui mezzi di famiglia: lì ho imparato a rispettare la terra e a “sentire” il lavoro prima ancora di chiamarlo professione.",
+    "Negli anni ho lavorato in realtà strutturate del movimento terra e in cantieri industriali complessi (tra cui Deferco). È lì che ho capito che la differenza non la fa solo la potenza delle macchine, ma il metodo: sicurezza, organizzazione, pulizia e rispetto di tempi e costi.",
+    "Nel 2023 nasce Novaterra: un’impresa giovane, con radici solide nel territorio. Oggi seguo personalmente ogni progetto, dal sopralluogo alla consegna, per dare ai privati e ai tecnici uno standard operativo affidabile — su scavi, sbancamenti, strade, argini, demolizioni e cura del verde."
   ]
 };
 

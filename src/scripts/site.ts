@@ -116,8 +116,9 @@ function initCursorAndCoords() {
 }
 
 function initBackToTop(lenis: Lenis) {
-  const btn = document.getElementById('back-to-top') as HTMLButtonElement | null;
-  if (!btn) return;
+  const btnEl = document.getElementById('back-to-top') as HTMLButtonElement | null;
+  if (!btnEl) return;
+  const btn = btnEl;
 
   let visible = false;
 
@@ -168,6 +169,56 @@ function initBackToTop(lenis: Lenis) {
   });
 }
 
+function initDepthGauge(lenis: Lenis) {
+  const indicatorEl = document.getElementById('depthIndicator') as HTMLElement | null;
+  const textEl = document.getElementById('depthText') as HTMLElement | null;
+  const gauge = indicatorEl?.closest('.depth-gauge') as HTMLElement | null;
+  if (!indicatorEl || !textEl || !gauge) return;
+  const indicator = indicatorEl;
+  const text = textEl;
+  const gaugeEl = gauge;
+
+  const maxDepthAttr = gauge.getAttribute('data-max-depth');
+  const maxDepth = maxDepthAttr ? Number.parseFloat(maxDepthAttr) : 100;
+
+  // Fade the gauge in after leaving the top (keeps hero clean)
+  const FADE_START_PX = 60;
+  const FADE_END_PX = 320;
+
+  function update(y: number) {
+    const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollTotal <= 0) return;
+
+    let p = y / scrollTotal;
+    if (p < 0) p = 0;
+    if (p > 1) p = 1;
+
+    indicator.style.top = `${p * 100}%`;
+    const currentDepth = (p * maxDepth).toFixed(1);
+    text.textContent = `-${currentDepth}m`;
+
+    // Visual presence (0 at top -> fades in as you scroll)
+    const tRaw = (y - FADE_START_PX) / (FADE_END_PX - FADE_START_PX);
+    const t = Math.max(0, Math.min(1, tRaw));
+    gaugeEl.style.setProperty('--dg-opacity', String(t));
+    gaugeEl.style.setProperty('--dg-shift', `${(1 - t) * 10}px`);
+  }
+
+  // Lenis-driven updates (smooth + consistent)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (lenis as any).on?.('scroll', (e: any) => {
+      const y = typeof e?.scroll === 'number' ? e.scroll : window.scrollY;
+      update(y);
+    });
+  } catch {
+    window.addEventListener('scroll', () => update(window.scrollY), { passive: true });
+  }
+
+  // Initial state
+  update(window.scrollY);
+}
+
 export function initSite() {
   // Initialize Lenis
   const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
@@ -207,16 +258,18 @@ export function initSite() {
     // Reveal effect (reference-like): IntersectionObserver + CSS
     initRevealFx();
     initBackToTop(lenis);
+    initDepthGauge(lenis);
   }
 
   // Preloader logic
   // IMPORTANT: don't rely on `window.load` because it waits for external assets (e.g. unpkg Leaflet),
   // which can hang and keep the preloader stuck forever in production.
-  const preloader = document.getElementById('preloader');
-  if (!preloader) {
+  const preloaderEl = document.getElementById('preloader');
+  if (!preloaderEl) {
     start();
     return;
   }
+  const preloader = preloaderEl;
 
   // Block scroll & Lenis while preloader is visible
   lenis.stop();
