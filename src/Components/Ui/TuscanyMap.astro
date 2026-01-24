@@ -1,0 +1,192 @@
+---
+// src/Components/Ui/TuscanyMap.astro
+// Animated Tuscany SVG (provided by client)
+interface Props {
+  className?: string;
+  /** If true, shows the bounding box (debug) */
+  showBox?: boolean;
+}
+
+const { className = '', showBox = false } = Astro.props;
+---
+
+<div
+  class={`tuscany-map-wrap ${className}`}
+  data-tuscany-map
+  data-show-box={showBox ? "true" : undefined}
+>
+  <svg
+    class="tuscany-map"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 436.95 501.61"
+    role="img"
+    aria-label="Mappa della Toscana"
+  >
+    <path class="tuscany-path" d="M52.03,97.64l-4.84-1.35s-1.16-.97,2.42-4.26,4.93-3.87,6.09-6-.19-4.64-1.93-6.38-1.93-5.61-5.22-2.51-1.74,7.54-3.48,6.58-2.32-3.49-2.32-7.74.77-8.7-2.13-9.09-8.9,1.16-9.29,0-.19-2.32,1.55-4.06,2.18-5.61-1.71-4.64-8.92,4.64-7.96,1.93.97-13.15-1.55-16.25-14.31-5.42-18.18-14.9-4.06-9.67,0-9.67,4.84.77,5.42-2.32S17.98,3.04,19.53,1.69s18.76-1.35,20.31-.97,4.06,1.93,4.84,3.29,1.55,1.35,2.51,2.13,1.93,6.38.19,7.93,1.16,4.64,3.1,5.61,9.67,8.51,12.57,8.32,6.96-1.93,8.32-.77,1.74,4.26,3.68,5.42,9.09,6.96,10.45,9.48,2.71,5.8,4.06,5.03,2.71-4.84,7.93-3.29,4.64,2.13,8.9,3.68,5.03,8.12,8.9,7.93,10.45,0,13.54,7.74,14.51,18.57,17.22,16.25.58-3.1,5.03-5.8,11.8-1.74,15.67-1.74,4.84,2.9,9.48,6.19,15.28,6.77,16.64,10.83,0,4.84,5.42.97,8.9-14.31,11.41-14.12.97,4.45,3.68,6.96,8.4,6.38,13.29,3.1,13.02-.39,17.85-1.74,10.06-.39,6-5.03-10.05-8.12,1.46-8.51c11.5-.39,11.7-9.87,15.37-10.25s5.42,2.13,6.38-2.71,3.68-4.26,6-2.71,3.29,4.26,5.8,8.9,10.06,8.71,13.15,7.54,1.93-3.48,4.45-2.32,4.26.77,6,1.55,3.48.58,1.35,2.13-7.74,6.19-2.9,6.96,5.61,5.8,7.74,5.22,4.64-4.06,8.9-5.03,10.83-2.13,10.64-.39-4.84,11.61-7.74,14.9-11.8,13.93-8.32,16.06,4.06,4.64,6,9.87,5.22,10.06,5.03,12.19,11.22,8.9,13.54,11.03,1.35,5.03,4.84,5.22,13.54,1.55,16.06,4.45,3.1,8.9,7.54,7.93,6.58-3.66,11.8.1c0,0,2.77,3.52,6.88,2.15s11.73-2.5,13.49.32,6.06.47,11.14-1.68,8.6-1.28,13.29,2.98,4.69,6.99,0,8.95-2.15-.2-8.8,5.28-12.51,5.67-10.75,9.38,4.1,4.1.98,8.01-7.62,13.68-11.53,15.05-9.97,5.08-7.04,7.43,12.9,6.25,7.43,7.04-3.71-1.95-5.86,2.74-3.52,5.86-6.06,5.28-10.36,5.29-6.84,6.46,5.28-2.35,6.84.97-.78,8.01,2.15,7.43,4.1-.98,5.86,2.35,2.35,7.23,1.17,10.36,6.45,8.6,7.82,5.08,3.71-7.62,5.47-4.89,3.32,4.1-.59,6.84-9.77,6.84-15.25,8.41-5.86,3.91-8.41,1.76-5.47-4.52-6.45.87,1.17,9.69-2.74,10.47-2.93-.78-6.65,2.15-11.73,7.82-9.19,14.86-.59,8.8,2.74,9.77,4.1-1.95,5.28,1.17,3.13,5.67.98,9.77-5.86,18.18-5.67,20.52,1.56,5.08,3.32,7.62,7.62,1.56-1.17,5.67-8.41,4.89-14.46,7.62-5.08-.59-8.41,3.32,1.76,7.43-3.32,3.91-6.65-7.82-7.62-2.35-2.15,7.43,1.37,10.36,12.9,7.82,8.01,10.95-8.6,2.93-7.04,6.06,11.34,3.32,6.65,7.62-4.3,4.1-7.62,4.69.78-1.37-4.1,2.35-10.75,9.58-13.88,10.56-3.52,4.3-5.08,2.15-.39-3.66-3.52-.85,1.37,1.64-1.37,3.79-4.1,7.23-1.56,8.6,7.23,4.89,6.84,7.04,1.95,3.13-.78,5.28,1.95,4.69-5.28,3.71-9.38-2.54-12.9-.78-1.76,3.13-5.28,6.65-5.08,7.04-5.47,6.06-12.12-7.62-17.4-7.62-4.89-.59-6.06-1.17-4.5-3.13-8.99-1.37-4.5,3.13-6.06,5.86-1.95,8.99-5.47,7.43-11.14-7.23-11.53-7.82-3.91-5.47-.98-7.43-.59.2,4.5-1.17,7.43,3.52,8.99-4.3-.78-18.37-4.5-22.09-1.17,2.93-5.67-.98-5.28-8.21-8.6-12.71,4.89-1.56-5.08-6.45-3.32,2.54-11.92-9.58-11.53-16.03-20.33-17.4-8.01,1.37-13.1-2.35-9.97-4.1-5.67-6.25,5.67-1.56,5.47-6.45-.39-6.84.2-8.8,4.69-9.19-9.97-12.71-19.94-4.89-21.7-3.13-3.52,2.74-5.28,4.69-2.15,7.23-6.84.39-6.84-7.82-3.52-11.92,3.32-4.1,4.5-6.45,9.19-21.31,4.1-46.72-10.36-19.74-11.92-22.48.2-1.37-1.76-6.84-14.27-18.96-18.18-26.97-5.28-15.25-6.06-20.13-3.52-8.99-3.52-15.83-3.91-47.69-7.23-57.27-18.18-23.85-22.48-29.12-6.63-4.94-6.54-5.69Z"/>
+    <path class="tuscany-path" d="M111.21,364.18c-1.18-3.15,3.74-6.5-1.18-3.15s-4.33,3.54-5.71,6.5,2.17,3.15-2.56,5.31-3.94,4.13-4.72,2.17,2.17-3.74-2.17-4.72-1.18-3.74-4.33-.98-6.3,6.15-6.89,6.52-4.33,1.01-4.33,0,.98-2.78-1.77-3.57-14.37-1.77-15.75,2.76-.2,6.1.2,10.24.2,4.13,4.53,3.35,3.94-2.17,10.04-.59,1.57-6.3,7.48-4.33,7.09,8.46,7.87,3.74.59-7.87,1.77-4.33.59,5.9,2.17,2.56.79-10.43,3.35-5.51,6.5,13.19,6.5,13.19c0,0,2.17-.2,4.53.79s5.51-1.18,3.35-3.94-5.12-4.53-4.92-6.89,7.87-3.71,6.5-6.28-2.36-.8-1.97-5.53.59-6.1.59-6.1l-2.56-1.18Z"/>
+    <path class="tuscany-path" d="M195.19,469.3c-.51-1.02-6.15-8.71-6.92-5.38s-4.87,5.84-2.56,7.92,2.82,1.82,6.4,5.66,8.2,4.1,6.92,1.28-3.84-9.48-3.84-9.48Z"/>
+    <path class="tuscany-path" d="M15.63,319.97c-.59-3.07-4.61-6.4-6.66,0s-1.54,8.96,1.79,7.43,5.89-2.05,4.87-7.43Z"/>
+    <path class="tuscany-path" d="M59.18,421.92s-1.79-12.04-4.61-7.17-3.84,5.64-3.84,8.2,3.59,5.89,5.89,3.33,2.56-4.35,2.56-4.35Z"/>
+    <path class="tuscany-path" d="M96.32,471.88c-1.76-1.58-5.38-.27-5.38,3.31s-2.31,4.87,2.69,3.59,4.99-4.83,2.69-6.9Z"/>
+    <rect id="Box" x=".5" y=".5" width="436.45" height="501.11" />
+    <path class="tuscany-path" d="M228.21,493.47c.22-2.39-5.81-.47-5.34,2.2s4.87,2.83,5.34-2.2Z"/>
+  </svg>
+</div>
+
+<style>
+  .tuscany-map-wrap {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: clamp(18px, 3vw, 34px);
+    overflow: hidden;
+  }
+
+  /* Compact variant (used in the home “Territorio” split section) */
+  .tuscany-map-wrap.tuscany-map--compact {
+    max-width: 525px;
+    margin: 0;
+    padding: 14px;
+    border-width: 2px;
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .tuscany-map {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .tuscany-path {
+    fill: rgba(205, 92, 47, 0);
+    stroke: rgba(205, 92, 47, 0);
+    stroke-width: 1.9;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 14px rgba(205, 92, 47, 0));
+  }
+
+  /* Bounding box (provided) */
+  #Box {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.0);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 0;
+  }
+
+  /* Step 1: draw the stroke (bright accent) */
+  :global([data-tuscany-map].is-active) .tuscany-path {
+    stroke: rgba(205, 92, 47, 0.95);
+    /* keep this subtle; loop glow will take over */
+    filter: drop-shadow(0 0 8px rgba(205, 92, 47, 0.16));
+  }
+
+  /* Step 2: fill fades in, then slowly dims */
+  :global([data-tuscany-map].is-filled) .tuscany-path {
+    animation:
+      tuscFill 1400ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1)) forwards,
+      tuscGlow 2400ms ease-in-out 1400ms infinite;
+  }
+
+  @keyframes tuscFill {
+    0% {
+      fill: rgba(205, 92, 47, 0);
+    }
+    55% {
+      fill: rgba(205, 92, 47, 0.18);
+    }
+    100% {
+      fill: rgba(205, 92, 47, 0.08);
+    }
+  }
+
+  @keyframes tuscGlow {
+    0% {
+      stroke: rgba(205, 92, 47, 0.78);
+      stroke-width: 1.9;
+      filter: drop-shadow(0 0 6px rgba(205, 92, 47, 0.10));
+    }
+    50% {
+      stroke: rgba(205, 92, 47, 1);
+      stroke-width: 2.6;
+      filter: drop-shadow(0 0 30px rgba(205, 92, 47, 0.38));
+    }
+    100% {
+      stroke: rgba(205, 92, 47, 0.78);
+      stroke-width: 1.9;
+      filter: drop-shadow(0 0 8px rgba(205, 92, 47, 0.12));
+    }
+  }
+
+  :global([data-tuscany-map][data-show-box="true"]) #Box {
+    opacity: 1;
+    stroke: rgba(255, 255, 255, 0.18);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tuscany-path {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-tuscany-map]');
+    if (!root) return;
+
+    // Optional debug: show bounding box
+    const showBox = root.getAttribute('data-show-box');
+    if (showBox === 'true') root.dataset.showBox = 'true';
+
+    const paths = Array.from(root.querySelectorAll('path.tuscany-path'));
+    if (!paths.length) return;
+
+    const STROKE_MS = 1400;
+
+    // Prepare stroke-dash animation based on real path lengths (precise draw)
+    for (const p of paths) {
+      try {
+        const len = p.getTotalLength();
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+        p.style.transition = `stroke-dashoffset ${STROKE_MS}ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1))`;
+      } catch {
+        // ignore
+      }
+    }
+
+    function activate() {
+      if (root.classList.contains('is-active')) return;
+      root.classList.add('is-active');
+      for (const p of paths) p.style.strokeDashoffset = '0';
+
+      // Fill starts only after the stroke draw is complete
+      window.setTimeout(() => {
+        root.classList.add('is-filled');
+      }, STROKE_MS + 120);
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          activate();
+          io.disconnect();
+          break;
+        }
+      },
+      // Start when the map is clearly in view (prevents "already played" feeling)
+      { threshold: 0.6, rootMargin: '0px 0px -25% 0px' }
+    );
+
+    io.observe(root);
+  })();
+</script>
+
