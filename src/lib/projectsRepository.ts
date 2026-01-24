@@ -1,7 +1,7 @@
 // src/lib/projectsRepository.ts
 // Repository layer per gestire progetti (futuro WordPress)
 
-import { projects, sortProjectsByPublishedAt, sortProjectsByYear, filterProjectsByCategory, type Project, type ProjectCategory } from '../data/projectsData';
+import { projects, sortProjectsByPublishedAt, sortProjectsByYear, filterProjectsByCategory, type Project, type ProjectCategory, type ServiceSlug } from '../data/projectsData';
 
 /**
  * Ottiene tutti i progetti ordinati per anno (più recenti prima)
@@ -30,6 +30,17 @@ export function getProjectsByCategory(category: ProjectCategory): Project[] {
  */
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find(project => project.slug === slug);
+}
+
+/**
+ * Ottiene le ultime realizzazioni collegate a uno o più servizi (match OR)
+ * Ordinamento: publishedAt desc (più recente prima)
+ */
+export function getProjectsByServices(services: ServiceSlug[], limit = 3): Project[] {
+  if (!services.length) return [];
+  const ordered = sortProjectsByPublishedAt(projects);
+  const filtered = ordered.filter((p) => p.services?.some((s) => services.includes(s)));
+  return filtered.slice(0, Math.max(0, limit));
 }
 
 /**

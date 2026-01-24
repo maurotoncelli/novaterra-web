@@ -21,6 +21,8 @@ export type PageHeroConfig = {
   description?: string;
   accentItalic?: boolean;
   parallaxSpeed?: number;
+  backLink?: string;
+  backLabel?: string;
 };
 
 export type PageMeta = {
@@ -55,6 +57,8 @@ const { meta, hero, showPreloader = false, containerClass = '' } = Astro.props;
       description={hero.description}
       accentItalic={hero.accentItalic ?? true}
       parallaxSpeed={hero.parallaxSpeed}
+      backLink={hero.backLink}
+      backLabel={hero.backLabel}
     />
 
     <div class={`container ${containerClass}`}>

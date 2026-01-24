@@ -1,0 +1,211 @@
+---
+import { getProjectsByServices } from '../../lib/projectsRepository';
+import type { ServiceSlug } from '../../data/projectsData';
+
+interface Props {
+  serviceSlugs: ServiceSlug[];
+  title?: string;
+}
+
+const { serviceSlugs, title = 'Realizzazioni correlate' } = Astro.props;
+const projects = getProjectsByServices(serviceSlugs, 3);
+---
+
+<section class="related-projects">
+  <span class="subtitle">Realizzazioni</span>
+  <h2 class="section-title">{title}</h2>
+
+  {projects.length ? (
+    <>
+      <div class="related-grid">
+        {projects.map((p) => (
+          <a class="related-card" href={`/realizzazioni/${p.slug}`}>
+            <div class="related-media">
+              <img src={p.thumbnail} alt={p.title} loading="lazy" decoding="async" />
+            </div>
+            <div class="related-body">
+              <h3 class="related-title">{p.title}</h3>
+              <p class="related-excerpt">{p.excerpt}</p>
+              <div class="related-meta">
+                <span class="related-cta">VEDI PROGETTO →</span>
+                <span class="related-year">{p.year}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="related-actions">
+        <a class="all-link" href="/realizzazioni">Vedi tutte le realizzazioni</a>
+      </div>
+    </>
+  ) : (
+    <p class="related-empty">Nuove realizzazioni in arrivo.</p>
+  )}
+</section>
+
+<style>
+  .related-projects {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .subtitle {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--nova-accent);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: clamp(1.6rem, 2.4vw, 2.05rem);
+    font-weight: 600;
+    color: var(--nova-text);
+    letter-spacing: -0.01em;
+  }
+
+  .related-grid {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .related-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    text-decoration: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+
+  .related-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(205, 92, 47, 0.22);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .related-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .related-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) brightness(0.72);
+    transform: scale(1.03);
+    transition: filter 0.35s ease, transform 0.35s ease;
+    display: block;
+  }
+
+  .related-card:hover .related-media img {
+    filter: saturate(1) brightness(0.82);
+    transform: scale(1.06);
+  }
+
+  .related-body {
+    padding: 1.25rem 1.25rem 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .related-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .related-excerpt {
+    margin: 0;
+    color: var(--nova-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-meta {
+    margin-top: 0.15rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.85rem;
+  }
+
+  .related-cta {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--nova-accent);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .related-year {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--nova-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .related-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.25rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .all-link {
+    display: inline-block;
+    padding: 1rem 1.75rem;
+    border: 1px solid var(--nova-accent);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 800;
+    font-size: 0.8rem;
+    transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+
+  .all-link:hover {
+    background: var(--nova-accent);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .related-empty {
+    margin-top: 1.5rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+  }
+
+  @media (min-width: 900px) {
+    .related-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .related-media {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>
+

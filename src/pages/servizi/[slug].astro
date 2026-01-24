@@ -2,13 +2,13 @@
 // src/pages/servizi/[slug].astro
 // Dynamic routing per pagine dettaglio servizi
 
-import Layout from '../../layouts/Layout.astro';
-import ServiceDetailHero from '../../Components/ServiceDetail/ServiceDetailHero.astro';
+import PageTemplate from '../../Components/Ui/PageTemplate.astro';
 import ServiceTextGrid from '../../Components/ServiceDetail/ServiceTextGrid.astro';
 import ServiceInfoCard from '../../Components/ServiceDetail/ServiceInfoCard.astro';
-import ServiceGalleryScroller from '../../Components/ServiceDetail/ServiceGalleryScroller.astro';
+import ServiceRelatedProjects from '../../Components/ServiceDetail/ServiceRelatedProjects.astro';
 import ServiceVideo from '../../Components/ServiceDetail/ServiceVideo.astro';
 import { getAllServiceSlugs, getServiceBySlug } from '../../lib/servicesRepository';
+import type { ServiceSlug } from '../../data/projectsData';
 
 // getStaticPaths genera tutte le pagine servizi
 export async function getStaticPaths() {
@@ -29,85 +29,74 @@ if (!service) {
 
 const pageTitle = `${service.hero.title.main} ${service.hero.title.accent} | Novaterra`;
 const pageDescription = service.content.introParagraph;
+const serviceSlug = slug as ServiceSlug;
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-  
+<PageTemplate
+  meta={{
+    title: pageTitle,
+    description: pageDescription,
+  }}
+  hero={{
+    subtitle: service.hero.subtitle,
+    title: service.hero.title,
+    image: service.hero.image,
+    backLink: service.hero.backLink,
+    backLabel: '← Torna ai Servizi',
+  }}
+>
   <div class="service-detail-page">
-    
-    <!-- Hero -->
-    <ServiceDetailHero 
-      title={service.hero.title}
-      subtitle={service.hero.subtitle}
-      image={service.hero.image}
-      backLink={service.hero.backLink}
-    />
-    
-    <!-- Container principale -->
-    <div class="container">
-      
-      <!-- Grid Testo + Info Card -->
-      <ServiceTextGrid 
-        introParagraph={service.content.introParagraph}
-        bodyParagraph={service.content.bodyParagraph}
-      >
-        <ServiceInfoCard 
-          title={service.infoCard.title}
-          items={service.infoCard.items}
-          headingLevel="h2"
-        />
-      </ServiceTextGrid>
-      
-      <!-- Gallery Scroller con Lightbox -->
-      <ServiceGalleryScroller 
-        title={service.gallery.title}
-        images={service.gallery.images}
+    <!-- Grid Testo + Info Card -->
+    <ServiceTextGrid
+      introParagraph={service.content.introParagraph}
+      bodyParagraph={service.content.bodyParagraph}
+    >
+      <ServiceInfoCard
+        title={service.infoCard.title}
+        items={service.infoCard.items}
+        headingLevel="h2"
       />
-      
-      <!-- Video Placeholder (sempre visibile sotto gallery) -->
-      {service.video ? (
-        <ServiceVideo 
-          title={service.video.title}
-          embedUrl={service.video.embedUrl}
-          mp4Url={service.video.mp4Url}
-          thumbnail={service.video.thumbnail}
-        />
-      ) : (
-        <div class="video-placeholder">
-          <span class="subtitle">Video Presentazione</span>
-          <div class="placeholder-box">
-            <div class="placeholder-icon">🎬</div>
-            <p class="placeholder-text">Video disponibile prossimamente</p>
-          </div>
-        </div>
-      )}
-      
-      <!-- CTA (opzionale) -->
-      {service.cta && (
-        <div class="cta-section">
-          <a href={service.cta.link} class="cta-button">
-            {service.cta.text}
-          </a>
-        </div>
-      )}
-      
-    </div>
-    
-  </div>
+    </ServiceTextGrid>
 
-</Layout>
+    <!-- Realizzazioni correlate (auto, max 3) -->
+    <ServiceRelatedProjects
+      serviceSlugs={[serviceSlug]}
+      title="Dal campo: le ultime realizzazioni"
+    />
+
+    <!-- Video Placeholder (sempre visibile sotto gallery) -->
+    {service.video ? (
+      <ServiceVideo
+        title={service.video.title}
+        embedUrl={service.video.embedUrl}
+        mp4Url={service.video.mp4Url}
+        thumbnail={service.video.thumbnail}
+      />
+    ) : (
+      <div class="video-placeholder">
+        <span class="subtitle">Video Presentazione</span>
+        <div class="placeholder-box">
+          <div class="placeholder-icon">🎬</div>
+          <p class="placeholder-text">Video disponibile prossimamente</p>
+        </div>
+      </div>
+    )}
+
+    <!-- CTA (opzionale) -->
+    {service.cta && (
+      <div class="cta-section">
+        <a href={service.cta.link} class="cta-button">
+          {service.cta.text}
+        </a>
+      </div>
+    )}
+  </div>
+</PageTemplate>
 
 <style>
   .service-detail-page {
     width: 100%;
     overflow-x: hidden;
-  }
-  
-  .container {
-    max-width: var(--container-width, 1400px);
-    margin: 0 auto;
-    padding: 0 5vw 6rem 5vw;
-    width: 100%;
   }
   
   .cta-section {
@@ -194,10 +183,6 @@ const pageDescription = service.content.introParagraph;
   }
   
   @media (max-width: 768px) {
-    .container {
-      padding-bottom: 4rem;
-    }
-    
     .placeholder-icon {
       font-size: 3rem;
     }

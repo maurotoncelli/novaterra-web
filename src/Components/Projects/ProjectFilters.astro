@@ -103,11 +103,11 @@ const categories = Object.entries(projectCategories);
 
 <script>
   // Gestione filtri client-side
-  const filterButtons = Array.from(document.querySelectorAll('.project-filters .filter-btn'));
-  const select = document.querySelector('[data-filters-select]');
-  const projectCards = document.querySelectorAll('.project-item');
+  const filterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.project-filters .filter-btn'));
+  const select = document.querySelector<HTMLSelectElement>('[data-filters-select]');
+  const projectCards = Array.from(document.querySelectorAll<HTMLElement>('.project-item'));
 
-  function applyFilter(category) {
+  function applyFilter(category: string) {
     // Update active state on buttons (desktop)
     filterButtons.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-category') === category));
 
@@ -116,7 +116,8 @@ const categories = Object.entries(projectCategories);
       const cardCategory = card.getAttribute('data-category');
       
       if (category === 'tutti' || cardCategory === category) {
-        card.style.display = 'block';
+        // Reset display to CSS default (important for grid view)
+        card.style.display = '';
         // Fade in animation
         card.style.opacity = '0';
         setTimeout(() => {
@@ -134,7 +135,7 @@ const categories = Object.entries(projectCategories);
 
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const category = button.getAttribute('data-category');
+      const category = button.getAttribute('data-category') ?? 'tutti';
       applyFilter(category);
       if (select) select.value = category;
     });
@@ -142,7 +143,9 @@ const categories = Object.entries(projectCategories);
 
   if (select) {
     select.addEventListener('change', (e) => {
-      const category = e.target.value;
+      const target = e.target as HTMLSelectElement | null;
+      if (!target) return;
+      const category = target.value;
       applyFilter(category);
     });
   }

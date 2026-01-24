@@ -67,7 +67,6 @@ const { className = '', showBox = false } = Astro.props;
     fill: rgba(205, 92, 47, 0);
     stroke: rgba(205, 92, 47, 0);
     stroke-width: 1.9;
-    vector-effect: non-scaling-stroke;
     stroke-linejoin: round;
     stroke-linecap: round;
     filter: drop-shadow(0 0 14px rgba(205, 92, 47, 0));
@@ -85,8 +84,8 @@ const { className = '', showBox = false } = Astro.props;
   /* Step 1: draw the stroke (bright accent) */
   :global([data-tuscany-map].is-active) .tuscany-path {
     stroke: rgba(205, 92, 47, 0.95);
-    /* keep this subtle; loop glow will take over */
-    filter: drop-shadow(0 0 8px rgba(205, 92, 47, 0.16));
+    /* IMPORTANT: keep draw phase "clean" to avoid filter/dash rendering artifacts */
+    filter: none;
   }
 
   /* Step 2: fill fades in, then slowly dims */
@@ -113,16 +112,19 @@ const { className = '', showBox = false } = Astro.props;
       stroke: rgba(205, 92, 47, 0.78);
       stroke-width: 1.9;
       filter: drop-shadow(0 0 6px rgba(205, 92, 47, 0.10));
+      fill: rgba(205, 92, 47, 0.08);
     }
     50% {
       stroke: rgba(205, 92, 47, 1);
       stroke-width: 2.6;
       filter: drop-shadow(0 0 30px rgba(205, 92, 47, 0.38));
+      fill: rgba(205, 92, 47, 0.14);
     }
     100% {
       stroke: rgba(205, 92, 47, 0.78);
       stroke-width: 1.9;
       filter: drop-shadow(0 0 8px rgba(205, 92, 47, 0.12));
+      fill: rgba(205, 92, 47, 0.08);
     }
   }
 
@@ -152,16 +154,17 @@ const { className = '', showBox = false } = Astro.props;
     if (!paths.length) return;
 
     const STROKE_MS = 1400;
+    const NORMALIZED_LEN = 1000;
 
-    // Prepare stroke-dash animation based on real path lengths (precise draw).
-    // NOTE: add a small epsilon to avoid tiny "gap" artifacts at the end of the stroke.
+    // Prepare stroke-dash animation using a normalized path length.
+    // This avoids precision artifacts ("missing segment") on very long paths.
     for (const p of paths) {
       try {
-        const len = p.getTotalLength();
-        const drawLen = len + 2;
-        p.style.strokeDasharray = String(drawLen);
-        p.style.strokeDashoffset = String(drawLen);
-        p.style.transition = `stroke-dashoffset ${STROKE_MS}ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1))`;
+        p.setAttribute('pathLength', String(NORMALIZED_LEN));
+        p.style.strokeDasharray = String(NORMALIZED_LEN);
+        p.style.strokeDashoffset = String(NORMALIZED_LEN);
+        // Linear keeps constant perceived speed along the outline
+        p.style.transition = `stroke-dashoffset ${STROKE_MS}ms linear`;
       } catch {
         // ignore
       }

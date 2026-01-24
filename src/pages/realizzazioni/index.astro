@@ -2,6 +2,7 @@
 // src/pages/realizzazioni/index.astro
 import PageTemplate from '../../Components/Ui/PageTemplate.astro';
 import ProjectCard from '../../Components/Projects/ProjectCard.astro';
+import ProjectGridCard from '../../Components/Projects/ProjectGridCard.astro';
 import ProjectFilters from '../../Components/Projects/ProjectFilters.astro';
 import { getAllProjects } from '../../lib/projectsRepository';
 import { projectsHero } from '../../data/projectsData';
@@ -18,14 +19,36 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
   }}
   hero={projectsHero}
 >
-  <!-- Filtri Categorie -->
-  <ProjectFilters activeCategory="tutti" />
+  <div class="projects-topbar">
+    <!-- Filtri Categorie -->
+    <ProjectFilters activeCategory="tutti" />
 
-  <!-- Lista Progetti -->
-  <div class="projects-list">
-    {projects.map((project) => (
-      <ProjectCard project={project} />
-    ))}
+    <!-- Toggle vista -->
+    <div class="view-toggle" role="group" aria-label="Seleziona vista realizzazioni" data-projects-view-toggle>
+      <button type="button" class="view-btn" data-view="editorial" aria-pressed="true">
+        Vetrina
+      </button>
+      <button type="button" class="view-btn" data-view="grid" aria-pressed="false">
+        Griglia
+      </button>
+    </div>
+  </div>
+
+  <!-- Views -->
+  <div class="projects-views" data-projects-views data-active-view="editorial">
+    <div class="projects-view projects-view--editorial" data-view="editorial">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+
+    <div class="projects-view projects-view--grid" data-view="grid">
+      <div class="projects-grid">
+        {projects.map((project) => (
+          <ProjectGridCard project={project} />
+        ))}
+      </div>
+    </div>
   </div>
 
   <!-- Empty State (nascosto di default, mostrato da JS se nessun risultato) -->
@@ -35,8 +58,116 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
 </PageTemplate>
 
 <style>
-  .projects-list {
+  .projects-topbar {
+    position: relative;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.75rem;
+    margin-bottom: 2.5rem; /* space before the active view */
+  }
+
+  .view-btn {
+    position: relative;
+    padding: 0.55rem 1.05rem;
+    padding: 0.95rem 1.75rem;
+    min-width: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(18, 17, 16, 0.35);
+    color: var(--nova-text);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 800;
+    isolation: isolate;
+  }
+
+  .view-btn:hover {
+    border-color: var(--nova-accent);
+    color: var(--nova-accent);
+  }
+
+  .view-btn[aria-pressed="true"] {
+    background: var(--nova-accent);
+    border-color: var(--nova-accent);
+    color: white;
+  }
+
+  /* Animated border (visible, premium) */
+  .view-btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(205, 92, 47, 0.85),
+      rgba(255, 255, 255, 0.18),
+      rgba(205, 92, 47, 0.85)
+    );
+    background-size: 220% 100%;
+    animation: viewBorderShift 2.4s linear infinite;
+    opacity: 0.85;
+    z-index: -2;
+  }
+
+  .view-btn::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 1px;
+    background: rgba(18, 17, 16, 0.9);
+    z-index: -1;
+  }
+
+  .view-btn[aria-pressed="true"]::before {
+    opacity: 0; /* active state already strong */
+    animation: none;
+  }
+  .view-btn[aria-pressed="true"]::after {
+    background: transparent;
+  }
+
+  @keyframes viewBorderShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 220% 50%; }
+  }
+
+  .projects-views {
     width: 100%;
+  }
+
+  .projects-view {
+    display: none;
+  }
+
+  .projects-views[data-active-view="editorial"] .projects-view--editorial {
+    display: block;
+  }
+
+  .projects-views[data-active-view="grid"] .projects-view--grid {
+    display: block;
+  }
+
+  .projects-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 640px) and (max-width: 899px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   
   .empty-state {
@@ -47,20 +178,67 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
   }
   
   @media (max-width: 768px) {
+    .view-toggle {
+      justify-content: center;
+      margin-top: 1.25rem;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+
+    .view-btn {
+      min-width: 0;
+      flex: 1;
+    }
   }
 </style>
 
 <script>
+  // View toggle (persisted)
+  const viewsRoot = document.querySelector('[data-projects-views]');
+  const toggle = document.querySelector('[data-projects-view-toggle]');
+  const emptyState = document.getElementById('emptyState');
+
+  function setActiveView(view: 'editorial' | 'grid') {
+    if (!viewsRoot || !toggle) return;
+    viewsRoot.setAttribute('data-active-view', view);
+    toggle.querySelectorAll('[data-view]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-view') === view ? 'true' : 'false');
+    });
+    try {
+      localStorage.setItem('projects:view', view);
+    } catch {}
+    window.dispatchEvent(new CustomEvent('projects:view-changed'));
+  }
+
+  // Init from storage
+  try {
+    const saved = localStorage.getItem('projects:view');
+    if (saved === 'grid' || saved === 'editorial') setActiveView(saved);
+  } catch {}
+
+  if (toggle) {
+    toggle.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      const btn = target?.closest?.('[data-view]') as HTMLElement | null;
+      const view = btn?.getAttribute?.('data-view');
+      if (view !== 'grid' && view !== 'editorial') return;
+      setActiveView(view);
+    });
+  }
+
   // Mostra empty state se nessun progetto visibile
   function checkEmptyState() {
-    const projectCards = document.querySelectorAll('.project-item');
-    const emptyState = document.getElementById('emptyState');
-    
-    if (!emptyState) return;
-    
-    const visibleCards = Array.from(projectCards).filter((card: Element) => 
-      (card as HTMLElement).style.display !== 'none'
-    );
+    if (!emptyState || !viewsRoot) return;
+
+    const activeView = viewsRoot.getAttribute('data-active-view') || 'editorial';
+    const activeContainer = viewsRoot.querySelector(`[data-view="${activeView}"]`);
+    if (!activeContainer) return;
+
+    const projectCards = activeContainer.querySelectorAll('.project-item');
+    const visibleCards = Array.from(projectCards).filter((card) => {
+      const el = card;
+      return window.getComputedStyle(el).display !== 'none';
+    });
     
     if (visibleCards.length === 0) {
       emptyState.style.display = 'block';
@@ -72,6 +250,11 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
   // Observer per filtri (collegato a ProjectFilters.astro)
   window.addEventListener('projects:filter-changed', () => {
     setTimeout(checkEmptyState, 100);
+  });
+
+  // Re-evaluate empty state when switching view
+  window.addEventListener('projects:view-changed', () => {
+    setTimeout(checkEmptyState, 50);
   });
 </script>
 

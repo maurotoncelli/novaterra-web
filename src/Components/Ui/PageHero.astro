@@ -10,9 +10,20 @@ interface Props {
   accentItalic?: boolean;
   description?: string;
   parallaxSpeed?: number;
+  backLink?: string;
+  backLabel?: string;
 }
 
-const { subtitle, title, image, accentItalic = true, description, parallaxSpeed = 0.5 } = Astro.props;
+const {
+  subtitle,
+  title,
+  image,
+  accentItalic = true,
+  description,
+  parallaxSpeed = 0.5,
+  backLink,
+  backLabel = '← Torna Indietro',
+} = Astro.props;
 ---
 
 <div class="page-hero" data-parallax-section="hero">
@@ -24,6 +35,11 @@ const { subtitle, title, image, accentItalic = true, description, parallaxSpeed 
   ></div>
 
   <div class="page-hero-content">
+    {backLink && (
+      <a href={backLink} class="page-hero-back">
+        {backLabel}
+      </a>
+    )}
     <span class="subtitle text-white">{subtitle}</span>
     <h1 class="display-text text-white m-0">
       {title.main}<br />
@@ -91,6 +107,23 @@ const { subtitle, title, image, accentItalic = true, description, parallaxSpeed 
     max-width: var(--container-width, 1400px);
     margin: 0 auto;
     padding: 0 5vw 3rem 5vw;
+  }
+
+  .page-hero-back {
+    display: inline-block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+
+  .page-hero-back:hover {
+    color: var(--nova-accent);
   }
 
   .page-hero-desc {
