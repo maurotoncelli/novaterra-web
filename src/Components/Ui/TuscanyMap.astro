@@ -41,14 +41,16 @@ const { className = '', showBox = false } = Astro.props;
     border: 1px solid transparent;
     background: transparent;
     padding: clamp(18px, 3vw, 34px);
-    overflow: hidden;
+    /* IMPORTANT: don't clip thick strokes / glow */
+    overflow: visible;
   }
 
   /* Compact variant (used in the home “Territorio” split section) */
   .tuscany-map-wrap.tuscany-map--compact {
     max-width: 525px;
     margin: 0;
-    padding: 14px;
+    /* a bit more breathing room so stroke never touches edges */
+    padding: 18px;
     border-width: 2px;
     border-color: transparent;
     background: transparent;
@@ -58,6 +60,7 @@ const { className = '', showBox = false } = Astro.props;
     display: block;
     width: 100%;
     height: auto;
+    overflow: visible;
   }
 
   .tuscany-path {
