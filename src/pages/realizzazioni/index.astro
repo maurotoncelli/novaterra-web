@@ -164,7 +164,8 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
-  @media (min-width: 640px) and (max-width: 899px) {
+  /* Tablet: 2 per riga */
+  @media (min-width: 768px) and (max-width: 899px) {
     .projects-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -177,12 +178,10 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
     font-size: 1.1rem;
   }
   
-  @media (max-width: 768px) {
+  /* Mobile: force cover view (no toggle) */
+  @media (max-width: 767px) {
     .view-toggle {
-      justify-content: center;
-      margin-top: 1.25rem;
-      margin-bottom: 2rem;
-      width: 100%;
+      display: none;
     }
 
     .view-btn {
@@ -197,6 +196,7 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
   const viewsRoot = document.querySelector('[data-projects-views]');
   const toggle = document.querySelector('[data-projects-view-toggle]');
   const emptyState = document.getElementById('emptyState');
+  const MOBILE_MAX = 767;
 
   function setActiveView(view: 'editorial' | 'grid') {
     if (!viewsRoot || !toggle) return;
@@ -210,11 +210,22 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
     window.dispatchEvent(new CustomEvent('projects:view-changed'));
   }
 
+  function isMobile() {
+    return window.matchMedia(`(max-width: ${MOBILE_MAX}px)`).matches;
+  }
+
   // Init from storage
   try {
     const saved = localStorage.getItem('projects:view');
-    if (saved === 'grid' || saved === 'editorial') setActiveView(saved);
+    if (!isMobile() && (saved === 'grid' || saved === 'editorial')) {
+      setActiveView(saved);
+    }
   } catch {}
+
+  // On mobile, always force the cover (vetrina) view
+  if (isMobile() && viewsRoot) {
+    viewsRoot.setAttribute('data-active-view', 'editorial');
+  }
 
   if (toggle) {
     toggle.addEventListener('click', (e) => {
@@ -225,6 +236,12 @@ const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
       setActiveView(view);
     });
   }
+
+  // If someone rotates/resizes into mobile, force editorial
+  window.addEventListener('resize', () => {
+    if (!viewsRoot) return;
+    if (isMobile()) viewsRoot.setAttribute('data-active-view', 'editorial');
+  });
 
   // Mostra empty state se nessun progetto visibile
   function checkEmptyState() {

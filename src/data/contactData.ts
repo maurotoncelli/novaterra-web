@@ -40,7 +40,7 @@ export const contactHero = {
   subtitle: contactInfo.subtitle,
   title: contactInfo.title,
   image:
-    "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800&auto=format&fit=crop",
+    "https://i.postimg.cc/FsQ7Z03Z/contatti1.jpg",
   parallaxSpeed: 0.5,
   description:
     "Richiedi un sopralluogo o un preventivo: rispondiamo rapidamente con una proposta chiara e operativa."
