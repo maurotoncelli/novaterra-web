@@ -153,12 +153,14 @@ const { className = '', showBox = false } = Astro.props;
 
     const STROKE_MS = 1400;
 
-    // Prepare stroke-dash animation based on real path lengths (precise draw)
+    // Prepare stroke-dash animation based on real path lengths (precise draw).
+    // NOTE: add a small epsilon to avoid tiny "gap" artifacts at the end of the stroke.
     for (const p of paths) {
       try {
         const len = p.getTotalLength();
-        p.style.strokeDasharray = String(len);
-        p.style.strokeDashoffset = String(len);
+        const drawLen = len + 2;
+        p.style.strokeDasharray = String(drawLen);
+        p.style.strokeDashoffset = String(drawLen);
         p.style.transition = `stroke-dashoffset ${STROKE_MS}ms var(--ease-out-expo, cubic-bezier(0.19, 1, 0.22, 1))`;
       } catch {
         // ignore
