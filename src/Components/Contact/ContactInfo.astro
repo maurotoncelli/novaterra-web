@@ -1,39 +1,60 @@
 ---
 // src/Components/Contact/ContactInfo.astro
 import { contactInfo } from '../../data/contactData';
+
+interface Props {
+  showHeading?: boolean;
+}
+
+const { showHeading = true } = Astro.props;
 ---
 
-<div class="contact-info-wrapper">
-  <span class="subtitle">{contactInfo.subtitle}</span>
-  <h1 class="display-text">
-    {contactInfo.title.main}<br>
-    <i class="font-extralight text-white italic">{contactInfo.title.accent}</i>.
-  </h1>
+<div class={`contact-info-wrapper ${showHeading ? '' : 'no-heading'}`}>
+  {showHeading && (
+    <>
+      <span class="subtitle">{contactInfo.subtitle}</span>
+      <h1 class="display-text">
+        {contactInfo.title.main}<br>
+        <i class="font-extralight text-white italic">{contactInfo.title.accent}</i>.
+      </h1>
+    </>
+  )}
   
   <div class="contact-details">
-    <p class="font-bold text-white">
-      {contactInfo.company.name} <span class="font-normal">{contactInfo.company.owner}</span>
-    </p>
-    <p class="text-nova-text" style="margin-top: 1rem; color: var(--nova-text);">
-      {contactInfo.address.street}, {contactInfo.address.city}
-    </p>
+    <div class="contact-block">
+      <h3 class="contact-block-title">Azienda</h3>
+      <p class="contact-block-value font-bold text-white">
+        {contactInfo.company.name} <span class="font-normal">{contactInfo.company.owner}</span>
+      </p>
+    </div>
+
+    <div class="contact-block">
+      <h3 class="contact-block-title">Indirizzo</h3>
+      <address class="contact-block-value contact-address">
+        {contactInfo.address.street}, {contactInfo.address.city}
+      </address>
+    </div>
     
     <!-- Nome contatto -->
-    <span class="contact-person-name">
-      {contactInfo.contactPerson}
-    </span>
+    <div class="contact-block">
+      <h3 class="contact-block-title">Referente</h3>
+      <span class="contact-person-name">{contactInfo.contactPerson}</span>
+    </div>
     
     <!-- Telefono (pulsante grande) -->
-    <a href={contactInfo.phone.href} class="btn-contact-phone">
-      {contactInfo.phone.display}
-    </a>
-    
-    <!-- Email -->
-    <p style="margin-top: 0.5rem;">
-      <a href={contactInfo.email.href} class="btn-minimal">
-        {contactInfo.email.display}
+    <div class="contact-block">
+      <h3 class="contact-block-title">Recapiti</h3>
+      <a href={contactInfo.phone.href} class="btn-contact-phone">
+        {contactInfo.phone.display}
       </a>
-    </p>
+      
+      <!-- Email -->
+      <p class="contact-email">
+        <a href={contactInfo.email.href} class="btn-minimal">
+          {contactInfo.email.display}
+        </a>
+      </p>
+    </div>
   </div>
 </div>
 
@@ -50,14 +71,49 @@ import { contactInfo } from '../../data/contactData';
   .contact-details {
     margin-top: 4rem;
   }
+
+  .contact-info-wrapper.no-heading .contact-details {
+    margin-top: 0;
+  }
+
+  .contact-block {
+    margin-top: 2.25rem;
+  }
+
+  .contact-block:first-child {
+    margin-top: 0;
+  }
+
+  .contact-block-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: var(--nova-accent);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .contact-block-value {
+    margin: 0;
+    color: var(--nova-text);
+    line-height: 1.6;
+  }
+
+  .contact-address {
+    font-style: normal;
+  }
   
   .contact-person-name {
     display: block;
-    font-size: 0.8rem;
-    color: var(--nova-accent);
-    margin-top: 1.5rem;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-size: 1rem;
+    color: var(--nova-text);
+    letter-spacing: 0.02em;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  .contact-email {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
   }
 </style>

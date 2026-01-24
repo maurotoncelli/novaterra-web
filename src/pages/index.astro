@@ -11,6 +11,8 @@ import Expectations from '../Components/home/Expectations.astro';
 import AssetsAndServices from '../Components/home/AssetsAndServices.astro';
 import Testimonials from '../Components/home/Testimonials.astro';
 import ClientsMarquee from '../Components/home/ClientsMarquee.astro';
+import FullBleedImage from '../Components/Ui/FullBleedImage.astro';
+import { homeEmotionalStrips, homeEmotionalStripHeightVh } from '../data/homeContent';
 ---
 
 <Layout title="Novaterra | Earth Engineering" showPreloader={true}>
@@ -20,8 +22,24 @@ import ClientsMarquee from '../Components/home/ClientsMarquee.astro';
 	<!-- CONTENUTI -->
 	<IntroSection />
 	<TargetSection />
+
+	<!-- Emotional full-width image (above “Il Processo”) -->
+	<FullBleedImage
+		src={homeEmotionalStrips.process.src}
+		alt={homeEmotionalStrips.process.alt}
+		heightVh={homeEmotionalStripHeightVh}
+	/>
+
 	<MethodSection />
 	<Certifications />
+
+	<!-- Emotional full-width image (above “Standard Operativo”) -->
+	<FullBleedImage
+		src={homeEmotionalStrips.standards.src}
+		alt={homeEmotionalStrips.standards.alt}
+		heightVh={homeEmotionalStripHeightVh}
+	/>
+
 	<Expectations />
 	<AssetsAndServices />
 	<Testimonials />

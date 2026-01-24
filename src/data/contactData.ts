@@ -29,9 +29,21 @@ export const contactInfo = {
     coordinates: {
       lat: 43.5267,
       lng: 10.6813,
-      zoom: 13
+      zoom: 10
     }
   }
+};
+
+// Hero cover per la pagina Contatti (PageTemplate/PageHero)
+// Nota: usiamo un'immagine wide e ad alto contrasto per rendere bene soprattutto su mobile.
+export const contactHero = {
+  subtitle: contactInfo.subtitle,
+  title: contactInfo.title,
+  image:
+    "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800&auto=format&fit=crop",
+  parallaxSpeed: 0.5,
+  description:
+    "Richiedi un sopralluogo o un preventivo: rispondiamo rapidamente con una proposta chiara e operativa."
 };
 
 export const formConfig = {

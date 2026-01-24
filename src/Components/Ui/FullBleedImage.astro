@@ -1,0 +1,39 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  /** Target viewport height (used inside a clamp) */
+  heightVh?: number;
+  /** Tailwind classes for outer wrapper (e.g. my-32) */
+  className?: string;
+  /** Parallax speed factor (falls back to global default if omitted) */
+  parallaxSpeed?: number;
+  /** Browser loading behavior */
+  loading?: "lazy" | "eager";
+}
+
+const {
+  src,
+  alt,
+  heightVh = 54,
+  className = "my-32",
+  parallaxSpeed = 0.12,
+  loading = "lazy",
+} = Astro.props;
+---
+
+<div
+  class={`w-full overflow-hidden relative ${className}`}
+  style={`height: clamp(360px, ${heightVh}vh, 720px);`}
+>
+  <img
+    src={src}
+    alt={alt}
+    loading={loading}
+    decoding="async"
+    class="w-full h-full object-cover grayscale brightness-50 parallax-img"
+    data-speed={String(parallaxSpeed)}
+    sizes="100vw"
+  />
+</div>
+

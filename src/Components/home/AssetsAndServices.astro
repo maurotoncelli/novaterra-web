@@ -1,6 +1,7 @@
 ---
-import { assets, homeServices } from '../../data/homeContent';
+import { assets, homeEmotionalStrips, homeEmotionalStripHeightVh, homeServices } from '../../data/homeContent';
 import SectionHeader from '../Ui/SectionHeader.astro';
+import FullBleedImage from '../Ui/FullBleedImage.astro';
 ---
 
 <!-- 1. ASSETS (3 Pilastri) -->
@@ -21,13 +22,11 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 </section>
 
 <!-- 2. IMMAGINE PARALLAX FULL WIDTH -->
-<div class="w-full h-[45vh] overflow-hidden relative my-32">
-    <img 
-        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800" 
-        class="w-full h-full object-cover grayscale brightness-50 parallax-img scale-110 transition-transform duration-100 ease-linear" 
-        alt="Panoramica Cantiere" 
-    />
-</div>
+<FullBleedImage
+    src={homeEmotionalStrips.landscapeEngineering.src}
+    alt={homeEmotionalStrips.landscapeEngineering.alt}
+    heightVh={homeEmotionalStripHeightVh}
+/>
 
 <!-- 3. SERVIZI GRID -->
 <section class="container mx-auto px-[5vw] pb-16 relative z-10">

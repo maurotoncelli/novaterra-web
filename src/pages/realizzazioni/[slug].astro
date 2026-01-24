@@ -68,19 +68,6 @@ const pageDescription = project.excerpt;
         
       </div>
       
-      <!-- Rilievo Topografico (opzionale) -->
-      {project.topographic && (
-        <TopographicSection 
-          title={project.topographic.title}
-          image={project.topographic.image}
-          dataReadout={project.topographic.dataReadout}
-        />
-      )}
-      
-      <!-- Galleria -->
-      <span class="subtitle">Galleria</span>
-      <ServiceGalleryScroller images={project.gallery} />
-      
       <!-- Video Cantiere (SEMPRE presente) -->
       <span class="subtitle">Video Cantiere</span>
       <ProjectVideo 
@@ -89,6 +76,18 @@ const pageDescription = project.excerpt;
         thumbnail={project.video.thumbnail}
         title={project.video.title}
       />
+
+      <!-- Rilievo Topografico (opzionale) -->
+      {project.topographic && (
+        <TopographicSection 
+          title={project.topographic.title}
+          image={project.topographic.image}
+          dataReadout={project.topographic.dataReadout}
+        />
+      )}
+
+      <!-- Galleria -->
+      <ServiceGalleryScroller title="Galleria" images={project.gallery} />
       
       <!-- CTA Bottom -->
       <div class="project-cta">

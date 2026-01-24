@@ -58,13 +58,14 @@ import { heroData } from '../../data/homeContent';
 	/* Hero cinematic reveal (delay so the user sees the image/video first) */
 	.hero-reveal {
 		opacity: 0;
-		transform: translateY(14px);
-		filter: blur(0px);
+		transform: translateY(18px);
+		filter: blur(10px);
+		will-change: transform, opacity, filter;
 	}
 
 	/* Start hero reveals only when site is ready (post-preloader) */
 	:global(html.site-ready) .hero-reveal {
-		animation: heroFadeUp 0.9s var(--ease-out-expo, cubic-bezier(0.19,1,0.22,1)) forwards;
+		animation: heroFadeUp 1.25s var(--ease-out-expo, cubic-bezier(0.19,1,0.22,1)) forwards;
 	}
 
 	:global(html.site-ready) .hero-reveal--subtitle { animation-delay: 0.35s; }
@@ -73,14 +74,14 @@ import { heroData } from '../../data/homeContent';
 	:global(html.site-ready) .hero-reveal--cta { animation-delay: 1.00s; }
 
 	@keyframes heroFadeUp {
-		to { opacity: 1; transform: translateY(0); }
+		to { opacity: 1; transform: translateY(0); filter: blur(0px); }
 	}
 
 	/* Scroll indicator (match demo feel) */
 	.scroll-indicator {
 		opacity: 0;
 	}
-
+	
 	:global(html.site-ready) .scroll-indicator {
 		animation: heroFadeIn 1s 1.2s forwards;
 	}
@@ -147,5 +148,17 @@ import { heroData } from '../../data/homeContent';
 		will-change: transform;
 	}
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
 
 

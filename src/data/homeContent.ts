@@ -11,6 +11,27 @@ export const heroData = {
     bgImage: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=2800&auto=format&fit=crop"
 };
 
+// Full-width emotional strips (home)
+// NOTE: keep these as plain URLs (CMS-ready). Used by `FullBleedImage`.
+export const homeEmotionalStrips = {
+    process: {
+        src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2800&auto=format&fit=crop",
+        alt: "Macchine operative in cantiere: metodo e controllo",
+    },
+    standards: {
+        src: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2800&auto=format&fit=crop",
+        alt: "Cantiere al lavoro: standard operativi e sicurezza",
+    },
+    landscapeEngineering: {
+        // Existing strip (above “Ingegneria del Paesaggio”)
+        src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800&auto=format&fit=crop",
+        alt: "Panoramica di cantiere in Toscana",
+    }
+};
+
+// +20% vs previous 45vh strip height
+export const homeEmotionalStripHeightVh = 54;
+
 // 0.5. INTRO
 export const introData = {
     shortIntro: {

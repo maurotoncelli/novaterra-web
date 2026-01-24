@@ -1,58 +1,60 @@
 ---
 // src/pages/contatti.astro
-import Layout from '../layouts/Layout.astro';
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
 import ContactForm from '../Components/Contact/ContactForm.astro';
 import ContactInfo from '../Components/Contact/ContactInfo.astro';
 import ContactMap from '../Components/Contact/ContactMap.astro';
+import { contactHero } from '../data/contactData';
 ---
 
-<Layout 
-  title="Contatti | Novaterra - Earth Engineering" 
-  description="Contatta NOVATERRA per preventivi e consulenze. Riccardo Toncelli, movimento terra in Toscana."
+<PageTemplate
+  meta={{
+    title: "Contatti | Novaterra - Earth Engineering",
+    description:
+      "Contatta NOVATERRA per preventivi e consulenze. Riccardo Toncelli, movimento terra in Toscana.",
+    canonicalHref: "/contatti"
+  }}
+  hero={contactHero}
 >
-  
-  <section class="page-section">
-    <div class="container">
-      
-      <!-- Grid 2 colonne: Info | Form -->
-      <div class="contact-layout">
-        
-        <!-- Colonna Info -->
-        <div>
-          <ContactInfo />
+  <section class="contact-page">
+    <!-- Grid 2 colonne: Info | Form -->
+    <div class="contact-layout">
+      <!-- Colonna Info -->
+      <div>
+        <span class="subtitle">Informazioni</span>
+        <h2 class="section-title">Ci sentiamo. E poi si parte.</h2>
+        <div class="contact-info-stack">
+          <ContactInfo showHeading={false} />
         </div>
-
-        <!-- Colonna Form -->
-        <div>
-          <ContactForm />
-        </div>
-
       </div>
 
-      <!-- Mappa -->
-      <ContactMap />
-
+      <!-- Colonna Form -->
+      <div>
+        <span class="subtitle">Richiesta</span>
+        <h2 class="section-title">Raccontaci il progetto.</h2>
+        <p class="contact-lead">
+          Compila il modulo: ti rispondiamo rapidamente con una proposta chiara e operativa.
+        </p>
+        <ContactForm />
+      </div>
     </div>
-  </section>
 
-</Layout>
+    <!-- Mappa -->
+    <ContactMap />
+  </section>
+</PageTemplate>
 
 <style>
-  /* Layout dinamico con navbar height */
-  .page-section {
-    /* Padding dinamico: navbar height + spazio extra */
-    padding-top: calc(var(--navbar-height) + 4rem);
-    padding-bottom: 6rem;
-    padding-left: 5vw;
-    padding-right: 5vw;
+  .contact-page {
     width: 100%;
-    overflow-x: hidden;
   }
-  
-  .container {
-    max-width: var(--container-width, 1400px);
-    margin: 0 auto;
-    width: 100%;
+
+  .contact-lead {
+    margin-top: 1.25rem;
+    margin-bottom: 3rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+    max-width: 42rem;
   }
   
   .contact-layout {
@@ -61,14 +63,20 @@ import ContactMap from '../Components/Contact/ContactMap.astro';
     gap: 4rem;
     margin-bottom: 6rem;
   }
+
+  .contact-info-stack {
+    margin-top: 2.25rem;
+  }
   
   @media (max-width: 768px) {
-    .page-section {
-      /* Mobile: navbar più piccola + padding ridotto */
-      padding-top: calc(var(--navbar-height) + 2rem);
-      padding-bottom: 4rem;
+    .contact-info-stack {
+      margin-top: 1.75rem;
     }
-    
+
+    .contact-lead {
+      margin-bottom: 2.25rem;
+    }
+
     .contact-layout {
       grid-template-columns: 1fr;
       gap: 3rem;
