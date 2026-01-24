@@ -1,13 +1,20 @@
 // src/lib/projectsRepository.ts
 // Repository layer per gestire progetti (futuro WordPress)
 
-import { projects, sortProjectsByYear, filterProjectsByCategory, type Project, type ProjectCategory } from '../data/projectsData';
+import { projects, sortProjectsByPublishedAt, sortProjectsByYear, filterProjectsByCategory, type Project, type ProjectCategory } from '../data/projectsData';
 
 /**
  * Ottiene tutti i progetti ordinati per anno (più recenti prima)
  */
 export function getAllProjects(): Project[] {
   return sortProjectsByYear(projects);
+}
+
+/**
+ * Ottiene l'ultimo progetto pubblicato (ordinato per publishedAt)
+ */
+export function getLatestProject(): Project | undefined {
+  return sortProjectsByPublishedAt(projects)[0];
 }
 
 /**

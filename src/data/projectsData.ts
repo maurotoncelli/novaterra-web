@@ -40,7 +40,10 @@ export interface Project {
   title: string;
   excerpt: string;
   thumbnail: string; // Immagine per card lista
+  /** Anno di realizzazione (quando il lavoro è stato eseguito) */
   year: string;
+  /** Data di pubblicazione sul sito (ISO: YYYY-MM-DD) */
+  publishedAt: string;
   category: ProjectCategory;
   
   // Hero (usato nella pagina singola)
@@ -104,6 +107,7 @@ export const projects: Project[] = [
     excerpt: "Scavo di fondazione complesso su terreno in forte pendenza (30%). Realizzazione di palificata di contenimento e viabilità di cantiere.",
     thumbnail: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2700&auto=format&fit=crop",
     year: "2024",
+    publishedAt: "2024-11-06",
     category: "movimento-terra",
     
     hero: {
@@ -172,6 +176,7 @@ export const projects: Project[] = [
     excerpt: "Rifacimento di 2km di strada poderale per accesso mezzi pesanti. Stesura stabilizzato, rullatura e creazione canaline di scolo acque.",
     thumbnail: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2700&auto=format&fit=crop",
     year: "2023",
+    publishedAt: "2024-03-22",
     category: "strade-piazzali",
     
     hero: {
@@ -240,6 +245,7 @@ export const projects: Project[] = [
     excerpt: "Sbancamento area 5000mq. Posa dorsali fognarie profonde 3m e preparazione massicciata per asfaltatura piazzale logistico.",
     thumbnail: "https://images.unsplash.com/photo-1581094271901-8022df4466f9?q=80&w=2700&auto=format&fit=crop",
     year: "2024",
+    publishedAt: "2025-01-15",
     category: "movimento-terra",
     
     hero: {
@@ -306,6 +312,18 @@ export function sortProjectsByYear(projects: Project[]): Project[] {
   return [...projects].sort((a, b) => 
     parseInt(b.year) - parseInt(a.year)
   );
+}
+
+export function sortProjectsByPublishedAt(projects: Project[]): Project[] {
+  return [...projects].sort((a, b) => {
+    const aTime = Date.parse(a.publishedAt);
+    const bTime = Date.parse(b.publishedAt);
+    // Fallback deterministic order if dates are invalid/equal
+    if (!Number.isFinite(aTime) || !Number.isFinite(bTime) || aTime === bTime) {
+      return Number.parseInt(b.id) - Number.parseInt(a.id);
+    }
+    return bTime - aTime;
+  });
 }
 
 export function filterProjectsByCategory(projects: Project[], category: ProjectCategory): Project[] {
