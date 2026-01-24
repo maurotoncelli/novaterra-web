@@ -17,6 +17,7 @@ const { title, subtitle, image, backLink } = Astro.props;
   <div 
     class="project-hero-bg parallax-img" 
     data-speed="0.5"
+    data-parallax-dir="up"
     style={`background-image: url('${image}');`}
   ></div>
   
@@ -36,13 +37,25 @@ const { title, subtitle, image, backLink } = Astro.props;
   .project-hero {
     position: relative;
     width: 100%;
-    height: 55vh;
-    min-height: 400px;
+    height: auto;
+    min-height: clamp(520px, 62vh, 760px);
     display: flex;
     align-items: flex-end;
     justify-content: center;
     overflow: hidden;
+    background: var(--nova-bg);
+    padding-top: calc(var(--navbar-height) + 1.25rem);
     margin-bottom: 6rem;
+  }
+
+  /* Dark overlay matching site hue (prevents harsh bands during parallax) */
+  .project-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 17, 16, 0.4);
+    z-index: 2;
+    pointer-events: none;
   }
   
   .project-hero-bg {
@@ -50,22 +63,24 @@ const { title, subtitle, image, backLink } = Astro.props;
     top: 0;
     left: 0;
     width: 100%;
-    height: 120%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     filter: brightness(0.4) contrast(1.1);
     z-index: 1;
+    transform: scale(1.1);
     will-change: transform;
   }
   
   .project-hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     max-width: var(--container-width, 1400px);
     margin: 0 auto;
-    padding: 0 5vw 3rem 5vw;
+    /* Extra bottom padding to keep breathing room under the title */
+    padding: 0 5vw 4.5rem 5vw;
   }
   
   .btn-back {
@@ -93,12 +108,12 @@ const { title, subtitle, image, backLink } = Astro.props;
     .project-hero {
       height: auto;
       min-height: 60vh;
-      padding-top: 80px;
+      padding-top: calc(var(--navbar-height) + 1rem);
       margin-bottom: 4rem;
     }
     
     .project-hero-content {
-      padding-bottom: 3rem;
+      padding-bottom: 3.5rem;
     }
   }
 </style>
