@@ -43,28 +43,28 @@ export const servicesList: Service[] = [
     symbol: "▧",
     title: "Movimento terra / Sbancamenti",
     slug: "/servizi/movimento-terra",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/Qt3nx6RN/servizi-Movimento-terra-e-sbancamenti-2.jpg"
   },
   {
     id: "strade-piazzali",
     symbol: "☰",
     title: "Realizzazione strade e piazzali",
     slug: "/servizi/strade-piazzali",
-    image: "https://images.unsplash.com/photo-1623018035782-b5e1f19d7ab4?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/v8XSbth2/servizi-realizzazione-strade-e-piazzali.jpg"
   },
   {
     id: "demolizioni",
     symbol: "✕",
     title: "Demolizioni",
     slug: "/servizi/demolizioni",
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/9Q06vnjT/servizi-demolizioni-2.jpg"
   },
   {
     id: "forestale",
     symbol: "↟",
     title: "Forestale / Verde / Abbattimenti",
     slug: "/servizi/forestale",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/CM49dghb/servizi-forestale-verde-abbattimenti.jpg"
   },
   {
     id: "idrogeologico",
@@ -78,7 +78,7 @@ export const servicesList: Service[] = [
     symbol: "◉",
     title: "Bacini idrici + Consolidamenti",
     slug: "/servizi/bacini",
-    image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/GmSCt1jN/servizi-bacini-idrici-e-consolidamenti.jpg"
   }
 ];
 

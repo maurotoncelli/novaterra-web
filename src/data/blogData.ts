@@ -34,7 +34,7 @@ export const blogHero = {
     main: "NOTIZIE &",
     accent: "INSIGHT" // Corsivo
   },
-  image: "https://i.postimg.cc/Yqcms5KT/notizie-e-Insight-2.jpg"
+  image: "https://i.postimg.cc/Yqcms5KT/notizie_e_Insight_2.jpg"
 };
 
 // Mock articles (oggi statico, domani da WordPress)

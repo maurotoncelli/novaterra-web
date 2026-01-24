@@ -15,11 +15,11 @@ export const heroData = {
 // NOTE: keep these as plain URLs (CMS-ready). Used by `FullBleedImage`.
 export const homeEmotionalStrips = {
     process: {
-        src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2800&auto=format&fit=crop",
+        src: "https://i.postimg.cc/D03yxKJr/Home-unmetodochiaro.jpg",
         alt: "Macchine operative in cantiere: metodo e controllo",
     },
     standards: {
-        src: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2800&auto=format&fit=crop",
+        src: "https://i.postimg.cc/Hn1s6Ccb/Home-cosaaspettarsi.jpg",
         alt: "Cantiere al lavoro: standard operativi e sicurezza",
     },
     landscapeEngineering: {

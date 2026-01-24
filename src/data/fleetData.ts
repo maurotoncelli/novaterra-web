@@ -44,7 +44,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "⟁",
     title: "Escavatori Compatti",
     spec: "1 – 8 Tonnellate",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/KjsNLQsc/parcomezzi-escavatoricompatti-2.jpg",
     uses: [
       "Cantieri con accessi stretti",
       "Scavi per fondazioni leggere",
@@ -57,7 +57,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "◼",
     title: "Escavatori Medi e Grandi",
     spec: "12 – 35 Tonnellate",
-    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/ZnDc3jDK/parcomezzi-escavatori-mediegrandi.jpg",
     uses: [
       "Sbancamenti e scavi profondi",
       "Modellazioni di terreno",
@@ -70,7 +70,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "◪",
     title: "Pale Gommate",
     spec: "Articolate",
-    image: "https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/vTSz9XSB/parcomezzi-pale-gommate.jpg",
     uses: [
       "Movimento grandi volumi",
       "Gestione piazzali",
@@ -83,7 +83,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "◈",
     title: "Minipale Cingolate",
     spec: "Skid Steer",
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/BbwgDNwb/parcomezzi-minipale-cingolate.jpg",
     uses: [
       "Manutenzione strade bianche",
       "Forestale leggero",
@@ -96,7 +96,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "❐",
     title: "Camion 3 e 4 Assi",
     spec: "Logistica",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/mk6wMV6g/parcomezzi-camion3-4-assi.jpg",
     uses: [
       "Trasporto materiali",
       "Gestione terre e rocce da scavo",
@@ -122,7 +122,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "⚙",
     title: "Attrezzature Tecniche",
     spec: "Attachments",
-    image: "https://images.unsplash.com/photo-1557003607-6f36f6ae1b07?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/0jHfmZHk/parcomezzi-attrezzature-tecniche-copia.jpg",
     uses: [
       "Martelli idraulici",
       "Benne inclinabili e grigliate",

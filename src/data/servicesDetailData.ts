@@ -61,7 +61,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "E SBANCAMENTI"
       },
       subtitle: "Servizio 01",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2700&auto=format&fit=crop",
+      image: "https://i.postimg.cc/Qt3nx6RN/servizi-Movimento-terra-e-sbancamenti-2.jpg",
       backLink: "/servizi"
     },
     
@@ -127,7 +127,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "PIAZZALI"
       },
       subtitle: "Servizio 02",
-      image: "https://images.unsplash.com/photo-1596525626296-6e2bb77651a0?q=80&w=2700&auto=format&fit=crop",
+      image: "https://i.postimg.cc/v8XSbth2/servizi-realizzazione-strade-e-piazzali.jpg",
       backLink: "/servizi"
     },
     
@@ -193,7 +193,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "CONTROLLATE"
       },
       subtitle: "Servizio 03",
-      image: "https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=2700&auto=format&fit=crop",
+      image: "https://i.postimg.cc/9Q06vnjT/servizi-demolizioni-2.jpg",
       backLink: "/servizi"
     },
     
@@ -259,7 +259,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "E VERDE"
       },
       subtitle: "Servizio 04",
-      image: "https://images.unsplash.com/photo-1444858291040-58f7e3a350bf?q=80&w=2700&auto=format&fit=crop",
+      image: "https://i.postimg.cc/CM49dghb/servizi-forestale-verde-abbattimenti.jpg",
       backLink: "/servizi"
     },
     
@@ -391,7 +391,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "E CONSOLIDAMENTI"
       },
       subtitle: "Servizio 06",
-      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2800&auto=format&fit=crop",
+      image: "https://i.postimg.cc/GmSCt1jN/servizi-bacini-idrici-e-consolidamenti.jpg",
       backLink: "/servizi"
     },
     

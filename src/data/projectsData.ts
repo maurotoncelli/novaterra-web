@@ -32,7 +32,7 @@ export const projectsHero = {
     main: "REALIZZAZIONI",
     accent: "PROGETTI"
   },
-  image: "https://i.postimg.cc/X7Dkq2Tk/realizzazioni-Copertina-realizzazioni.jpg"
+  image: "https://i.postimg.cc/X7Dkq2Tk/realizzazioni_Copertina_realizzazioni.jpg"
 };
 
 export interface Project {
@@ -110,7 +110,7 @@ export const projects: Project[] = [
     
     title: 'Nuova Residenza "Il Poggio"',
     excerpt: "Scavo di fondazione complesso su terreno in forte pendenza (30%). Realizzazione di palificata di contenimento e viabilità di cantiere.",
-    thumbnail: "https://i.postimg.cc/4KTwSdTg/realizzazioni-Nuovaresidenzailpoggio-copertina.jpg",
+    thumbnail: "https://i.postimg.cc/KY1V4kqR/realizzazioni_Nuovaresidenzailpoggio_copertina.jpg",
     year: "2024",
     publishedAt: "2024-11-06",
     category: "movimento-terra",
@@ -122,7 +122,7 @@ export const projects: Project[] = [
         accent: "RESIDENZA"
       },
       subtitle: "Case Study",
-      image: "https://i.postimg.cc/4KTwSdTg/realizzazioni-Nuovaresidenzailpoggio-copertina.jpg"
+      image: "https://i.postimg.cc/KY1V4kqR/realizzazioni_Nuovaresidenzailpoggio_copertina.jpg"
     },
     
     specs: {
@@ -149,19 +149,19 @@ export const projects: Project[] = [
     
     gallery: [
       {
-        src: "https://i.postimg.cc/QBrSytrG/realizzazioni-Nuovaresidenzailpoggio-2.jpg",
+        src: "https://i.postimg.cc/251J3bc6/realizzazioni_Nuovaresidenzailpoggio_2.jpg",
         alt: "Dettaglio scavo fondazione in pendenza"
       },
       {
-        src: "https://i.postimg.cc/nstTPztf/realizzazioni-Nuovaresidenzailpoggio-3.jpg",
+        src: "https://i.postimg.cc/jjD9Cwg2/realizzazioni_Nuovaresidenzailpoggio_3.jpg",
         alt: "Escavatore su terreno argilloso"
       },
       {
-        src: "https://i.postimg.cc/94j1nMj3/realizzazioni-Nuovaresidenzailpoggio-4.jpg",
+        src: "https://i.postimg.cc/MGn4XMPG/realizzazioni_Nuovaresidenzailpoggio_4.jpg",
         alt: "Mezzi pesanti al lavoro"
       },
       {
-        src: "https://i.postimg.cc/FfQGBRXM/realizzazioni-Nuovaresidenzailpoggio-5.jpg",
+        src: "https://i.postimg.cc/43YMn7Lx/realizzazioni_Nuovaresidenzailpoggio_5.jpg",
         alt: "Completamento opere di contenimento"
       }
     ],
@@ -169,7 +169,7 @@ export const projects: Project[] = [
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder", // Placeholder per ora
-      thumbnail: "https://i.postimg.cc/4KTwSdTg/realizzazioni-Nuovaresidenzailpoggio-copertina.jpg",
+      thumbnail: "https://i.postimg.cc/KY1V4kqR/realizzazioni_Nuovaresidenzailpoggio_copertina.jpg",
       title: "Video Cantiere"
     }
   },
@@ -180,7 +180,7 @@ export const projects: Project[] = [
     
     title: "Infrastruttura Vitivinicola",
     excerpt: "Rifacimento di 2km di strada poderale per accesso mezzi pesanti. Stesura stabilizzato, rullatura e creazione canaline di scolo acque.",
-    thumbnail: "https://i.postimg.cc/RJvk5d50/realizzazioni-infrastrutturavitivinicola-4.jpg",
+    thumbnail: "https://i.postimg.cc/HnMdMv6b/realizzazioni_infrastrutturavitivinicola_4.jpg",
     year: "2023",
     publishedAt: "2024-03-22",
     category: "strade-piazzali",
@@ -192,7 +192,7 @@ export const projects: Project[] = [
         accent: "VITIVINICOLA"
       },
       subtitle: "Case Study",
-      image: "https://i.postimg.cc/RJvk5d50/realizzazioni-infrastrutturavitivinicola-4.jpg"
+      image: "https://i.postimg.cc/HnMdMv6b/realizzazioni_infrastrutturavitivinicola_4.jpg"
     },
     
     specs: {
@@ -219,23 +219,23 @@ export const projects: Project[] = [
     
     gallery: [
       {
-        src: "https://i.postimg.cc/n9nyb2bh/realizzazioni-infrastrutturavitivinicola-1.jpg",
+        src: "https://i.postimg.cc/VvtmtZKn/realizzazioni_infrastrutturavitivinicola_1.jpg",
         alt: "Vigneto collinare con filari"
       },
       {
-        src: "https://i.postimg.cc/fSMGnCnT/realizzazioni-infrastrutturavitivinicola-2.jpg",
+        src: "https://i.postimg.cc/QC7h7Yf5/realizzazioni_infrastrutturavitivinicola_2.jpg",
         alt: "Strada poderale tra i vigneti"
       },
       {
-        src: "https://i.postimg.cc/q6pPVwVB/realizzazioni-infrastrutturavitivinicola-3.jpg",
+        src: "https://i.postimg.cc/brnpnVmn/realizzazioni_infrastrutturavitivinicola_3.jpg",
         alt: "Compattazione stabilizzato con rullo"
       },
       {
-        src: "https://i.postimg.cc/RJvk5d50/realizzazioni-infrastrutturavitivinicola-4.jpg",
+        src: "https://i.postimg.cc/HnMdMv6b/realizzazioni_infrastrutturavitivinicola_4.jpg",
         alt: "Risultato finale viabilità agricola"
       },
       {
-        src: "https://i.postimg.cc/grdFZzw3/realizzazioni-infrastrutturavitivinicola-5.jpg",
+        src: "https://i.postimg.cc/gcLY1rmt/realizzazioni_infrastrutturavitivinicola_5.jpg",
         alt: "Vista completa infrastruttura vitivinicola"
       }
     ],
@@ -243,7 +243,7 @@ export const projects: Project[] = [
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/RJvk5d50/realizzazioni-infrastrutturavitivinicola-4.jpg",
+      thumbnail: "https://i.postimg.cc/HnMdMv6b/realizzazioni_infrastrutturavitivinicola_4.jpg",
       title: "Video Cantiere"
     }
   },
@@ -254,7 +254,7 @@ export const projects: Project[] = [
     
     title: "Urbanizzazione Area Industriale",
     excerpt: "Sbancamento area 5000mq. Posa dorsali fognarie profonde 3m e preparazione massicciata per asfaltatura piazzale logistico.",
-    thumbnail: "https://i.postimg.cc/R6hts5hX/realizzazioni-areaindustriale1.jpg",
+    thumbnail: "https://i.postimg.cc/0QdCN9sR/realizzazioni_areaindustriale1.jpg",
     year: "2024",
     publishedAt: "2025-01-15",
     category: "movimento-terra",
@@ -266,7 +266,7 @@ export const projects: Project[] = [
         accent: "INDUSTRIALE"
       },
       subtitle: "Case Study",
-      image: "https://i.postimg.cc/R6hts5hX/realizzazioni-areaindustriale1.jpg"
+      image: "https://i.postimg.cc/0QdCN9sR/realizzazioni_areaindustriale1.jpg"
     },
     
     specs: {
@@ -293,23 +293,23 @@ export const projects: Project[] = [
     
     gallery: [
       {
-        src: "https://i.postimg.cc/R6hts5hX/realizzazioni-areaindustriale1.jpg",
+        src: "https://i.postimg.cc/0QdCN9sR/realizzazioni_areaindustriale1.jpg",
         alt: "Sbancamento area industriale 5000mq"
       },
       {
-        src: "https://i.postimg.cc/2byWcRyT/realizzazioni-areaindustriale2.jpg",
+        src: "https://i.postimg.cc/ydXTN7Hq/realizzazioni_areaindustriale2.jpg",
         alt: "Scavo dorsali fognarie profonde"
       },
       {
-        src: "https://i.postimg.cc/qhqKbVqL/realizzazioni-areaindustriale3.jpg",
+        src: "https://i.postimg.cc/xCyPd9SW/realizzazioni_areaindustriale3.jpg",
         alt: "Posa sottoservizi e tubazioni"
       },
       {
-        src: "https://i.postimg.cc/YG0FnK0R/realizzazioni-areaindustriale4.jpg",
+        src: "https://i.postimg.cc/zBSkfq1s/realizzazioni_areaindustriale4.jpg",
         alt: "Compattazione massicciata finale"
       },
       {
-        src: "https://i.postimg.cc/R6hts5hP/realizzazioni-areaindustriale5.jpg",
+        src: "https://i.postimg.cc/d1m90JYK/realizzazioni_areaindustriale5.jpg",
         alt: "Vista completa area industriale"
       }
     ],
@@ -317,7 +317,7 @@ export const projects: Project[] = [
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/R6hts5hX/realizzazioni-areaindustriale1.jpg",
+      thumbnail: "https://i.postimg.cc/0QdCN9sR/realizzazioni_areaindustriale1.jpg",
       title: "Video Cantiere"
     }
   },
@@ -330,7 +330,7 @@ export const projects: Project[] = [
     excerpt:
       "Demolizione controllata di un annesso rurale, selezione materiali e ripristino quote per nuova platea. Intervento rapido, pulito e tracciabile.",
     thumbnail:
-      "https://i.postimg.cc/3d76dnqr/realizzazioni-demolizione-cascinale-1.jpg",
+      "https://i.postimg.cc/WbJPYy6Z/realizzazioni_demolizione_cascinale_1.jpg",
     year: "2025",
     publishedAt: "2025-10-03",
     category: "demolizioni",
@@ -340,7 +340,7 @@ export const projects: Project[] = [
       title: { main: "DEMOLIZIONE", accent: "CASCINALE" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/3d76dnqr/realizzazioni-demolizione-cascinale-1.jpg"
+        "https://i.postimg.cc/WbJPYy6Z/realizzazioni_demolizione_cascinale_1.jpg"
     },
 
     specs: {
@@ -362,17 +362,17 @@ export const projects: Project[] = [
     },
 
     gallery: [
-      { src: "https://i.postimg.cc/3d76dnqr/realizzazioni-demolizione-cascinale-1.jpg", alt: "Cantiere demolizione controllata" },
-      { src: "https://i.postimg.cc/KRFVRJWv/realizzazioni-demolizione-cascinale-2.jpg", alt: "Demolizione meccanica con pinza" },
-      { src: "https://i.postimg.cc/mtRqt8ns/realizzazioni-demolizione-cascinale-3.jpg", alt: "Separazione materiali e area pulita" },
-      { src: "https://i.postimg.cc/F7mq7DB2/realizzazioni-demolizione-cascinale-4.jpg", alt: "Ripristino quote e preparazione sottofondo" },
-      { src: "https://i.postimg.cc/ZCcQ36kW/realizzazioni-demolizione-cascinale-5.jpg", alt: "Vista finale demolizione cascinale" }
+      { src: "https://i.postimg.cc/WbJPYy6Z/realizzazioni_demolizione_cascinale_1.jpg", alt: "Cantiere demolizione controllata" },
+      { src: "https://i.postimg.cc/qMCdDFXn/realizzazioni_demolizione_cascinale_2.jpg", alt: "Demolizione meccanica con pinza" },
+      { src: "https://i.postimg.cc/sDZRHL9v/realizzazioni_demolizione_cascinale_3.jpg", alt: "Separazione materiali e area pulita" },
+      { src: "https://i.postimg.cc/QxWrYzkx/realizzazioni_demolizione_cascinale_4.jpg", alt: "Ripristino quote e preparazione sottofondo" },
+      { src: "https://i.postimg.cc/pLbMwBqJ/realizzazioni_demolizione_cascinale_5.jpg", alt: "Vista finale demolizione cascinale" }
     ],
 
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/3d76dnqr/realizzazioni-demolizione-cascinale-1.jpg",
+      thumbnail: "https://i.postimg.cc/WbJPYy6Z/realizzazioni_demolizione_cascinale_1.jpg",
       title: "Video Cantiere"
     }
   },
@@ -385,7 +385,7 @@ export const projects: Project[] = [
     excerpt:
       "Manutenzione di argini e scoline: trinciatura, rimozione rovi e ripristino accessi poderali. Intervento preventivo per ridurre rischio incendi e ristagni.",
     thumbnail:
-      "https://i.postimg.cc/Cnd4qnbh/realizzazioni-argini-e-fossi-1.jpg",
+      "https://i.postimg.cc/gjHt1vJZ/realizzazioni_argini_e_fossi_1.jpg",
     year: "2025",
     publishedAt: "2025-08-18",
     category: "forestale",
@@ -395,7 +395,7 @@ export const projects: Project[] = [
       title: { main: "PULIZIA", accent: "ARGINI" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/Cnd4qnbh/realizzazioni-argini-e-fossi-1.jpg"
+        "https://i.postimg.cc/gjHt1vJZ/realizzazioni_argini_e_fossi_1.jpg"
     },
 
     specs: {
@@ -417,17 +417,17 @@ export const projects: Project[] = [
     },
 
     gallery: [
-      { src: "https://i.postimg.cc/Cnd4qnbh/realizzazioni-argini-e-fossi-1.jpg", alt: "Trinciatura vegetazione lungo fossi" },
-      { src: "https://i.postimg.cc/2L3xZLn1/realizzazioni-argini-e-fossi-2.jpg", alt: "Pulizia argini e sottobosco" },
-      { src: "https://i.postimg.cc/bSdRtS1Y/realizzazioni-argini-e-fossi-3.jpg", alt: "Ripristino accessi poderali" },
-      { src: "https://i.postimg.cc/m1hSH17k/realizzazioni-argini-e-fossi-4.jpg", alt: "Risultato finale: argine pulito e scolina libera" },
-      { src: "https://i.postimg.cc/Fk1xLk0g/realizzazioni-argini-e-fossi-5.jpg", alt: "Vista completa pulizia argini" }
+      { src: "https://i.postimg.cc/gjHt1vJZ/realizzazioni_argini_e_fossi_1.jpg", alt: "Trinciatura vegetazione lungo fossi" },
+      { src: "https://i.postimg.cc/T1JNBrwJ/realizzazioni_argini_e_fossi_2.jpg", alt: "Pulizia argini e sottobosco" },
+      { src: "https://i.postimg.cc/C5sr9j18/realizzazioni_argini_e_fossi_3.jpg", alt: "Ripristino accessi poderali" },
+      { src: "https://i.postimg.cc/cCBkPQHR/realizzazioni_argini_e_fossi_4.jpg", alt: "Risultato finale: argine pulito e scolina libera" },
+      { src: "https://i.postimg.cc/L53QGzX7/realizzazioni_argini_e_fossi_5.jpg", alt: "Vista completa pulizia argini" }
     ],
 
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/Cnd4qnbh/realizzazioni-argini-e-fossi-1.jpg",
+      thumbnail: "https://i.postimg.cc/gjHt1vJZ/realizzazioni_argini_e_fossi_1.jpg",
       title: "Video Cantiere"
     }
   },
@@ -440,7 +440,7 @@ export const projects: Project[] = [
     excerpt:
       "Consolidamento sponda e regimazione acque: posa massi ciclopici e riprofilatura alveo per proteggere campi e accessi dopo erosione.",
     thumbnail:
-      "https://i.postimg.cc/rDb205WD/realizzazioni-difesa-spondale-1.jpg",
+      "https://i.postimg.cc/yN61GP8y/realizzazioni_difesa_spondale_1.jpg",
     year: "2025",
     publishedAt: "2025-06-05",
     category: "idrogeologico",
@@ -450,7 +450,7 @@ export const projects: Project[] = [
       title: { main: "DIFESA", accent: "SPONDALE" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/rDb205WD/realizzazioni-difesa-spondale-1.jpg"
+        "https://i.postimg.cc/yN61GP8y/realizzazioni_difesa_spondale_1.jpg"
     },
 
     specs: {
@@ -478,15 +478,15 @@ export const projects: Project[] = [
     },
 
     gallery: [
-      { src: "https://i.postimg.cc/rDb205WD/realizzazioni-difesa-spondale-1.jpg", alt: "Posa massi ciclopici per scogliera" },
-      { src: "https://i.postimg.cc/DSD3J1sZ/realizzazioni-difesa-spondale-2.jpg", alt: "Scavo e preparazione piano di posa" },
-      { src: "https://i.postimg.cc/NKVv9RT5/realizzazioni-difesa-spondale-3.jpg", alt: "Riprofilatura alveo e sponda" }
+      { src: "https://i.postimg.cc/yN61GP8y/realizzazioni_difesa_spondale_1.jpg", alt: "Posa massi ciclopici per scogliera" },
+      { src: "https://i.postimg.cc/R0CSYRZc/realizzazioni_difesa_spondale_2.jpg", alt: "Scavo e preparazione piano di posa" },
+      { src: "https://i.postimg.cc/hG4DYrtb/realizzazioni_difesa_spondale_3.jpg", alt: "Riprofilatura alveo e sponda" }
     ],
 
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/rDb205WD/realizzazioni-difesa-spondale-1.jpg",
+      thumbnail: "https://i.postimg.cc/yN61GP8y/realizzazioni_difesa_spondale_1.jpg",
       title: "Video Cantiere"
     }
   },
@@ -499,7 +499,7 @@ export const projects: Project[] = [
     excerpt:
       "Scavo e modellazione bacino per irrigazione, gestione terre e sistemazione accessi. Progetto pensato per durare e integrarsi nel paesaggio.",
     thumbnail:
-      "https://i.postimg.cc/bGC8R4KQ/realizzazioni-bacinoirriguocollinare-1.jpg",
+      "https://i.postimg.cc/hjgjKBs3/realizzazioni_bacinoirriguocollinare_1.jpg",
     year: "2024",
     publishedAt: "2025-03-12",
     category: "bacini",
@@ -509,7 +509,7 @@ export const projects: Project[] = [
       title: { main: "BACINO", accent: "IRRIGUO" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/bGC8R4KQ/realizzazioni-bacinoirriguocollinare-1.jpg"
+        "https://i.postimg.cc/hjgjKBs3/realizzazioni_bacinoirriguocollinare_1.jpg"
     },
 
     specs: {
@@ -537,17 +537,17 @@ export const projects: Project[] = [
     },
 
     gallery: [
-      { src: "https://i.postimg.cc/bGC8R4KQ/realizzazioni-bacinoirriguocollinare-1.jpg", alt: "Bacino irriguo collinare - vista 1" },
-      { src: "https://i.postimg.cc/sB6yJbtZ/realizzazioni-bacinoirriguocollinare-2.jpg", alt: "Bacino irriguo collinare - vista 2" },
-      { src: "https://i.postimg.cc/PL3hM0BY/realizzazioni-bacinoirriguocollinare-3.jpg", alt: "Bacino irriguo collinare - vista 3" },
-      { src: "https://i.postimg.cc/PL3hM0BW/realizzazioni-bacinoirriguocollinare-4.jpg", alt: "Bacino irriguo collinare - vista 4" },
-      { src: "https://i.postimg.cc/SXTqGHwf/realizzazioni-bacinoirriguocollinare-5.jpg", alt: "Bacino irriguo collinare - vista 5" }
+      { src: "https://i.postimg.cc/hjgjKBs3/realizzazioni_bacinoirriguocollinare_1.jpg", alt: "Bacino irriguo collinare - vista 1" },
+      { src: "https://i.postimg.cc/FRmRh4pG/realizzazioni_bacinoirriguocollinare_2.jpg", alt: "Bacino irriguo collinare - vista 2" },
+      { src: "https://i.postimg.cc/Pxhxdjy3/realizzazioni_bacinoirriguocollinare_3.jpg", alt: "Bacino irriguo collinare - vista 3" },
+      { src: "https://i.postimg.cc/NMYMQcDz/realizzazioni_bacinoirriguocollinare_4.jpg", alt: "Bacino irriguo collinare - vista 4" },
+      { src: "https://i.postimg.cc/B6s6J0pk/realizzazioni_bacinoirriguocollinare_5.jpg", alt: "Bacino irriguo collinare - vista 5" }
     ],
 
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/bGC8R4KQ/realizzazioni-bacinoirriguocollinare-1.jpg",
+      thumbnail: "https://i.postimg.cc/hjgjKBs3/realizzazioni_bacinoirriguocollinare_1.jpg",
       title: "Video Cantiere"
     }
   },
@@ -560,7 +560,7 @@ export const projects: Project[] = [
     excerpt:
       "Risanamento strada poderale con scarifica, stesura stabilizzato e drenaggi laterali. Intervento mirato per aumentare portanza e durata nel tempo.",
     thumbnail:
-      "https://i.postimg.cc/hztLkQyT/realizzazioni-rifacimento-Stradabianca-1.jpg",
+      "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg",
     year: "2025",
     publishedAt: "2025-11-12",
     category: "strade-piazzali",
@@ -570,7 +570,7 @@ export const projects: Project[] = [
       title: { main: "STRADA", accent: "PODERALE" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/hztLkQyT/realizzazioni-rifacimento-Stradabianca-1.jpg"
+        "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg"
     },
 
     specs: {
@@ -598,9 +598,9 @@ export const projects: Project[] = [
     },
 
     gallery: [
-      { src: "https://i.postimg.cc/hztLkQyT/realizzazioni-rifacimento-Stradabianca-1.jpg", alt: "Fondo strada in ripristino" },
-      { src: "https://i.postimg.cc/62prk4jZ/realizzazioni-rifacimento-Stradabianca-2.jpg", alt: "Stesura stabilizzato e rullatura" },
-      { src: "https://i.postimg.cc/1n3GkVCq/realizzazioni-rifacimento-Stradabianca-3.jpg", alt: "Drenaggi laterali e canalette" },
+      { src: "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg", alt: "Fondo strada in ripristino" },
+      { src: "https://i.postimg.cc/0QpVJp7V/realizzazioni_rifacimento_Stradabianca_2.jpg", alt: "Stesura stabilizzato e rullatura" },
+      { src: "https://i.postimg.cc/9MGLqGyJ/realizzazioni_rifacimento_Stradabianca_3.jpg", alt: "Drenaggi laterali e canalette" },
       { src: "https://i.postimg.cc/HJ20v923/realizzazioni-rifacimento-Stradabianca-4.jpg", alt: "Risultato finale strada bianca" },
       { src: "https://i.postimg.cc/bDwx7SCx/realizzazioni-rifacimento-Stradabianca-5.jpg", alt: "Vista panoramica strada completata" },
       { src: "https://i.postimg.cc/hztLkQyb/realizzazioni-rifacimento-Stradabianca-6.jpg", alt: "Dettaglio rifacimento strada bianca" }
@@ -609,7 +609,7 @@ export const projects: Project[] = [
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/hztLkQyT/realizzazioni-rifacimento-Stradabianca-1.jpg",
+      thumbnail: "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg",
       title: "Video Cantiere"
     }
   }
