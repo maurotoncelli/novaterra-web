@@ -56,6 +56,12 @@ const { className = '', showBox = false } = Astro.props;
     background: transparent;
   }
 
+  @media (max-width: 768px) {
+    .tuscany-map-wrap.tuscany-map--compact {
+      padding: 12px;
+    }
+  }
+
   .tuscany-map {
     display: block;
     width: 100%;

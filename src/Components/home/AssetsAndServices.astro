@@ -4,18 +4,36 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 ---
 
 <!-- 1. ASSETS (3 Pilastri) -->
-<section class="container mx-auto px-[5vw] mt-32 mb-24 relative z-10">
+<section class="container mx-auto px-[5vw] mt-16 md:mt-32 mb-16 md:mb-24 relative z-10">
     
     <!-- Header Standard -->
     <SectionHeader subtitle="Asset" title="Le Fondamenta." />
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-fx">
+    <div class="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-8 reveal-fx">
         {assets.map(asset => (
-            <div class="bg-nova-surface p-8 border border-white/5 hover:border-nova-accent transition-colors duration-300">
-                <div class="text-[2.5rem] text-nova-accent font-thin mb-4 opacity-50">{asset.num}</div>
-                <h3 class="text-[1.3rem] font-bold text-white mb-4 leading-tight">{asset.title}</h3>
-                <p class="text-nova-muted font-light leading-[1.7]">{asset.desc}</p>
+            <div class="bg-nova-surface p-4 md:p-8 border border-white/5 hover:border-nova-accent transition-colors duration-300">
+                <div class="text-[1.6rem] md:text-[2.5rem] text-nova-accent font-thin mb-2 md:mb-4 opacity-50">{asset.num}</div>
+                <h3 class="asset-title text-[0.9rem] md:text-[1.3rem] font-bold text-white mb-2 md:mb-4 leading-tight">{asset.title}</h3>
+                <p class="asset-desc text-[0.78rem] md:text-[1rem] text-nova-muted font-light leading-[1.35] md:leading-[1.7]">{asset.desc}</p>
             </div>
         ))}
     </div>
 </section>
+
+<style>
+  @media (max-width: 768px) {
+    .asset-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .asset-desc {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+</style>

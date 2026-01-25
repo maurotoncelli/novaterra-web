@@ -4,19 +4,19 @@ import { homeServices } from '../../data/homeContent';
 import SectionHeader from '../Ui/SectionHeader.astro';
 ---
 
-<section class="container mx-auto px-[5vw] pb-16 relative z-10">
+<section class="container mx-auto px-[5vw] pb-10 md:pb-16 relative z-10">
   <SectionHeader subtitle="Cosa Facciamo" title="Ingegneria del Paesaggio" />
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
+  <div class="grid grid-cols-2 md:grid-cols-2 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
     {homeServices.map((srv) => (
       <a
         href={`/servizi#${srv.id}`}
-        class="bg-nova-bg p-12 hover:bg-nova-surface transition-colors duration-300 group block"
+        class="bg-nova-bg p-5 md:p-12 hover:bg-nova-surface transition-colors duration-300 group block"
       >
-        <span class="text-[1.5rem] font-bold text-white group-hover:text-nova-accent transition-colors block mb-2 leading-tight">
+        <span class="text-[1.02rem] md:text-[1.5rem] font-bold text-white group-hover:text-nova-accent transition-colors block mb-1 md:mb-2 leading-tight">
           {srv.num} / {srv.title}
         </span>
-        <span class="text-[0.75rem] font-bold tracking-[0.1em] text-nova-muted group-hover:text-white transition-colors uppercase">
+        <span class="hidden md:inline-block text-[0.75rem] font-bold tracking-[0.1em] text-nova-muted group-hover:text-white transition-colors uppercase">
           APPROFONDISCI &rarr;
         </span>
       </a>
