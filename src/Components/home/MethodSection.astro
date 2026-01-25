@@ -38,7 +38,7 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 </section>
 
 <style>
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .method-card {
       cursor: pointer;
     }
@@ -59,8 +59,8 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 
 <script is:inline>
   (() => {
-    function isMobile() {
-      return !!(window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+    function isTabletOrBelow() {
+      return !!(window.matchMedia && window.matchMedia('(max-width: 1024px)').matches);
     }
 
     function init() {
@@ -69,7 +69,7 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 
       cards.forEach((card) => {
         card.addEventListener('click', () => {
-          if (!isMobile()) return;
+          if (!isTabletOrBelow()) return;
           card.classList.toggle('is-expanded');
         });
       });

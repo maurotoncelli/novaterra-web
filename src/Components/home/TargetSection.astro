@@ -19,7 +19,7 @@ import SectionHeader from '../Ui/SectionHeader.astro';
     <!-- GRIGLIA DELLE CARD -->
     <div class="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-8">
         {targets.map((item) => (
-            <div class="bg-nova-surface p-4 md:p-10 border border-white/10 hover:border-nova-accent md:hover:-translate-y-2 transition-all duration-300 group reveal-fx">
+            <div class="target-card bg-nova-surface p-4 md:p-10 border border-white/10 hover:border-nova-accent md:hover:-translate-y-2 transition-all duration-300 group reveal-fx" data-expandable-card="target">
                 
                 <!-- Icona -->
                 <div class="text-[1.25rem] md:text-[2rem] text-nova-accent mb-2 md:mb-6 font-thin">{item.icon}</div>
@@ -35,7 +35,11 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 </section>
 
 <style>
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    .target-card {
+      cursor: pointer;
+    }
+
     /* Keep the 3 cards visible together by clamping text */
     .target-title {
       display: -webkit-box;
@@ -50,5 +54,37 @@ import SectionHeader from '../Ui/SectionHeader.astro';
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    .target-card.is-expanded .target-title,
+    .target-card.is-expanded .target-desc {
+      display: block;
+      overflow: visible;
+    }
   }
 </style>
+
+<script is:inline>
+  (() => {
+    function isTabletOrBelow() {
+      return !!(window.matchMedia && window.matchMedia('(max-width: 1024px)').matches);
+    }
+
+    function init() {
+      const cards = Array.prototype.slice.call(document.querySelectorAll('[data-expandable-card="target"]'));
+      if (!cards.length) return;
+
+      cards.forEach((card) => {
+        card.addEventListener('click', () => {
+          if (!isTabletOrBelow()) return;
+          card.classList.toggle('is-expanded');
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
