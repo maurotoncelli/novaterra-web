@@ -11,8 +11,20 @@ import { heroData } from '../../data/homeContent';
 			class="hero-bg parallax-img"
 			data-speed="0.5"
 			data-parallax-dir="up"
-			style={`background-image: url('${heroData.bgImage}');`}
-		></div>
+		>
+			<!-- Fallback image (kept behind the video) -->
+			<div class="hero-fallback" style={`background-image: url('${heroData.bgImage}');`}></div>
+
+			<!-- Streamable video background (autoplay + loop) -->
+			<iframe
+				class="hero-video-embed"
+				src="https://streamable.com/e/cohr26?autoplay=1&loop=1"
+				title="Novaterra Hero Video"
+				allow="autoplay; fullscreen"
+				allowfullscreen
+				frameborder="0"
+			></iframe>
+		</div>
 		<!-- Match site background hue (avoid pure-black revealed band) -->
 		<div class="absolute inset-0" style="background: rgba(18, 17, 16, 0.4);"></div>
 	</div>
@@ -140,15 +152,46 @@ import { heroData } from '../../data/homeContent';
 	.hero-bg {
 		position: absolute;
 		inset: 0;
+		background: var(--nova-bg);
+		transform: scale(1.1);
+		will-change: transform;
+		overflow: hidden;
+	}
+
+	.hero-fallback {
+		position: absolute;
+		inset: 0;
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
 		filter: brightness(0.6) contrast(1.1);
-		transform: scale(1.1);
-		will-change: transform;
+		transform: scale(1.02);
+	}
+
+	/* Video sits on top of the fallback background image (cover behavior) */
+	.hero-video-embed {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		/* Cover behavior for 16:9 video */
+		width: 100vw;
+		height: 56.25vw; /* 9/16 * 100 */
+		min-width: 177.78vh; /* 16/9 * 100 */
+		min-height: 100vh;
+		border: 0;
+		/* Keep hero content clickable */
+		pointer-events: none;
+		filter: brightness(0.62) contrast(1.1);
+	}
+
+	/* Accessibility: respect reduced motion by falling back to the image */
+	@media (prefers-reduced-motion: reduce) {
+		.hero-video-embed {
+			display: none;
+		}
 	}
 </style>
-
 
 
 
