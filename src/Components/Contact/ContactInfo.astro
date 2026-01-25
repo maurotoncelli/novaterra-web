@@ -26,6 +26,9 @@ const { showHeading = true } = Astro.props;
       <p class="contact-block-value font-bold text-white">
         {contactInfo.company.name} <span class="font-normal">{contactInfo.company.owner}</span>
       </p>
+      <p class="contact-block-meta">
+        P.IVA {contactInfo.company.vat} · REA {contactInfo.company.rea}
+      </p>
     </div>
 
     <div class="contact-block">
@@ -99,6 +102,15 @@ const { showHeading = true } = Astro.props;
     line-height: 1.6;
   }
 
+  .contact-block-meta {
+    margin: 0.5rem 0 0 0;
+    color: var(--nova-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
   .contact-address {
     font-style: normal;
   }
@@ -115,5 +127,20 @@ const { showHeading = true } = Astro.props;
   .contact-email {
     margin-top: 0.5rem;
     margin-bottom: 0;
+  }
+
+  /* Tablet: tighten vertical rhythm */
+  @media (max-width: 1024px) {
+    .contact-details {
+      margin-top: 3rem;
+    }
+
+    .contact-block {
+      margin-top: 1.75rem;
+    }
+
+    .contact-block-title {
+      margin-bottom: 0.6rem;
+    }
   }
 </style>

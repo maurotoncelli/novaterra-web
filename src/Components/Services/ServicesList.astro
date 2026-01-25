@@ -163,6 +163,61 @@ import { servicesIntro, servicesList } from '../../data/servicesData';
     color: var(--nova-accent);
     transform: translateX(10px);
   }
+
+  /* Tablet: show all 6 services in a compact 3x2 grid */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .services-intro {
+      margin-bottom: 2.75rem;
+    }
+
+    .services-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      max-width: 1200px;
+      border-top: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .service-item {
+      border-bottom: 0;
+      height: auto;
+      background: var(--nova-bg);
+    }
+
+    .service-link {
+      grid-template-columns: 1fr;
+      height: 100%;
+    }
+
+    .service-image {
+      height: 140px;
+    }
+
+    .service-info {
+      padding: 1.1rem 1.15rem 1.2rem 1.15rem;
+      gap: 0.55rem;
+    }
+
+    .service-num {
+      font-size: 0.85rem;
+    }
+
+    .service-symbol {
+      font-size: 1.35rem;
+    }
+
+    .service-title {
+      font-size: 1.05rem;
+      line-height: 1.15;
+    }
+
+    .service-arrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+  }
   
   @media (max-width: 768px) {
     .service-item {

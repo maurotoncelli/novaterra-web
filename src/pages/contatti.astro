@@ -67,6 +67,14 @@ import { contactHero } from '../data/contactData';
   .contact-info-stack {
     margin-top: 2.25rem;
   }
+
+  /* Tablet: reduce spacing without changing layout */
+  @media (max-width: 1024px) {
+    .contact-layout {
+      gap: 3rem;
+      margin-bottom: 5rem;
+    }
+  }
   
   @media (max-width: 768px) {
     .contact-info-stack {

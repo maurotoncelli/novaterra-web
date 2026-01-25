@@ -11,7 +11,7 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 
     <div class="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-8 reveal-fx">
         {assets.map(asset => (
-            <div class="bg-nova-surface p-4 md:p-8 border border-white/5 hover:border-nova-accent transition-colors duration-300">
+            <div class="asset-card bg-nova-surface p-4 md:p-8 border border-white/5 hover:border-nova-accent transition-colors duration-300" data-expandable-card="asset">
                 <div class="text-[1.6rem] md:text-[2.5rem] text-nova-accent font-thin mb-2 md:mb-4 opacity-50">{asset.num}</div>
                 <h3 class="asset-title text-[0.9rem] md:text-[1.3rem] font-bold text-white mb-2 md:mb-4 leading-tight">{asset.title}</h3>
                 <p class="asset-desc text-[0.78rem] md:text-[1rem] text-nova-muted font-light leading-[1.35] md:leading-[1.7]">{asset.desc}</p>
@@ -22,6 +22,10 @@ import SectionHeader from '../Ui/SectionHeader.astro';
 
 <style>
   @media (max-width: 768px) {
+    .asset-card {
+      cursor: pointer;
+    }
+
     .asset-title {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -35,5 +39,38 @@ import SectionHeader from '../Ui/SectionHeader.astro';
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    .asset-card.is-expanded .asset-title,
+    .asset-card.is-expanded .asset-desc {
+      display: block;
+      overflow: visible;
+    }
   }
 </style>
+
+<script is:inline>
+  (() => {
+    function isMobile() {
+      return !!(window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+    }
+
+    function init() {
+      const cards = Array.prototype.slice.call(document.querySelectorAll('[data-expandable-card="asset"]'));
+      if (!cards.length) return;
+
+      cards.forEach((card) => {
+        card.addEventListener('click', () => {
+          if (!isMobile()) return;
+          card.classList.toggle('is-expanded');
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+</script>
+

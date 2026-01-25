@@ -8,8 +8,10 @@ export const contactInfo = {
     accent: "PROGETTO", // In corsivo/peso leggero
   },
   company: {
-    name: "Novaterra",
-    owner: "di Riccardo Toncelli"
+    name: "Nova Terra",
+    owner: "di Riccardo Toncelli",
+    vat: "02488820503",
+    rea: "257404"
   },
   address: {
     street: "Via G. Galilei 61",
