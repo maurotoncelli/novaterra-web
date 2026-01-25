@@ -7,7 +7,7 @@ export const servicesHero = {
     main: "SOLUZIONI",
     accent: "COMPLETE"
   },
-  image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2800&auto=format&fit=crop",
+  image: "https://i.postimg.cc/CM49dghb/servizi_forestale_verde_abbattimenti.jpg",
   parallaxSpeed: 0.5
 };
 
@@ -71,7 +71,7 @@ export const servicesList: Service[] = [
     symbol: "≈",
     title: "Sistemazioni Idrogeologiche",
     slug: "/servizi/idrogeologico",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop"
+    image: "https://i.postimg.cc/jdFgJqGp/servizi-sistemazioni-idrogeologiche.jpg"
   },
   {
     id: "bacini",

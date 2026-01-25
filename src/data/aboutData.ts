@@ -17,7 +17,7 @@ export const founderBio = {
   name: "Riccardo Toncelli",
   role: "Direttore Tecnico",
   image: {
-    src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop",
+    src: "https://i.postimg.cc/W3mt4FLd/ritratto-riccardo-toncelli-2-3-centrato.jpg",
     alt: "Direttore di Cantiere Novaterra"
   },
   bio: [

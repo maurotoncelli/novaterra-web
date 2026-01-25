@@ -24,7 +24,7 @@ export const homeEmotionalStrips = {
     },
     landscapeEngineering: {
         // Existing strip (above “Ingegneria del Paesaggio”)
-        src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2800&auto=format&fit=crop",
+        src: "https://i.postimg.cc/YqP2MfG3/servizi-Movimento-terra-e-sbancamenti-1.jpg",
         alt: "Panoramica di cantiere in Toscana",
     }
 };
@@ -45,7 +45,7 @@ export const introData = {
         quote: "\"Il movimento terra non è solo scavare. È capire cosa c'è sotto e cosa ci sarà sopra.\"",
         desc: "Fondatore e Direttore Tecnico. Cresciuto sui mezzi fin da bambino, formato in cantieri industriali complessi. Oggi guida Novaterra con una visione chiara: unire la potenza dei mezzi moderni alla precisione dell'ingegneria.",
         cta: { text: "Continua a leggere", link: "/chi-siamo" },
-        image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200&auto=format&fit=crop"
+        image: "https://i.postimg.cc/W3mt4FLd/ritratto-riccardo-toncelli-2-3-centrato.jpg"
     }
 };
 

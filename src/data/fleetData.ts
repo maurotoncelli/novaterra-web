@@ -11,7 +11,7 @@ export interface FleetCategory {
 }
 
 export const fleetHero = {
-  image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2800&auto=format&fit=crop",
+  image: "https://i.postimg.cc/8zGKFx6C/parcomezzi-tutti.jpg",
   subtitle: "La Flotta",
   title: {
     main: "IL MEZZO GIUSTO",
@@ -109,7 +109,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "↟",
     title: "Mezzi Forestali",
     spec: "Speciali",
-    image: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/7Y8XcjXt/parcomezzi-mezzi-forestali2.jpg",
     uses: [
       "Abbattimenti controllati",
       "Pulizia boschi e trinciature",
@@ -135,7 +135,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "◎",
     title: "Rulli Compattatori",
     spec: "Vibranti",
-    image: "https://images.unsplash.com/photo-1564182842519-8a3b2af3e228?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.postimg.cc/fbrfvPJ9/parcomezzi-rulli-compattatori.jpg",
     uses: [
       "Compattazione sottofondi",
       "Strade bianche e asfalto",
