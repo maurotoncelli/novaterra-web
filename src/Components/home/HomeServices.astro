@@ -10,7 +10,7 @@ import SectionHeader from '../Ui/SectionHeader.astro';
   <div class="grid grid-cols-2 md:grid-cols-2 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
     {homeServices.map((srv) => (
       <a
-        href={`/servizi#${srv.id}`}
+        href={srv.slug}
         class="bg-nova-bg p-5 md:p-12 hover:bg-nova-surface transition-colors duration-300 group block"
       >
         <span class="text-[1.02rem] md:text-[1.5rem] font-bold text-white group-hover:text-nova-accent transition-colors block mb-1 md:mb-2 leading-tight">

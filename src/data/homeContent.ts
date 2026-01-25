@@ -121,12 +121,12 @@ export const assets = [
 
 // 6. SERVIZI HOME
 export const homeServices = [
-    { id: "movimento", num: "01", title: "Movimento Terra" },
-    { id: "strade", num: "02", title: "Strade & Piazzali" },
-    { id: "demolizioni", num: "03", title: "Demolizioni" },
-    { id: "forestale", num: "04", title: "Forestale & Verde" },
-    { id: "idrogeologico", num: "05", title: "Idrogeologico" },
-    { id: "bacini", num: "06", title: "Bacini & Laghi" }
+    { id: "movimento", num: "01", title: "Movimento Terra", slug: "/servizi/movimento-terra" },
+    { id: "strade", num: "02", title: "Strade & Piazzali", slug: "/servizi/strade-piazzali" },
+    { id: "demolizioni", num: "03", title: "Demolizioni", slug: "/servizi/demolizioni" },
+    { id: "forestale", num: "04", title: "Forestale & Verde", slug: "/servizi/forestale" },
+    { id: "idrogeologico", num: "05", title: "Idrogeologico", slug: "/servizi/idrogeologico" },
+    { id: "bacini", num: "06", title: "Bacini & Laghi", slug: "/servizi/bacini" }
 ];
 
 // 7. TESTIMONIAL

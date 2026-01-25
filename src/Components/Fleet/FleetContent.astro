@@ -114,6 +114,14 @@ import { fleetAccess, fleetIntro, fleetCategories, fleetMethod, fleetCTA } from 
     margin-top: 4rem;
   }
 
+  /* Tablet: show categories in 3 columns */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .fleet-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 3rem;
+    }
+  }
+
   /* Desktop: 4 columns for 8 items symmetry */
   @media (min-width: 1200px) {
     .fleet-grid {
@@ -185,7 +193,7 @@ import { fleetAccess, fleetIntro, fleetCategories, fleetMethod, fleetCTA } from 
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .fleet-access {
       margin-bottom: 4rem;
       padding-bottom: 3rem;
