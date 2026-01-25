@@ -91,6 +91,14 @@ export interface Project {
   gallery: Array<{
     src: string;
     alt: string;
+    /**
+     * Optional aspect hint for fixed-ratio tiles.
+     * - landscape => 3/2
+     * - portrait  => 2/3
+     *
+     * CMS-ready: this can map to a WP/ACF field in the future.
+     */
+    aspect?: "landscape" | "portrait";
   }>;
   
   // Video Cantiere (SEMPRE presente secondo utente)

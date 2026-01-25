@@ -7,6 +7,7 @@ interface Props {
     alt: string;
     width?: number;
     height?: number;
+    aspect?: "landscape" | "portrait";
   }>;
 }
 
@@ -18,17 +19,29 @@ const { title, images } = Astro.props;
     <span class="subtitle">{title}</span>
     
     <div class="gallery-scroller" id="galleryScroller">
-      {images.map((image, index) => (
-        <img 
-          src={image.src} 
-          alt={image.alt}
-          width={image.width || 1200}
-          height={image.height || 800}
-          loading="lazy"
-          data-index={index}
-          class="gallery-img-clickable"
-        />
-      ))}
+      {images.map((image, index) => {
+        const aspect = image.aspect ?? "landscape";
+        const width = image.width ?? (aspect === "portrait" ? 800 : 1200);
+        const height = image.height ?? (aspect === "portrait" ? 1200 : 800);
+
+        return (
+          <button
+            type="button"
+            class={`gallery-item ${aspect === "portrait" ? "is-portrait" : "is-landscape"}`}
+            aria-label={`Apri immagine ${index + 1} di ${images.length}: ${image.alt}`}
+            data-index={index}
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              width={width}
+              height={height}
+              loading="lazy"
+              class="gallery-img-clickable"
+            />
+          </button>
+        );
+      })}
     </div>
   </div>
 )}
@@ -62,6 +75,34 @@ const { title, images } = Astro.props;
     padding-bottom: 1rem;
     cursor: grab;
   }
+
+  .gallery-item {
+    /* Button reset */
+    appearance: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    flex-shrink: 0;
+    cursor: pointer;
+
+    /* Fixed-ratio tile */
+    width: min(560px, 78vw);
+    aspect-ratio: 3 / 2; /* default landscape */
+    border-radius: 2px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gallery-item.is-portrait {
+    aspect-ratio: 2 / 3;
+    width: min(420px, 68vw);
+  }
+
+  .gallery-item:focus-visible {
+    outline: 2px solid var(--nova-accent);
+    outline-offset: 3px;
+  }
   
   .gallery-scroller::-webkit-scrollbar {
     height: 8px;
@@ -81,17 +122,14 @@ const { title, images } = Astro.props;
     cursor: grabbing;
   }
   
-  .gallery-scroller img {
-    height: 400px;
-    width: auto;
-    flex-shrink: 0;
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 2px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+    display: block;
   }
   
-  .gallery-scroller img:hover {
+  .gallery-item:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 20px rgba(205, 92, 47, 0.3);
   }
@@ -183,8 +221,20 @@ const { title, images } = Astro.props;
   }
   
   @media (max-width: 768px) {
-    .gallery-scroller img {
-      height: 300px;
+    /* On mobile, switch to vertical stack (more natural scrolling) */
+    .gallery-scroller {
+      flex-direction: column;
+      overflow-x: visible;
+      padding-bottom: 0;
+      cursor: default;
+      gap: 14px;
+    }
+
+    .gallery-item,
+    .gallery-item.is-portrait {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
     }
     
     .lightbox-prev,
@@ -245,7 +295,11 @@ const { title, images } = Astro.props;
   }
   
   // Event listeners
-  images.forEach((img, index) => {
+  images.forEach((img) => {
+    const parent = img.closest('[data-index]') as HTMLElement | null;
+    const idxAttr = parent?.getAttribute('data-index');
+    const idx = idxAttr ? Number.parseInt(idxAttr, 10) : NaN;
+    const index = Number.isFinite(idx) ? idx : 0;
     img.addEventListener('click', () => openLightbox(index));
   });
   

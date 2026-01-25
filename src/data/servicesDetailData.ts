@@ -33,6 +33,14 @@ export interface ServiceDetailContent {
       alt: string;
       width?: number;
       height?: number;
+      /**
+       * Optional aspect hint for fixed-ratio tiles.
+       * - landscape => 3/2
+       * - portrait  => 2/3
+       *
+       * CMS-ready: this can map to a WP/ACF field in the future.
+       */
+      aspect?: "landscape" | "portrait";
     }>;
   };
   
