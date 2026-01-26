@@ -333,7 +333,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         accent: "IDROGEOLOGICHE"
       },
       subtitle: "Servizio 05",
-      image: "https://images.unsplash.com/photo-1599940824399-b87987ced72a?q=80&w=2700&auto=format&fit=crop",
+      image: "https://i.postimg.cc/jdFgJqGp/servizi-sistemazioni-idrogeologiche.jpg",
       backLink: "/servizi"
     },
     

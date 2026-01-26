@@ -36,7 +36,11 @@ export interface ArticleContent {
   };
 }
 
-export const articles: Record<string, ArticleContent> = {
+// NOTE:
+// Keep the dataset "single source of truth" for the featured image.
+// We store it in `hero.image` and then derive any in-article section image src from it.
+// This avoids duplicated URLs and keeps the data CMS-ready (one canonical image field).
+const rawArticles: Record<string, ArticleContent> = {
   "ristrutturazioni-2025-detrazioni-movimento-terra": {
     slug: "ristrutturazioni-2025-detrazioni-movimento-terra",
     
@@ -46,7 +50,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "2025"
       },
       subtitle: "Normative",
-      image: "https://images.unsplash.com/photo-1590240362304-45e0322b7937?q=80&w=2700",
+      image: "https://i.postimg.cc/ZK3Xg8S7/notizie-insight-detrazioni-movimento-terra-copia.jpg",
       backLink: "/blog"
     },
     
@@ -89,7 +93,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "IMPRESE 2025"
       },
       subtitle: "Business",
-      image: "https://images.unsplash.com/photo-1574360778004-945657805625?q=80&w=2700",
+      image: "https://i.postimg.cc/m2MKqYsd/notizie-insight-credito-imposta-macchinari.jpg",
       backLink: "/blog"
     },
     
@@ -128,7 +132,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "TECNICO"
       },
       subtitle: "Metodo",
-      image: "https://images.unsplash.com/photo-1455165814004-1126a7199f9b?q=80&w=2700",
+      image: "https://i.postimg.cc/wTJnPXpn/notizie-insight-sopralluogo-tecnico.jpg",
       backLink: "/blog"
     },
     
@@ -169,7 +173,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "COLLINA"
       },
       subtitle: "Agricoltura",
-      image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=2700",
+      image: "https://i.postimg.cc/vH9Cjrs2/notizie-insight-preparare-terreno-vigna-copia.jpg",
       backLink: "/blog"
     },
     
@@ -208,7 +212,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "IDRAULICHE"
       },
       subtitle: "Sicurezza",
-      image: "https://images.unsplash.com/photo-1461887036734-6c3e622b947b?q=80&w=2700",
+      image: "https://i.postimg.cc/pX837fH4/notizie-insight-sistemazioni-idrauliche-post-alluvione.jpg",
       backLink: "/blog"
     },
     
@@ -247,7 +251,7 @@ export const articles: Record<string, ArticleContent> = {
         accent: "E SCAVI"
       },
       subtitle: "Mercato",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2700",
+      image: "https://i.postimg.cc/SN8H56ht/notizie-insight-impatto-bonus-cantieri.jpg",
       backLink: "/blog"
     },
     
@@ -278,3 +282,35 @@ export const articles: Record<string, ArticleContent> = {
   }
 };
 
+function deriveSectionImagesFromHero(
+  input: Record<string, ArticleContent>
+): Record<string, ArticleContent> {
+  const out: Record<string, ArticleContent> = {};
+
+  for (const [key, article] of Object.entries(input)) {
+    const heroSrc = article.hero.image;
+    const sections = article.content.sections?.map((section) => {
+      if (!section.image) return section;
+      return {
+        ...section,
+        image: {
+          ...section.image,
+          src: heroSrc,
+        },
+      };
+    });
+
+    out[key] = {
+      ...article,
+      content: {
+        ...article.content,
+        sections,
+      },
+    };
+  }
+
+  return out;
+}
+
+export const articles: Record<string, ArticleContent> =
+  deriveSectionImagesFromHero(rawArticles);
