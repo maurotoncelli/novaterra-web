@@ -568,7 +568,7 @@ export const projects: Project[] = [
     excerpt:
       "Risanamento strada poderale con scarifica, stesura stabilizzato e drenaggi laterali. Intervento mirato per aumentare portanza e durata nel tempo.",
     thumbnail:
-      "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg",
+      "https://i.postimg.cc/KjZQWh1D/realizzazioni_rifacimento_Stradabianca_8.jpg",
     year: "2025",
     publishedAt: "2025-11-12",
     category: "strade-piazzali",
@@ -578,7 +578,7 @@ export const projects: Project[] = [
       title: { main: "STRADA", accent: "PODERALE" },
       subtitle: "Case Study",
       image:
-        "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg"
+        "https://i.postimg.cc/KjZQWh1D/realizzazioni_rifacimento_Stradabianca_8.jpg"
     },
 
     specs: {
@@ -611,13 +611,14 @@ export const projects: Project[] = [
       { src: "https://i.postimg.cc/9MGLqGyJ/realizzazioni_rifacimento_Stradabianca_3.jpg", alt: "Drenaggi laterali e canalette" },
       { src: "https://i.postimg.cc/HJ20v923/realizzazioni-rifacimento-Stradabianca-4.jpg", alt: "Risultato finale strada bianca" },
       { src: "https://i.postimg.cc/bDwx7SCx/realizzazioni-rifacimento-Stradabianca-5.jpg", alt: "Vista panoramica strada completata" },
-      { src: "https://i.postimg.cc/hztLkQyb/realizzazioni-rifacimento-Stradabianca-6.jpg", alt: "Dettaglio rifacimento strada bianca" }
+      { src: "https://i.postimg.cc/hztLkQyb/realizzazioni-rifacimento-Stradabianca-6.jpg", alt: "Dettaglio rifacimento strada bianca" },
+      { src: "https://i.postimg.cc/J01KFCsb/realizzazioni_rifacimento_Stradabianca_7.jpg", alt: "Vista d'insieme strada completata" }
     ],
 
     video: {
       type: "mp4",
       url: "https://player.vimeo.com/video/placeholder",
-      thumbnail: "https://i.postimg.cc/50wsFw87/realizzazioni_rifacimento_Stradabianca_1.jpg",
+      thumbnail: "https://i.postimg.cc/KjZQWh1D/realizzazioni_rifacimento_Stradabianca_8.jpg",
       title: "Video Cantiere"
     }
   }

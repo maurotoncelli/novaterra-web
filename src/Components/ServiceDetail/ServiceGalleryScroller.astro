@@ -15,45 +15,70 @@ const { title, images } = Astro.props;
 ---
 
 {images.length > 0 && (
-  <div class="gallery-section">
+  <div class="gallery-section" data-gallery-root>
     <span class="subtitle">{title}</span>
-    
-    <div class="gallery-scroller" id="galleryScroller">
-      {images.map((image, index) => {
-        const aspect = image.aspect ?? "landscape";
-        const width = image.width ?? (aspect === "portrait" ? 800 : 1200);
-        const height = image.height ?? (aspect === "portrait" ? 1200 : 800);
 
-        return (
-          <button
-            type="button"
-            class={`gallery-item ${aspect === "portrait" ? "is-portrait" : "is-landscape"}`}
-            aria-label={`Apri immagine ${index + 1} di ${images.length}: ${image.alt}`}
-            data-index={index}
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              width={width}
-              height={height}
-              loading="lazy"
-              class="gallery-img-clickable"
-            />
-          </button>
-        );
-      })}
+    <div class="gallery-shell">
+      <!-- Desktop-only press-and-hold nav buttons -->
+      <button
+        type="button"
+        class="gallery-nav gallery-nav--left"
+        aria-label="Scorri galleria a sinistra"
+        data-gallery-nav="left"
+      >
+        <span class="gallery-nav__inner">
+          <span class="gallery-nav__arrow">‹</span>
+        </span>
+      </button>
+
+      <div class="gallery-scroller" data-gallery-scroller>
+        {images.map((image, index) => {
+          const aspect = image.aspect ?? "landscape";
+          const width = image.width ?? (aspect === "portrait" ? 800 : 1200);
+          const height = image.height ?? (aspect === "portrait" ? 1200 : 800);
+
+          return (
+            <button
+              type="button"
+              class={`gallery-item ${aspect === "portrait" ? "is-portrait" : "is-landscape"}`}
+              aria-label={`Apri immagine ${index + 1} di ${images.length}: ${image.alt}`}
+              data-index={index}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={width}
+                height={height}
+                loading="lazy"
+                class="gallery-img-clickable"
+              />
+            </button>
+          );
+        })}
+      </div>
+
+      <button
+        type="button"
+        class="gallery-nav gallery-nav--right"
+        aria-label="Scorri galleria a destra"
+        data-gallery-nav="right"
+      >
+        <span class="gallery-nav__inner">
+          <span class="gallery-nav__arrow">›</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Lightbox Modal (must live inside the gallery root for scoping) -->
+    <div class="lightbox" data-gallery-lightbox>
+      <button class="lightbox-close" type="button" data-lightbox-close>✕</button>
+      <button class="lightbox-prev" type="button" data-lightbox-prev>‹</button>
+      <button class="lightbox-next" type="button" data-lightbox-next>›</button>
+      <img data-lightbox-image src="" alt="" />
+      <div class="lightbox-counter" data-lightbox-counter></div>
     </div>
   </div>
 )}
-
-<!-- Lightbox Modal -->
-<div id="galleryLightbox" class="lightbox">
-  <button class="lightbox-close" id="lightboxClose">✕</button>
-  <button class="lightbox-prev" id="lightboxPrev">‹</button>
-  <button class="lightbox-next" id="lightboxNext">›</button>
-  <img id="lightboxImage" src="" alt="" />
-  <div class="lightbox-counter" id="lightboxCounter"></div>
-</div>
 
 <style>
   .gallery-section {
@@ -65,6 +90,10 @@ const { title, images } = Astro.props;
     display: block;
     margin-bottom: 2rem;
   }
+
+  .gallery-shell {
+    /* Default: just the scroller (mobile/tablet). Desktop layout is defined below. */
+  }
   
   .gallery-scroller {
     display: flex;
@@ -74,6 +103,70 @@ const { title, images } = Astro.props;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 1rem;
     cursor: grab;
+  }
+
+  /* Excavator-style nav buttons (desktop only) */
+  .gallery-nav {
+    display: none;
+    width: 56px;
+    height: 92px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(18, 17, 16, 0.78), rgba(18, 17, 16, 0.55));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+    z-index: 5;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .gallery-nav__inner {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gallery-nav__arrow {
+    display: inline-block;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .gallery-nav--left,
+  .gallery-nav--right {
+    justify-self: center;
+  }
+
+  .gallery-nav:focus-visible {
+    outline: 2px solid var(--nova-accent);
+    outline-offset: 3px;
+  }
+
+  .gallery-nav.is-pressed {
+    border-color: rgba(205, 92, 47, 0.65);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.45),
+      0 0 0 3px rgba(205, 92, 47, 0.18),
+      0 0 22px rgba(205, 92, 47, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+  }
+
+  /* Keep buttons subtle until hover/press */
+  @media (hover: hover) {
+    .gallery-nav:hover {
+      border-color: rgba(205, 92, 47, 0.35);
+    }
   }
 
   .gallery-item {
@@ -222,6 +315,10 @@ const { title, images } = Astro.props;
   
   @media (max-width: 768px) {
     /* On mobile, switch to vertical stack (more natural scrolling) */
+    .gallery-shell {
+      display: block;
+    }
+
     .gallery-scroller {
       flex-direction: column;
       overflow-x: visible;
@@ -252,75 +349,198 @@ const { title, images } = Astro.props;
       right: 10px;
     }
   }
+
+  @media (min-width: 769px) {
+    .gallery-nav {
+      display: block;
+    }
+
+    /* True "outside" buttons: dedicated side gutters, no overlap */
+    .gallery-shell {
+      display: grid;
+      grid-template-columns: clamp(78px, 7vw, 132px) 1fr clamp(78px, 7vw, 132px);
+      gap: 0;
+      align-items: center;
+    }
+
+    .gallery-scroller {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 </style>
 
 <script>
-  // Lightbox Gallery con navigazione
-  const images = Array.from(document.querySelectorAll('.gallery-img-clickable')) as HTMLImageElement[];
-  const lightbox = document.getElementById('galleryLightbox');
-  const lightboxImg = document.getElementById('lightboxImage') as HTMLImageElement;
-  const lightboxCounter = document.getElementById('lightboxCounter');
-  const closeBtn = document.getElementById('lightboxClose');
-  const prevBtn = document.getElementById('lightboxPrev');
-  const nextBtn = document.getElementById('lightboxNext');
-  
-  let currentIndex = 0;
-  
-  function openLightbox(index: number) {
-    if (!lightbox || !lightboxImg || !lightboxCounter) return;
-    
-    currentIndex = index;
-    lightboxImg.src = images[currentIndex].src;
-    lightboxImg.alt = images[currentIndex].alt;
-    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-    
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  
-  function showNext() {
-    currentIndex = (currentIndex + 1) % images.length;
-    openLightbox(currentIndex);
-  }
-  
-  function showPrev() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    openLightbox(currentIndex);
-  }
-  
-  // Event listeners
-  images.forEach((img) => {
-    const parent = img.closest('[data-index]') as HTMLElement | null;
-    const idxAttr = parent?.getAttribute('data-index');
-    const idx = idxAttr ? Number.parseInt(idxAttr, 10) : NaN;
-    const index = Number.isFinite(idx) ? idx : 0;
-    img.addEventListener('click', () => openLightbox(index));
-  });
-  
-  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-  if (nextBtn) nextBtn.addEventListener('click', showNext);
-  if (prevBtn) prevBtn.addEventListener('click', showPrev);
-  
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox?.classList.contains('active')) return;
-    
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') showNext();
-    if (e.key === 'ArrowLeft') showPrev();
-  });
-  
-  // Click outside to close
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
+  // Gallery + Lightbox + desktop press-and-hold scroller buttons
+  const init = () => {
+    const roots = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-gallery-root]")
+    );
+
+    roots.forEach((root) => {
+      const scroller = root.querySelector<HTMLElement>("[data-gallery-scroller]");
+      const navLeft = root.querySelector<HTMLButtonElement>(
+        '[data-gallery-nav="left"]'
+      );
+      const navRight = root.querySelector<HTMLButtonElement>(
+        '[data-gallery-nav="right"]'
+      );
+
+      const lightbox = root.querySelector<HTMLElement>("[data-gallery-lightbox]");
+      const lightboxImg = root.querySelector<HTMLImageElement>(
+        "[data-lightbox-image]"
+      );
+      const lightboxCounter = root.querySelector<HTMLElement>(
+        "[data-lightbox-counter]"
+      );
+      const closeBtn = root.querySelector<HTMLButtonElement>(
+        "[data-lightbox-close]"
+      );
+      const prevBtn = root.querySelector<HTMLButtonElement>(
+        "[data-lightbox-prev]"
+      );
+      const nextBtn = root.querySelector<HTMLButtonElement>(
+        "[data-lightbox-next]"
+      );
+
+      const clickableImages = Array.from(
+        root.querySelectorAll<HTMLImageElement>(".gallery-img-clickable")
+      );
+
+      let currentIndex = 0;
+
+      function isLightboxActive(): boolean {
+        return !!(lightbox && lightbox.classList.contains("active"));
+      }
+
+      function openLightbox(index: number) {
+        if (!lightbox || !lightboxImg || !lightboxCounter) return;
+        if (!clickableImages.length) return;
+
+        const safeIndex = Math.max(0, Math.min(index, clickableImages.length - 1));
+        currentIndex = safeIndex;
+
+        const img = clickableImages[currentIndex];
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCounter.textContent = `${currentIndex + 1} / ${clickableImages.length}`;
+
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        if (!lightbox) return;
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      function showNext() {
+        if (!clickableImages.length) return;
+        currentIndex = (currentIndex + 1) % clickableImages.length;
+        openLightbox(currentIndex);
+      }
+
+      function showPrev() {
+        if (!clickableImages.length) return;
+        currentIndex = (currentIndex - 1 + clickableImages.length) % clickableImages.length;
+        openLightbox(currentIndex);
+      }
+
+      // Open lightbox on click (button contains the image)
+      const items = Array.from(
+        root.querySelectorAll<HTMLButtonElement>(".gallery-item[data-index]")
+      );
+      items.forEach((item) => {
+        item.addEventListener("click", () => {
+          const idxAttr = item.getAttribute("data-index");
+          const idx = idxAttr ? Number.parseInt(idxAttr, 10) : 0;
+          openLightbox(Number.isFinite(idx) ? idx : 0);
+        });
+      });
+
+      if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+      if (nextBtn) nextBtn.addEventListener("click", showNext);
+      if (prevBtn) prevBtn.addEventListener("click", showPrev);
+
+      // Click outside to close
+      if (lightbox) {
+        lightbox.addEventListener("click", (e: MouseEvent) => {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
+
+      // Keyboard navigation (scoped: only if this lightbox is active)
+      document.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (!isLightboxActive()) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowRight") showNext();
+        if (e.key === "ArrowLeft") showPrev();
+      });
+
+      // Desktop-only: press-and-hold to scroll horizontally
+      let rafId = 0;
+      let activeDir: -1 | 0 | 1 = 0; // -1 left, +1 right
+      let lastTs = 0;
+
+      function stopHoldScroll() {
+        activeDir = 0;
+        lastTs = 0;
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+        if (navLeft) navLeft.classList.remove("is-pressed");
+        if (navRight) navRight.classList.remove("is-pressed");
+      }
+
+      function tick(ts: number) {
+        if (!scroller || !activeDir) return;
+        const dt = lastTs ? ts - lastTs : 16;
+        lastTs = ts;
+
+        // speed: pixels per second
+        const speed = 900;
+        scroller.scrollLeft += activeDir * (speed * (dt / 1000));
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function startHoldScroll(dir: -1 | 1, btn: HTMLButtonElement | null) {
+        if (!scroller) return;
+        activeDir = dir;
+        lastTs = 0;
+        if (btn) btn.classList.add("is-pressed");
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function wireHoldButton(btn: HTMLButtonElement | null, dir: -1 | 1) {
+        if (!btn) return;
+
+        btn.addEventListener("pointerdown", (e: PointerEvent) => {
+          // Avoid text selection / drag conflicts
+          e.preventDefault();
+          try {
+            btn.setPointerCapture(e.pointerId);
+          } catch (_) {}
+          startHoldScroll(dir, btn);
+        });
+
+        btn.addEventListener("pointerup", stopHoldScroll);
+        btn.addEventListener("pointercancel", stopHoldScroll);
+        btn.addEventListener("pointerleave", stopHoldScroll);
+        btn.addEventListener("blur", stopHoldScroll);
+      }
+
+      wireHoldButton(navLeft, -1);
+      wireHoldButton(navRight, 1);
     });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
   }
 </script>
 

@@ -10,7 +10,7 @@ import { videoSection } from '../../data/aboutData';
   </div>
   
   <div class="video-wrapper">
-    <video autoplay muted loop playsinline>
+    <video autoplay muted loop playsinline poster={videoSection.placeholder}>
       <source src={videoSection.video.src} type={videoSection.video.type} />
       Il tuo browser non supporta il tag video.
     </video>

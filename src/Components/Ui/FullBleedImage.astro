@@ -17,7 +17,8 @@ const {
   alt,
   heightVh = 54,
   className = "my-32",
-  parallaxSpeed = 0.12,
+  // Match the site's hero parallax feel more closely (still subtle).
+  parallaxSpeed = 0.3,
   loading = "lazy",
 } = Astro.props;
 ---
@@ -33,6 +34,7 @@ const {
     decoding="async"
     class="w-full h-full object-cover parallax-img"
     data-speed={String(parallaxSpeed)}
+    data-parallax-dir="up"
     sizes="100vw"
   />
 </div>

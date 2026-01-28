@@ -29,6 +29,18 @@ if (!project) {
 
 const pageTitle = `${project.title} | Realizzazioni Novaterra`;
 const pageDescription = project.excerpt;
+
+// Ensure aligned architecture: Topographic section is always present
+const DEFAULT_TOPO_IMAGE =
+  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2000&auto=format&fit=crop";
+
+const topographic = project.topographic ?? {
+  title: "Rilievo Topografico",
+  image: DEFAULT_TOPO_IMAGE,
+  dataReadout: `LOC: ${project.specs.location.toUpperCase()} // YEAR: ${
+    project.specs.year
+  } // SERVICE: ${project.specs.service.toUpperCase()}`,
+};
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -77,14 +89,12 @@ const pageDescription = project.excerpt;
         title={project.video.title}
       />
 
-      <!-- Rilievo Topografico (opzionale) -->
-      {project.topographic && (
-        <TopographicSection 
-          title={project.topographic.title}
-          image={project.topographic.image}
-          dataReadout={project.topographic.dataReadout}
-        />
-      )}
+      <!-- Rilievo Topografico (sempre presente) -->
+      <TopographicSection 
+        title={topographic.title}
+        image={topographic.image}
+        dataReadout={topographic.dataReadout}
+      />
 
       <!-- Galleria -->
       <ServiceGalleryScroller title="Galleria" images={project.gallery} />

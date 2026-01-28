@@ -7,7 +7,7 @@ export const aboutHero = {
     main: "RADICI PROFONDE.",
     accent: "VISIONE MODERNA", // Corsivo/peso leggero
   },
-  image: "https://i.postimg.cc/LXchG176/chisiamo-radici-profonde.jpg",
+  image: "https://i.postimg.cc/W3Vdm2yC/chisiamo_radici_profonde_2.jpg",
   parallaxSpeed: 0.5,
   description:
     "Dal 1993 a oggi: esperienza vera, metodo operativo e rispetto del paesaggio toscano."
@@ -29,7 +29,8 @@ export const founderBio = {
 
 export const videoSection = {
   subtitle: "Vision",
-  title: "Il nostro metodo in azione.",
+  title: "Terra, mezzi e territorio: così operiamo.",
+  placeholder: "https://i.postimg.cc/7ZcsZRRD/Placeholder_brand_id.jpg",
   video: {
     src: "https://videos.pexels.com/video-files/2882566/2882566-uhd_2560_1440_24fps.mp4",
     type: "video/mp4"
@@ -56,7 +57,7 @@ export const timeline = {
       description: "Apro la mia partita IVA e nasce Novaterra a Terricciola. L'idea è semplice e ambiziosa: portare lo standard dei grandi cantieri e delle aziende strutturate dentro i lavori privati, agricoli e residenziali della Toscana, con un'attenzione maniacale per metodo, pulizia e rispetto del paesaggio."
     },
     {
-      year: "2025",
+      year: "2026",
       title: "Oggi",
       description: "Novaterra cresce: il parco mezzi si amplia con un nuovo camion 4 assi e macchine sempre più moderne; collaboro con una rete di professionisti e artigiani di fiducia. Lavoriamo in Valdera e provincia di Pisa su scavi, laghi, argini, strade, demolizioni e cura del verde. L'obiettivo dei prossimi anni è trasformare l'attività in una società strutturata, capace di diventare azienda leader in Toscana."
     }

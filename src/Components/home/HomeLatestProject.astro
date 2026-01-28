@@ -14,9 +14,9 @@ function formatItDate(iso: string): string {
 
 {latestProject && (
   <section class="container mx-auto px-[5vw] mt-32 relative z-10">
-    <SectionHeader subtitle="Realizzazioni" title="L’ultimo lavoro pubblicato.">
+    <SectionHeader subtitle="Realizzazioni" title="Il nostro ultimo lavoro.">
       <p class="mt-6 mx-auto text-center text-nova-muted text-[1.05rem] font-light leading-[1.7] max-w-[58ch]">
-        Un’anteprima dal campo: dettagli, contesto e risultati. Sfoglia tutte le realizzazioni per vedere metodi, mezzi e soluzioni applicate ai cantieri.
+        Un'anteprima dal campo: dettagli, contesto e risultati. Sfoglia tutte le realizzazioni per vedere metodi, mezzi e soluzioni applicate ai cantieri.
       </p>
     </SectionHeader>
 
@@ -38,9 +38,6 @@ function formatItDate(iso: string): string {
         <div class="latest-project-meta">
           <span class="latest-project-kicker">Ultimo progetto</span>
           <div class="latest-project-dates">
-            <time class="latest-project-date" datetime={latestProject.publishedAt}>
-              Pubblicato {formatItDate(latestProject.publishedAt)}
-            </time>
             <span class="latest-project-year">Anno lavoro {latestProject.year}</span>
           </div>
         </div>
@@ -190,4 +187,3 @@ function formatItDate(iso: string): string {
     }
   }
 </style>
-
