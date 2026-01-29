@@ -9,11 +9,16 @@ import { videoSection } from '../../data/aboutData';
     <h2 class="section-title">{videoSection.title}</h2>
   </div>
   
-  <div class="video-wrapper">
-    <video autoplay muted loop playsinline poster={videoSection.placeholder}>
+  <div class="video-wrapper" data-video-container>
+    <video playsinline poster={videoSection.placeholder} data-video-player>
       <source src={videoSection.video.src} type={videoSection.video.type} />
       Il tuo browser non supporta il tag video.
     </video>
+    <button class="video-play-btn" data-video-play aria-label="Riproduci video">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+    </button>
   </div>
 </div>
 
@@ -30,25 +35,100 @@ import { videoSection } from '../../data/aboutData';
   }
   
   .video-wrapper {
+    position: relative;
     width: 100%;
     height: 500px;
     overflow: hidden;
     border: 1px solid var(--nova-line);
+    background: rgba(0, 0, 0, 0.9);
   }
   
   .video-wrapper video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(100%);
+  }
+
+  .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(205, 92, 47, 0.9);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 300ms ease;
+    z-index: 10;
+  }
+
+  .video-play-btn svg {
+    margin-left: 6px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  .video-play-btn:hover {
+    background: rgba(205, 92, 47, 1);
+    border-color: white;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .video-play-btn:active {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  .video-wrapper.playing .video-play-btn {
+    opacity: 0;
+    pointer-events: none;
   }
   
   @media (max-width: 768px) {
     .video-wrapper {
       height: 350px;
     }
+
+    .video-play-btn {
+      width: 90px;
+      height: 90px;
+    }
+
+    .video-play-btn svg {
+      width: 50px;
+      height: 50px;
+    }
   }
 </style>
 
+<script>
+  const container = document.querySelector<HTMLElement>('[data-video-container]');
+  const video = document.querySelector<HTMLVideoElement>('[data-video-player]');
+  const playBtn = document.querySelector<HTMLButtonElement>('[data-video-play]');
 
+  if (container && video && playBtn) {
+    playBtn.addEventListener('click', () => {
+      container.classList.add('playing');
+      video.play();
+    });
 
+    video.addEventListener('pause', () => {
+      container.classList.remove('playing');
+    });
+
+    video.addEventListener('ended', () => {
+      container.classList.remove('playing');
+    });
+
+    // Click sul video per mettere in pausa
+    video.addEventListener('click', () => {
+      if (!video.paused) {
+        video.pause();
+      }
+    });
+  }
+</script>
