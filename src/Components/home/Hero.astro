@@ -3,7 +3,7 @@
 import { heroData } from '../../data/homeContent';
 ---
 
-<main class="relative w-full h-screen overflow-hidden flex items-center justify-center bg-nova-bg" data-parallax-section="hero">
+<main class="relative w-full h-screen overflow-hidden flex items-center justify-center" data-parallax-section="hero">
 	<!-- Background con Parallax -->
 	<div class="absolute inset-0 z-0 overflow-hidden">
 		<!-- Use a background layer like the demo (lets parallax reveal black edges naturally) -->
@@ -12,9 +12,6 @@ import { heroData } from '../../data/homeContent';
 			data-speed="0.5"
 			data-parallax-dir="up"
 		>
-			<!-- Fallback image (kept behind the video) -->
-			<div class="hero-fallback" style={`background-image: url('${heroData.bgImage}');`}></div>
-
 			<!-- Streamable video background (autoplay + loop) -->
 			<iframe
 				class="hero-video-embed"
@@ -47,7 +44,7 @@ import { heroData } from '../../data/homeContent';
 			{heroData.description}
 		</p>
 
-		<div class="hero-reveal hero-reveal--cta flex flex-col md:flex-row gap-[20px] justify-center mb-16 md:mb-20">
+		<div class="hero-reveal hero-reveal--cta flex flex-col md:flex-row gap-[20px] justify-center md:mb-24">
 			<a href={heroData.primaryCTA.link} class="py-[15px] px-[35px] bg-white/10 backdrop-blur-md border border-white/60 text-white text-[0.9rem] uppercase tracking-[0.2em] font-bold hover:bg-nova-accent hover:border-nova-accent transition-all duration-300">
 				{heroData.primaryCTA.text}
 			</a>
@@ -58,7 +55,7 @@ import { heroData } from '../../data/homeContent';
 	</div>
 
 	<!-- Scroll Indicator -->
-	<div id="hero-scroll" class="scroll-indicator absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
+	<div id="hero-scroll" class="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
 		<div class="mouse-icon">
 			<div class="mouse-wheel"></div>
 		</div>
@@ -96,13 +93,6 @@ import { heroData } from '../../data/homeContent';
 	
 	:global(html.site-ready) .scroll-indicator {
 		animation: heroFadeIn 1s 1.2s forwards;
-	}
-
-	/* Hide scroll indicator on short viewports to prevent overlap */
-	@media (max-height: 700px) {
-		.scroll-indicator {
-			display: none;
-		}
 	}
 
 	@keyframes heroFadeIn {
@@ -159,7 +149,7 @@ import { heroData } from '../../data/homeContent';
 	.hero-bg {
 		position: absolute;
 		inset: 0;
-		background: var(--nova-bg);
+		background: transparent;
 		transform: scale(1.1);
 		will-change: transform;
 		overflow: hidden;
