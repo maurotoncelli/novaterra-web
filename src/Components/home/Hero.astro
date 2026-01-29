@@ -47,7 +47,7 @@ import { heroData } from '../../data/homeContent';
 			{heroData.description}
 		</p>
 
-		<div class="hero-reveal hero-reveal--cta flex flex-col md:flex-row gap-[20px] justify-center">
+		<div class="hero-reveal hero-reveal--cta flex flex-col md:flex-row gap-[20px] justify-center mb-16 md:mb-20">
 			<a href={heroData.primaryCTA.link} class="py-[15px] px-[35px] bg-white/10 backdrop-blur-md border border-white/60 text-white text-[0.9rem] uppercase tracking-[0.2em] font-bold hover:bg-nova-accent hover:border-nova-accent transition-all duration-300">
 				{heroData.primaryCTA.text}
 			</a>
@@ -58,7 +58,7 @@ import { heroData } from '../../data/homeContent';
 	</div>
 
 	<!-- Scroll Indicator -->
-	<div id="hero-scroll" class="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
+	<div id="hero-scroll" class="scroll-indicator absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
 		<div class="mouse-icon">
 			<div class="mouse-wheel"></div>
 		</div>
@@ -96,6 +96,13 @@ import { heroData } from '../../data/homeContent';
 	
 	:global(html.site-ready) .scroll-indicator {
 		animation: heroFadeIn 1s 1.2s forwards;
+	}
+
+	/* Hide scroll indicator on short viewports to prevent overlap */
+	@media (max-height: 700px) {
+		.scroll-indicator {
+			display: none;
+		}
 	}
 
 	@keyframes heroFadeIn {
@@ -192,7 +199,6 @@ import { heroData } from '../../data/homeContent';
 		}
 	}
 </style>
-
 
 
 
