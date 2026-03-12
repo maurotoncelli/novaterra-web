@@ -4,7 +4,25 @@ import { formConfig } from '../../data/contactData';
 ---
 
 <div class="form-wrapper">
-  <form id="contact-form" class="contact-form">
+  <!-- Netlify Forms: l'attributo "netlify" + "name" fa intercettare le submissions a Netlify.
+       Per ricevere le email su info@novaterra.work:
+         Netlify Dashboard → Site Settings → Forms → Form notifications → Add email notification
+       Per disattivare o cambiare email, gestisci tutto dalla dashboard Netlify senza toccare codice. -->
+  <form
+    id="contact-form"
+    class="contact-form"
+    name="contatto"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    novalidate
+  >
+    <!-- Campo anti-spam nascosto (Netlify honeypot) -->
+    <input type="hidden" name="form-name" value="contatto" />
+    <p class="hidden" aria-hidden="true">
+      <input name="bot-field" tabindex="-1" autocomplete="off" />
+    </p>
+
     {formConfig.fields.map((field) => (
       <div class="input-group">
         <input
@@ -30,9 +48,17 @@ import { formConfig } from '../../data/contactData';
       </label>
     </div>
     
-    <button type="submit" class="submit-btn">
+    <button type="submit" class="submit-btn" id="submit-btn">
       {formConfig.submitButton.text}
     </button>
+
+    <!-- Messaggi di feedback -->
+    <div id="form-success" class="form-feedback form-feedback--success" aria-live="polite" hidden>
+      ✓ Richiesta inviata! Ti risponderemo al più presto.
+    </div>
+    <div id="form-error" class="form-feedback form-feedback--error" aria-live="polite" hidden>
+      ✗ Qualcosa è andato storto. Riprova o scrivici direttamente a <a href="mailto:info@novaterra.work">info@novaterra.work</a>.
+    </div>
   </form>
 </div>
 
@@ -46,6 +72,10 @@ import { formConfig } from '../../data/contactData';
     width: 100%;
   }
   
+  .hidden {
+    display: none !important;
+  }
+
   .input-group {
     margin-bottom: 2rem;
   }
@@ -90,23 +120,79 @@ import { formConfig } from '../../data/contactData';
     color: var(--nova-accent);
     border-color: rgba(205, 92, 47, 0.65);
   }
+
+  .form-feedback {
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: 1px solid;
+  }
+
+  .form-feedback--success {
+    color: #7ecfa0;
+    border-color: rgba(126, 207, 160, 0.35);
+    background: rgba(126, 207, 160, 0.06);
+  }
+
+  .form-feedback--error {
+    color: var(--nova-accent);
+    border-color: rgba(205, 92, 47, 0.35);
+    background: rgba(205, 92, 47, 0.06);
+  }
+
+  .form-feedback--error a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 </style>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const successMsg = document.getElementById('form-success') as HTMLElement | null;
+  const errorMsg = document.getElementById('form-error') as HTMLElement | null;
 
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e: Event) => {
       e.preventDefault();
-      
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      
-      console.log('Form submitted:', data);
-      
-      // Feedback successo (simulato)
-      alert('Richiesta inviata con successo! Ti contatteremo al più presto.');
-      form.reset();
+
+      if (!submitBtn) return;
+
+      // Stato caricamento
+      const originalText = submitBtn.textContent ?? '';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'INVIO IN CORSO...';
+      if (successMsg) successMsg.hidden = true;
+      if (errorMsg) errorMsg.hidden = true;
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        });
+
+        if (response.ok) {
+          if (successMsg) successMsg.hidden = false;
+          form.reset();
+          // Scrolla al messaggio di successo
+          successMsg?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          if (errorMsg) errorMsg.hidden = false;
+        }
+      } catch {
+        if (errorMsg) errorMsg.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
     });
   }
 </script>
