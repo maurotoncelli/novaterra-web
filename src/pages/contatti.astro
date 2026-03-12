@@ -16,6 +16,16 @@ import { contactHero } from '../data/contactData';
   }}
   hero={contactHero}
 >
+  <!-- ============================================================
+    BANNER MANUTENZIONE — attivo
+    Per rimuoverlo: elimina questo blocco <div class="maintenance-banner">...</div>
+    e il relativo CSS .maintenance-banner in fondo al file <style>
+    ============================================================ -->
+  <div class="maintenance-banner">
+    <span class="maintenance-icon">⚙</span>
+    <span class="maintenance-text">Sito in costruzione — torneremo presto con qualcosa di bello.</span>
+  </div>
+
   <section class="contact-page">
     <!-- Grid 2 colonne: Info | Form -->
     <div class="contact-layout">
@@ -88,6 +98,45 @@ import { contactHero } from '../data/contactData';
     .contact-layout {
       grid-template-columns: 1fr;
       gap: 3rem;
+    }
+  }
+
+  /* ============================================================
+    BANNER MANUTENZIONE — CSS
+    Da rimuovere insieme al blocco HTML sopra quando il sito torna online
+    ============================================================ */
+  .maintenance-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: rgba(205, 92, 47, 0.08);
+    border: 1px solid rgba(205, 92, 47, 0.35);
+    color: var(--nova-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .maintenance-icon {
+    font-size: 1rem;
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    .maintenance-banner {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+      font-size: 0.78rem;
     }
   }
 </style>

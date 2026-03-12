@@ -6,3 +6,66 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--no-audit --no-fund"
   ASTRO_TELEMETRY_DISABLED = "1"
+
+# ============================================================
+# MODALITÀ MANUTENZIONE — attiva
+# Per disattivare e tornare al sito normale:
+#   1. Elimina o commenta tutte le righe da qui fino a "FINE MANUTENZIONE"
+#   2. Fai commit + push → Netlify rideploya automaticamente
+# ============================================================
+[[redirects]]
+  from = "/"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/chi-siamo"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/servizi"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/servizi/*"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/realizzazioni"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/realizzazioni/*"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/parco-mezzi"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/contatti"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/contatti"
+  status = 302
+  force = true
+# ============================================================
+# FINE MANUTENZIONE
+# ============================================================
