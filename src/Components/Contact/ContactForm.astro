@@ -59,6 +59,13 @@ import { formConfig } from '../../data/contactData';
           <strong>Non vendiamo i dati a terzi</strong>.
         </span>
       </label>
+      <label class="consent-row consent-row--optional">
+        <input id="newsletter-consent" name="newsletterConsent" type="checkbox" />
+        <span class="consent-text">
+          Voglio ricevere aggiornamenti dal blog — per esempio su nuovi bonus edilizia, normative o articoli utili.
+          <span class="consent-optional">(facoltativo)</span>
+        </span>
+      </label>
     </div>
     
     <button type="submit" class="submit-btn">
@@ -124,6 +131,18 @@ import { formConfig } from '../../data/contactData';
   .consent-link:hover {
     color: var(--nova-accent);
     border-color: rgba(205, 92, 47, 0.65);
+  }
+
+  .consent-row--optional {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .consent-optional {
+    color: rgba(156, 152, 145, 0.6);
+    font-size: 0.82rem;
+    margin-left: 0.25rem;
   }
 
   /* ── Banner successo ── */
