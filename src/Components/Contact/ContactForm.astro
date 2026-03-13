@@ -173,10 +173,16 @@ import { formConfig } from '../../data/contactData';
       if (errorMsg) errorMsg.hidden = true;
 
       try {
-        const response = await fetch('/', {
+        // POST direttamente alla pagina del form (non a '/' che ha redirect in manutenzione)
+        const params = new URLSearchParams();
+        new FormData(form).forEach((value, key) => {
+          params.append(key, value.toString());
+        });
+
+        const response = await fetch('/contatti', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+          body: params.toString(),
         });
 
         if (response.ok) {
