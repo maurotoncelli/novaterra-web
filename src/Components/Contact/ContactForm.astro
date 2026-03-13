@@ -3,23 +3,36 @@
 import { formConfig } from '../../data/contactData';
 ---
 
+<!-- Banner successo (visibile quando URL ha ?success=true dopo submission Netlify) -->
+<div id="form-success-banner" class="success-banner" hidden aria-live="polite">
+  <div class="success-inner">
+    <span class="success-icon">✓</span>
+    <div class="success-text">
+      <strong class="success-title">Messaggio inviato!</strong>
+      <p class="success-desc">Riccardo ti risponderà al più presto a <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
+    </div>
+    <button class="success-close" type="button" aria-label="Chiudi">✕</button>
+  </div>
+</div>
+
 <div class="form-wrapper">
-  <!-- Netlify Forms: l'attributo "netlify" + "name" fa intercettare le submissions a Netlify.
-       Per ricevere le email su info@novaterra.work:
-         Netlify Dashboard → Site Settings → Forms → Form notifications → Add email notification
-       Per disattivare o cambiare email, gestisci tutto dalla dashboard Netlify senza toccare codice. -->
+  <!--
+    Netlify Forms: il form invia via POST standard (non AJAX) → più affidabile.
+    Dopo l'invio, Netlify redirige a /contatti?success=true
+    Per cambiare email di notifica: Netlify Dashboard → Site Settings → Forms → Form notifications
+  -->
   <form
     id="contact-form"
     class="contact-form"
     name="contatto"
     method="POST"
+    action="/contatti?success=true"
     data-netlify="true"
     netlify-honeypot="bot-field"
-    novalidate
   >
-    <!-- Campo anti-spam nascosto (Netlify honeypot) -->
+    <!-- Campi obbligatori per Netlify Forms -->
     <input type="hidden" name="form-name" value="contatto" />
-    <p class="hidden" aria-hidden="true">
+    <p class="honeypot" aria-hidden="true">
       <input name="bot-field" tabindex="-1" autocomplete="off" />
     </p>
 
@@ -48,17 +61,9 @@ import { formConfig } from '../../data/contactData';
       </label>
     </div>
     
-    <button type="submit" class="submit-btn" id="submit-btn">
+    <button type="submit" class="submit-btn">
       {formConfig.submitButton.text}
     </button>
-
-    <!-- Messaggi di feedback -->
-    <div id="form-success" class="form-feedback form-feedback--success" aria-live="polite" hidden>
-      ✓ Richiesta inviata! Ti risponderemo al più presto.
-    </div>
-    <div id="form-error" class="form-feedback form-feedback--error" aria-live="polite" hidden>
-      ✗ Qualcosa è andato storto. Riprova o scrivici direttamente a <a href="mailto:info@novaterra.work">info@novaterra.work</a>.
-    </div>
   </form>
 </div>
 
@@ -71,11 +76,11 @@ import { formConfig } from '../../data/contactData';
   .contact-form {
     width: 100%;
   }
-  
-  .hidden {
+
+  .honeypot {
     display: none !important;
   }
-
+  
   .input-group {
     margin-bottom: 2rem;
   }
@@ -121,84 +126,124 @@ import { formConfig } from '../../data/contactData';
     border-color: rgba(205, 92, 47, 0.65);
   }
 
-  .form-feedback {
-    margin-top: 1.25rem;
-    padding: 1rem 1.25rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    border: 1px solid;
+  /* ── Banner successo ── */
+  .success-banner {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9000;
+    width: min(600px, calc(100vw - 2rem));
+    background: #1c1b19;
+    border: 1px solid rgba(126, 207, 160, 0.5);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    animation: slideUp 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
   }
 
-  .form-feedback--success {
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  .success-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .success-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(126, 207, 160, 0.15);
+    border: 1px solid rgba(126, 207, 160, 0.5);
     color: #7ecfa0;
-    border-color: rgba(126, 207, 160, 0.35);
-    background: rgba(126, 207, 160, 0.06);
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .form-feedback--error {
-    color: var(--nova-accent);
-    border-color: rgba(205, 92, 47, 0.35);
-    background: rgba(205, 92, 47, 0.06);
+  .success-text {
+    flex: 1;
   }
 
-  .form-feedback--error a {
-    color: inherit;
-    text-decoration: underline;
+  .success-title {
+    display: block;
+    color: #7ecfa0;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
   }
 
-  .submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  .success-desc {
+    color: var(--nova-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .success-desc a {
+    color: var(--nova-text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .success-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--nova-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 200ms ease;
+  }
+
+  .success-close:hover {
+    color: var(--nova-text);
+  }
+
+  @media (max-width: 768px) {
+    .success-banner {
+      bottom: 1rem;
+    }
+
+    .success-inner {
+      padding: 1.25rem;
+      gap: 1rem;
+    }
+
+    .success-title {
+      font-size: 0.9rem;
+    }
+
+    .success-desc {
+      font-size: 0.82rem;
+    }
   }
 </style>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
-  const successMsg = document.getElementById('form-success') as HTMLElement | null;
-  const errorMsg = document.getElementById('form-error') as HTMLElement | null;
-
-  if (form) {
-    form.addEventListener('submit', async (e: Event) => {
-      e.preventDefault();
-
-      if (!submitBtn) return;
-
-      // Stato caricamento
-      const originalText = submitBtn.textContent ?? '';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'INVIO IN CORSO...';
-      if (successMsg) successMsg.hidden = true;
-      if (errorMsg) errorMsg.hidden = true;
-
-      try {
-        // POST direttamente alla pagina del form (non a '/' che ha redirect in manutenzione)
-        const params = new URLSearchParams();
-        new FormData(form).forEach((value, key) => {
-          params.append(key, value.toString());
-        });
-
-        const response = await fetch('/contatti', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params.toString(),
-        });
-
-        if (response.ok) {
-          if (successMsg) successMsg.hidden = false;
-          form.reset();
-          // Scrolla al messaggio di successo
-          successMsg?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          if (errorMsg) errorMsg.hidden = false;
-        }
-      } catch {
-        if (errorMsg) errorMsg.hidden = false;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    });
+  // Mostra banner se Netlify ha rediretto qui con ?success=true
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    const banner = document.getElementById('form-success-banner');
+    if (banner) banner.removeAttribute('hidden');
+    // Pulisce l'URL senza ricaricare la pagina
+    window.history.replaceState({}, '', window.location.pathname);
+    // Scrolla al banner
+    banner?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
+
+  // Bottone chiudi
+  document.querySelector('.success-close')?.addEventListener('click', () => {
+    document.getElementById('form-success-banner')?.setAttribute('hidden', '');
+  });
 </script>
