@@ -19,8 +19,13 @@ pnpm-debug.log*
 .env
 .env.production
 
+# handoff doc (contiene credenziali in chiaro: NON committare)
+HANDOFF.md
+
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+.vercel
+.env*
