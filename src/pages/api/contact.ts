@@ -65,6 +65,9 @@ export const POST: APIRoute = async ({ request }) => {
     port: SMTP_PORT,
     secure: SMTP_PORT === 465, // 465 = SSL, 587 = STARTTLS
     auth: { user: SMTP_USER, pass: SMTP_PASS },
+    // Mail server condivisi (Netsons) spesso hanno un certificato con hostname
+    // diverso dal dominio: evitiamo il fallimento di validazione TLS.
+    tls: { rejectUnauthorized: false },
   });
 
   const subject = `Nuova richiesta dal sito — ${name}`;
