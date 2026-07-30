@@ -15,23 +15,32 @@ import { formConfig } from '../../data/contactData';
   </div>
 </div>
 
+<!-- Banner errore (visibile quando URL ha ?error=true dopo submission fallita) -->
+<div id="form-error-banner" class="error-banner" hidden aria-live="polite">
+  <div class="success-inner">
+    <span class="error-icon">!</span>
+    <div class="success-text">
+      <strong class="error-title">Invio non riuscito</strong>
+      <p class="success-desc">Riprova tra poco oppure scrivici a <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
+    </div>
+    <button class="success-close error-close" type="button" aria-label="Chiudi">✕</button>
+  </div>
+</div>
+
 <div class="form-wrapper">
   <!--
-    Netlify Forms: il form invia via POST standard (non AJAX) → più affidabile.
-    Dopo l'invio, Netlify redirige a /contatti?success=true
-    Per cambiare email di notifica: Netlify Dashboard → Site Settings → Forms → Form notifications
+    Invio via POST standard (non AJAX) all'endpoint serverless /api/contact.
+    L'endpoint invia l'email con Resend e redirige a /contatti?success=true (o ?error=true).
+    Per cambiare email di notifica: variabile d'ambiente CONTACT_TO_EMAIL su Vercel.
   -->
   <form
     id="contact-form"
     class="contact-form"
     name="contatto"
     method="POST"
-    action="/contatti?success=true"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
+    action="/api/contact"
   >
-    <!-- Campi obbligatori per Netlify Forms -->
-    <input type="hidden" name="form-name" value="contatto" />
+    <!-- Honeypot anti-spam (deve restare vuoto) -->
     <p class="honeypot" aria-hidden="true">
       <input name="bot-field" tabindex="-1" autocomplete="off" />
     </p>
@@ -145,8 +154,9 @@ import { formConfig } from '../../data/contactData';
     margin-left: 0.25rem;
   }
 
-  /* ── Banner successo ── */
-  .success-banner {
+  /* ── Banner successo / errore ── */
+  .success-banner,
+  .error-banner {
     position: fixed;
     bottom: 2rem;
     left: 50%;
@@ -157,6 +167,41 @@ import { formConfig } from '../../data/contactData';
     border: 1px solid rgba(126, 207, 160, 0.5);
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
     animation: slideUp 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .error-banner {
+    border-color: rgba(205, 92, 47, 0.6);
+  }
+
+  .error-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(205, 92, 47, 0.15);
+    border: 1px solid rgba(205, 92, 47, 0.6);
+    color: var(--nova-accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-title {
+    display: block;
+    color: var(--nova-accent);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .error-banner {
+      bottom: 1rem;
+    }
   }
 
   @keyframes slideUp {
@@ -250,19 +295,26 @@ import { formConfig } from '../../data/contactData';
 </style>
 
 <script>
-  // Mostra banner se Netlify ha rediretto qui con ?success=true
+  // Mostra il banner in base al parametro impostato da /api/contact
   const params = new URLSearchParams(window.location.search);
+
   if (params.get('success') === 'true') {
     const banner = document.getElementById('form-success-banner');
     if (banner) banner.removeAttribute('hidden');
-    // Pulisce l'URL senza ricaricare la pagina
     window.history.replaceState({}, '', window.location.pathname);
-    // Scrolla al banner
+    banner?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  } else if (params.get('error') === 'true') {
+    const banner = document.getElementById('form-error-banner');
+    if (banner) banner.removeAttribute('hidden');
+    window.history.replaceState({}, '', window.location.pathname);
     banner?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 
-  // Bottone chiudi
-  document.querySelector('.success-close')?.addEventListener('click', () => {
+  // Bottoni chiudi
+  document.querySelector('#form-success-banner .success-close')?.addEventListener('click', () => {
     document.getElementById('form-success-banner')?.setAttribute('hidden', '');
+  });
+  document.querySelector('#form-error-banner .error-close')?.addEventListener('click', () => {
+    document.getElementById('form-error-banner')?.setAttribute('hidden', '');
   });
 </script>
