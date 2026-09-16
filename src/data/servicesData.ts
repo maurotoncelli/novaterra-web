@@ -7,7 +7,7 @@ export const servicesHero = {
     main: "SOLUZIONI",
     accent: "COMPLETE"
   },
-  image: "https://i.postimg.cc/CM49dghb/servizi_forestale_verde_abbattimenti.jpg",
+  image: "/images/servizi/forestale.jpg",
   parallaxSpeed: 0.5
 };
 
@@ -43,42 +43,42 @@ export const servicesList: Service[] = [
     symbol: "▧",
     title: "Movimento terra / Sbancamenti",
     slug: "/servizi/movimento-terra",
-    image: "https://i.postimg.cc/Qt3nx6RN/servizi-Movimento-terra-e-sbancamenti-2.jpg"
+    image: "/images/servizi/movimento-terra.jpg"
   },
   {
     id: "strade-piazzali",
     symbol: "☰",
     title: "Realizzazione strade e piazzali",
     slug: "/servizi/strade-piazzali",
-    image: "https://i.postimg.cc/v8XSbth2/servizi-realizzazione-strade-e-piazzali.jpg"
+    image: "/images/servizi/strade-piazzali.jpg"
   },
   {
     id: "demolizioni",
     symbol: "✕",
     title: "Demolizioni",
     slug: "/servizi/demolizioni",
-    image: "https://i.postimg.cc/9Q06vnjT/servizi-demolizioni-2.jpg"
+    image: "/images/servizi/demolizioni.jpg"
   },
   {
     id: "forestale",
     symbol: "↟",
     title: "Forestale / Verde / Abbattimenti",
     slug: "/servizi/forestale",
-    image: "https://i.postimg.cc/CM49dghb/servizi-forestale-verde-abbattimenti.jpg"
+    image: "/images/servizi/forestale.jpg"
   },
   {
     id: "idrogeologico",
     symbol: "≈",
     title: "Sistemazioni Idrogeologiche",
     slug: "/servizi/idrogeologico",
-    image: "https://i.postimg.cc/jdFgJqGp/servizi-sistemazioni-idrogeologiche.jpg"
+    image: "/images/servizi/idrogeologico.jpg"
   },
   {
     id: "bacini",
     symbol: "◉",
     title: "Bacini idrici + Consolidamenti",
     slug: "/servizi/bacini",
-    image: "https://i.postimg.cc/GmSCt1jN/servizi-bacini-idrici-e-consolidamenti.jpg"
+    image: "/images/servizi/bacini.jpg"
   }
 ];
 
