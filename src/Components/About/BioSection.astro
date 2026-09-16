@@ -38,7 +38,8 @@ import { founderBio } from '../../data/aboutData';
   .bio-img-wrapper {
     position: sticky;
     top: calc(var(--navbar-height) + 2rem);
-    height: 70vh;
+    width: min(100%, calc(min(85vh, 36rem) * 3 / 4));
+    aspect-ratio: 3 / 4;
     overflow: hidden;
     align-self: start;
   }
@@ -47,7 +48,7 @@ import { founderBio } from '../../data/aboutData';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1.1);
+    object-position: center 20%;
   }
   
   .bio-content {

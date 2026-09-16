@@ -1,14 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "redirects": [
-    { "source": "/", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/chi-siamo", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/servizi", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/servizi/:path*", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/realizzazioni", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/realizzazioni/:path*", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/parco-mezzi", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/blog", "destination": "/contatti", "statusCode": 302 },
-    { "source": "/blog/:path*", "destination": "/contatti", "statusCode": 302 }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }

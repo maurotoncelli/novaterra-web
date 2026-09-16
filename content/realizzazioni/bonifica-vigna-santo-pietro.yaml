@@ -1,0 +1,59 @@
+title: Bonifica Vigna a Santo Pietro
+id: "12"
+excerpt: "Disfacimento di un vigneto in collina: estirpo dei filari, rimozione pali e vegetazione, carico e sgombero del materiale. Escavatore Yanmar con pinza NPK, trattore con rimorchio per il trasporto."
+year: "2026"
+publishedAt: 2026-06-09
+category: movimento-terra
+services:
+  - movimento-terra
+heroMain: "BONIFICA"
+heroAccent: "VIGNA"
+heroSubtitle: Case Study
+cover: /images/realizzazioni/santo-pietro-vigna/copertina.jpg
+client: Privato
+location: Santo Pietro (PI)
+serviceLabel: Bonifica vigneto
+challengeTitle: La Sfida
+challenge: "Rimuovere un vigneto in disuso in un contesto di filari ancora in produzione, su terreno collinare con erba alta e accessi stretti, senza danneggiare i vigneti confinanti e senza aprire piste invasive."
+solution: "Abbiamo lavorato fila per fila con un escavatore cingolato Yanmar equipaggiato di pinza idraulica NPK: viti e pali vengono afferrati, sradicati e caricati sul rimorchio agricolo. Restando nei tracciati del vigneto, il mezzo riduce il calpestio e lascia il campo sgombro per la nuova destinazione del suolo."
+topoTitle: Rilievo Topografico
+topoImage: /images/realizzazioni/santo-pietro-vigna/zenitale-filari.jpg
+topoReadout: "LOC: SANTO PIETRO (PI) // YEAR: 2026 // TYPE: BONIFICA VIGNETO"
+videoType: mp4
+videoUrl: /videos/realizzazioni/santo-pietro-vigna/cantiere.mp4
+videoPoster: /videos/realizzazioni/santo-pietro-vigna/poster.jpg
+videoTitle: Video cantiere — Bonifica vigna Santo Pietro
+gallery:
+  - src: /images/realizzazioni/santo-pietro-vigna/copertina.jpg
+    alt: Vista zenitale della bonifica vigna a Santo Pietro
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/collina.jpg
+    alt: Cantiere di disfacimento nel paesaggio collinare
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/collina-ampia.jpg
+    alt: Filare in rimozione tra i vigneti confinanti
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/zenitale-filari.jpg
+    alt: "Yanmar tra i filari, inquadratura zenitale"
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/pinza-frontale.jpg
+    alt: Pinza idraulica NPK in avvicinamento ai pali
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/yanmar-campo.jpg
+    alt: Escavatore Yanmar con pinza NPK in campo
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/estirpo-palo.jpg
+    alt: Estirpo di un palo in cemento con la pinza
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/pinza-vite.jpg
+    alt: Dettaglio della pinza NPK sull’impianto
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/carico-aereo.jpg
+    alt: Carico del materiale vegetale sul rimorchio agricolo
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/trattore-rimorchio.jpg
+    alt: Trattore e rimorchio a fianco dell’escavatore
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro-vigna/zenitale-carico.jpg
+    alt: "Yanmar e trattore in carico, vista zenitale"
+    aspect: landscape

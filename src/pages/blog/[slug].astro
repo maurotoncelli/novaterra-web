@@ -6,22 +6,20 @@ import Layout from '../../layouts/Layout.astro';
 import ArticleHero from '../../Components/Blog/ArticleHero.astro';
 import ArticleContent from '../../Components/Blog/ArticleContent.astro';
 import RelatedArticles from '../../Components/Blog/RelatedArticles.astro';
-import { getAllPostSlugs, getPostBySlug } from '../../lib/blogRepository';
-import { articles } from '../../data/articlesData';
+import { getAllPostSlugs, getArticleBySlug, getPostBySlug } from '../../lib/blogRepository';
 import { formatDate } from '../../data/blogData';
 
-// getStaticPaths genera tutte le pagine articoli
 export async function getStaticPaths() {
-  const slugs = getAllPostSlugs();
-  
+  const slugs = await getAllPostSlugs();
+
   return slugs.map((slug) => ({
     params: { slug },
   }));
 }
 
 const { slug } = Astro.params;
-const post = getPostBySlug(slug!);
-const article = articles[slug!];
+const post = await getPostBySlug(slug!);
+const article = await getArticleBySlug(slug!);
 
 // 404 se articolo non trovato
 if (!post || !article) {

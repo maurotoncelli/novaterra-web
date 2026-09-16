@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { serviceSlugs, title = 'Realizzazioni correlate' } = Astro.props;
-const projects = getProjectsByServices(serviceSlugs, 3);
+const projects = await getProjectsByServices(serviceSlugs, 3);
 ---
 
 <section class="related-projects">

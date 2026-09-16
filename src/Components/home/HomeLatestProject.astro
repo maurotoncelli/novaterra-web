@@ -3,7 +3,7 @@
 import SectionHeader from '../Ui/SectionHeader.astro';
 import { getLatestProject } from '../../lib/projectsRepository';
 
-const latestProject = getLatestProject();
+const latestProject = await getLatestProject();
 
 function formatItDate(iso: string): string {
   const d = new Date(iso);

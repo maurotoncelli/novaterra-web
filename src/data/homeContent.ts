@@ -45,7 +45,7 @@ export const introData = {
         quote: "\"Il movimento terra non è solo scavare. È capire cosa c'è sotto e cosa ci sarà sopra.\"",
         desc: "Fondatore e Direttore Tecnico. Cresciuto sui mezzi fin da bambino, formato in cantieri industriali complessi. Oggi guida Novaterra con una visione chiara: unire la potenza dei mezzi moderni alla precisione dell'ingegneria.",
         cta: { text: "Continua a leggere", link: "/chi-siamo" },
-        image: "https://i.postimg.cc/W3mt4FLd/ritratto-riccardo-toncelli-2-3-centrato.jpg"
+        image: "/images/riccardo-toncelli.jpg"
     }
 };
 

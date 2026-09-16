@@ -4,10 +4,10 @@ import PageTemplate from '../../Components/Ui/PageTemplate.astro';
 import ProjectCard from '../../Components/Projects/ProjectCard.astro';
 import ProjectGridCard from '../../Components/Projects/ProjectGridCard.astro';
 import ProjectFilters from '../../Components/Projects/ProjectFilters.astro';
-import { getAllProjects } from '../../lib/projectsRepository';
-import { projectsHero } from '../../data/projectsData';
+import { getAllProjects, getProjectsHero } from '../../lib/projectsRepository';
 
-const projects = getAllProjects(); // Ordinati per anno (più recenti prima)
+const projects = await getAllProjects();
+const projectsHero = await getProjectsHero();
 ---
 
 <PageTemplate

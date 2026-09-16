@@ -12,15 +12,15 @@ import { getAllProjectSlugs, getProjectBySlug } from '../../lib/projectsReposito
 
 // getStaticPaths genera tutte le pagine progetti
 export async function getStaticPaths() {
-  const slugs = getAllProjectSlugs();
-  
+  const slugs = await getAllProjectSlugs();
+
   return slugs.map((slug) => ({
     params: { slug },
   }));
 }
 
 const { slug } = Astro.params;
-const project = getProjectBySlug(slug!);
+const project = await getProjectBySlug(slug!);
 
 // 404 se progetto non trovato
 if (!project) {

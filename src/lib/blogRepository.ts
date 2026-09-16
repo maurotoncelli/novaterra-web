@@ -1,47 +1,49 @@
-// src/lib/blogRepository.ts
-// Repository layer per gestire articoli blog (futuro WordPress)
+import { articles as fallbackArticles, type ArticleContent } from "../data/articlesData";
+import {
+  blogPosts as fallbackPosts,
+  filterPostsByCategory,
+  sortPostsByDate,
+  type BlogCategory,
+  type BlogPost,
+} from "../data/blogData";
+import { loadArticlesFromCms, loadBlogHero, type PageHero } from "./cms";
 
-import { blogPosts, sortPostsByDate, filterPostsByCategory, type BlogPost, type BlogCategory } from '../data/blogData';
-
-/**
- * Ottiene tutti gli articoli ordinati per data (più recenti prima)
- */
-export function getAllPosts(): BlogPost[] {
-  return sortPostsByDate(blogPosts);
+async function readArticles() {
+  const fromCms = await loadArticlesFromCms();
+  if (fromCms.length) return fromCms;
+  return fallbackPosts.map((post) => ({
+    post,
+    article: fallbackArticles[post.slug],
+  }));
 }
 
-/**
- * Ottiene articoli filtrati per categoria
- */
-export function getPostsByCategory(category: BlogCategory): BlogPost[] {
-  const filtered = filterPostsByCategory(blogPosts, category);
-  return sortPostsByDate(filtered);
+export async function getAllPosts(): Promise<BlogPost[]> {
+  const articles = await readArticles();
+  return sortPostsByDate(articles.map((item) => item.post));
 }
 
-/**
- * Ottiene un articolo per slug
- */
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find(post => post.slug === slug);
+export async function getPostsByCategory(category: BlogCategory): Promise<BlogPost[]> {
+  return sortPostsByDate(filterPostsByCategory(await getAllPosts(), category));
 }
 
-/**
- * Ottiene tutti gli slug (per getStaticPaths)
- */
-export function getAllPostSlugs(): string[] {
-  return blogPosts.map(post => post.slug);
+export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
+  const articles = await readArticles();
+  return articles.find((item) => item.post.slug === slug)?.post;
 }
 
-/**
- * Verifica se un post esiste
- */
-export function postExists(slug: string): boolean {
-  return blogPosts.some(post => post.slug === slug);
+export async function getArticleBySlug(slug: string): Promise<ArticleContent | undefined> {
+  const articles = await readArticles();
+  return articles.find((item) => item.post.slug === slug)?.article ?? fallbackArticles[slug];
 }
 
-// Futuro: WordPress integration
-// export async function getPostsFromWordPress() {
-//   const res = await fetch('https://tuosito.com/wp-json/wp/v2/posts?_embed');
-//   return res.json();
-// }
+export async function getAllPostSlugs(): Promise<string[]> {
+  return (await getAllPosts()).map((post) => post.slug);
+}
 
+export async function postExists(slug: string): Promise<boolean> {
+  return (await getAllPosts()).some((post) => post.slug === slug);
+}
+
+export async function getBlogHero(): Promise<PageHero> {
+  return loadBlogHero();
+}

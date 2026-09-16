@@ -1,67 +1,59 @@
-// src/lib/projectsRepository.ts
-// Repository layer per gestire progetti (futuro WordPress)
+import {
+  filterProjectsByCategory,
+  projects as fallbackProjects,
+  sortProjectsByPublishedAt,
+  sortProjectsByYear,
+  type Project,
+  type ProjectCategory,
+  type ServiceSlug,
+} from "../data/projectsData";
+import { loadProjectsFromCms, loadRealizzazioniHero, type PageHero } from "./cms";
 
-import { projects, sortProjectsByPublishedAt, sortProjectsByYear, filterProjectsByCategory, type Project, type ProjectCategory, type ServiceSlug } from '../data/projectsData';
-
-/**
- * Ottiene tutti i progetti ordinati per anno (più recenti prima)
- */
-export function getAllProjects(): Project[] {
-  return sortProjectsByYear(projects);
+function withCardCover(project: Project): Project {
+  return { ...project, thumbnail: project.hero.image };
 }
 
-/**
- * Ottiene l'ultimo progetto pubblicato (ordinato per publishedAt)
- */
-export function getLatestProject(): Project | undefined {
-  return sortProjectsByPublishedAt(projects)[0];
+async function readProjects(): Promise<Project[]> {
+  const fromCms = await loadProjectsFromCms();
+  return fromCms.length ? fromCms : fallbackProjects;
 }
 
-/**
- * Ottiene progetti filtrati per categoria
- */
-export function getProjectsByCategory(category: ProjectCategory): Project[] {
-  const filtered = filterProjectsByCategory(projects, category);
-  return sortProjectsByYear(filtered);
+export async function getAllProjects(): Promise<Project[]> {
+  return sortProjectsByYear(await readProjects()).map(withCardCover);
 }
 
-/**
- * Ottiene un progetto per slug
- */
-export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find(project => project.slug === slug);
+export async function getLatestProject(): Promise<Project | undefined> {
+  const latest = sortProjectsByPublishedAt(await readProjects())[0];
+  return latest ? withCardCover(latest) : undefined;
 }
 
-/**
- * Ottiene le ultime realizzazioni collegate a uno o più servizi (match OR)
- * Ordinamento: publishedAt desc (più recente prima)
- */
-export function getProjectsByServices(services: ServiceSlug[], limit = 3): Project[] {
+export async function getProjectsByCategory(category: ProjectCategory): Promise<Project[]> {
+  const filtered = filterProjectsByCategory(await readProjects(), category);
+  return sortProjectsByYear(filtered).map(withCardCover);
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+  const project = (await readProjects()).find((item) => item.slug === slug);
+  return project ? withCardCover(project) : undefined;
+}
+
+export async function getProjectsByServices(services: ServiceSlug[], limit = 3): Promise<Project[]> {
   if (!services.length) return [];
-  const ordered = sortProjectsByPublishedAt(projects);
-  const filtered = ordered.filter((p) => p.services?.some((s) => services.includes(s)));
-  return filtered.slice(0, Math.max(0, limit));
+  const ordered = sortProjectsByPublishedAt(await readProjects());
+  const filtered = ordered.filter((project) =>
+    project.services?.some((service) => services.includes(service))
+  );
+  return filtered.slice(0, Math.max(0, limit)).map(withCardCover);
 }
 
-/**
- * Ottiene tutti gli slug (per getStaticPaths)
- */
-export function getAllProjectSlugs(): string[] {
-  return projects.map(project => project.slug);
+export async function getAllProjectSlugs(): Promise<string[]> {
+  return (await readProjects()).map((project) => project.slug);
 }
 
-/**
- * Verifica se un progetto esiste
- */
-export function projectExists(slug: string): boolean {
-  return projects.some(project => project.slug === slug);
+export async function projectExists(slug: string): Promise<boolean> {
+  return (await readProjects()).some((project) => project.slug === slug);
 }
 
-// Futuro: WordPress integration
-// export async function getProjectsFromWordPress() {
-//   const res = await fetch('https://tuosito.com/wp-json/wp/v2/projects?_embed');
-//   return res.json();
-// }
-
-
-
+export async function getProjectsHero(): Promise<PageHero> {
+  return loadRealizzazioniHero();
+}

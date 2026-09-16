@@ -15,7 +15,7 @@ interface Props {
 const { currentSlug, currentCategory, maxItems = 3 } = Astro.props;
 
 // Ottieni tutti i post
-const allPosts = getAllPosts();
+const allPosts = await getAllPosts();
 
 // Filtra: escludi articolo corrente
 const otherPosts = allPosts.filter(post => post.slug !== currentSlug);

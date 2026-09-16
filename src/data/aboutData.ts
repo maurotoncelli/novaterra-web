@@ -17,8 +17,8 @@ export const founderBio = {
   name: "Riccardo Toncelli",
   role: "Direttore Tecnico",
   image: {
-    src: "https://i.postimg.cc/W3mt4FLd/ritratto-riccardo-toncelli-2-3-centrato.jpg",
-    alt: "Direttore di Cantiere Novaterra"
+    src: "/images/riccardo-toncelli.jpg",
+    alt: "Riccardo Toncelli, Direttore Tecnico di Novaterra"
   },
   bio: [
     "Sono nato nel 1993 a Terricciola, nel cuore della Valdera. Da bambino ero già sui mezzi di famiglia: lì ho imparato a rispettare la terra e a “sentire” il lavoro prima ancora di chiamarlo professione.",

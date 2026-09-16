@@ -1,0 +1,74 @@
+title: Sistemazione Forestale a San Vincenzo
+id: "9"
+excerpt: "Intervento forestale con forwarder: esbosco, accatastamento e pulizia del sottobosco in area mediterranea. Mezzi specializzati, lavoro in pendenza e gestione del materiale legnoso in sito."
+year: "2024"
+publishedAt: 2024-05-09
+category: forestale
+services:
+  - forestale
+heroMain: "SAN"
+heroAccent: "VINCENZO"
+heroSubtitle: Case Study
+cover: /images/realizzazioni/san-vincenzo/copertina.jpg
+client: Privato
+location: San Vincenzo (LI)
+serviceLabel: Sistemazioni forestali
+challengeTitle: La Sfida
+challenge: "Operare in un bosco mediterraneo con pendenze, accessi stretti e vegetazione densa, esboscando e accatastando il materiale senza danneggiare il soprassuolo residuo e senza aprire piste invasive."
+solution: "Abbiamo lavorato con un forwarder forestale John Deere: gru e pinza per il carico, accatastamento ordinato in sito e avanzamento su terreno accidentato. Il mezzo consente di muovere volumi importanti di legna restando nei tracciati, riducendo il calpestio e lasciando il cantiere pulito."
+topoTitle: Rilievo Topografico
+topoImage: /images/realizzazioni/san-vincenzo/forwarder-carico.jpg
+topoReadout: "LOC: SAN VINCENZO (LI) // YEAR: 2024 // TYPE: FORESTALE"
+videoType: mp4
+videoUrl: /videos/realizzazioni/san-vincenzo/cantiere.mp4
+videoPoster: /videos/realizzazioni/san-vincenzo/poster.jpg
+videoTitle: Video cantiere — San Vincenzo
+gallery:
+  - src: /images/realizzazioni/san-vincenzo/copertina.jpg
+    alt: Forwarder John Deere in accatastamento a San Vincenzo
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/forwarder-carico.jpg
+    alt: Forwarder carico di ramaglia in avanzamento nel bosco
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/esbosco.jpg
+    alt: Esbosco in pendenza con il forwarder forestale
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/forwarder-salita.jpg
+    alt: Mezzo in salita sul tracciato di esbosco
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/forwarder-pendio.jpg
+    alt: Forwarder in pendio tra la macchia mediterranea
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/accatastamento.jpg
+    alt: Accatastamento del materiale legnoso con la gru
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/gru-catasta.jpg
+    alt: Pinza idraulica in carico sulla catasta
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/catene-bosco.jpg
+    alt: Dettaglio delle catene forestali sul terreno
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/catene.jpg
+    alt: Catene forestali sui pneumatici del forwarder
+    aspect: landscape
+  - src: /images/realizzazioni/san-vincenzo/in-cabina.jpg
+    alt: Riccardo Toncelli in cabina del forwarder
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/cabina-profilo.jpg
+    alt: Operatore in cabina durante il lavoro
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/manutenzione.jpg
+    alt: Manutenzione della pinza forestale in sito
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/pulizia-stanga.jpg
+    alt: Pulizia delle stanghe del carico
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/salita.jpg
+    alt: Accesso in cabina del forwarder
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/pausa-cofano.jpg
+    alt: Pausa sul mezzo John Deere in cantiere
+    aspect: portrait
+  - src: /images/realizzazioni/san-vincenzo/cabina-bn.jpg
+    alt: "Riccardo Toncelli in cabina, ritratto in bianco e nero"
+    aspect: landscape

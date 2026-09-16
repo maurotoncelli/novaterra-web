@@ -3,10 +3,10 @@
 import PageTemplate from '../../Components/Ui/PageTemplate.astro';
 import BlogFilters from '../../Components/Blog/BlogFilters.astro';
 import BlogCard from '../../Components/Blog/BlogCard.astro';
-import { getAllPosts } from '../../lib/blogRepository';
-import { blogHero } from '../../data/blogData';
+import { getAllPosts, getBlogHero } from '../../lib/blogRepository';
 
-const posts = getAllPosts(); // Ordinati per data (più recenti prima)
+const posts = await getAllPosts();
+const blogHero = await getBlogHero();
 ---
 
 <PageTemplate

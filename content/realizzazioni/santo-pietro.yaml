@@ -1,0 +1,36 @@
+title: Santo Pietro
+id: "10"
+excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
+year: "2025"
+publishedAt: 2025-04-18
+category: forestale
+services:
+  - forestale
+  - movimento-terra
+heroMain: "SANTO"
+heroAccent: "PIETRO"
+heroSubtitle: Case Study
+cover: /images/realizzazioni/santo-pietro/escavatore-case.jpg
+client: Da definire
+location: Santo Pietro (PI)
+serviceLabel: Da definire
+challengeTitle: La Sfida
+challenge: Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online.
+solution: Testo in attesa dei dettagli del lavoro. Nel video si vede il nuovo escavatore CASE in operazione.
+topoTitle: Rilievo Topografico
+topoImage: /images/realizzazioni/santo-pietro/escavatore-case.jpg
+topoReadout: "LOC: SANTO PIETRO // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+videoType: mp4
+videoUrl: /videos/realizzazioni/santo-pietro/cantiere.mp4
+videoPoster: /videos/realizzazioni/santo-pietro/poster.jpg
+videoTitle: Video cantiere — Santo Pietro
+gallery:
+  - src: /images/realizzazioni/santo-pietro/escavatore-case.jpg
+    alt: Escavatore CASE in cantiere a Santo Pietro
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro/cabina.jpg
+    alt: Operatore in cabina
+    aspect: landscape
+  - src: /images/realizzazioni/santo-pietro/cantiere.jpg
+    alt: Vista cantiere Santo Pietro
+    aspect: landscape

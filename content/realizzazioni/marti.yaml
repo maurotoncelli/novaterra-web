@@ -1,0 +1,38 @@
+title: Marti
+id: "11"
+excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
+year: "2025"
+publishedAt: 2025-08-19
+category: movimento-terra
+services:
+  - movimento-terra
+heroMain: "MARTI"
+heroAccent: "CANTIERE"
+heroSubtitle: Case Study
+cover: /images/realizzazioni/marti/copertina.jpg
+client: Da definire
+location: Marti (PI)
+serviceLabel: Da definire
+challengeTitle: La Sfida
+challenge: Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online.
+solution: Testo in attesa dei dettagli del lavoro. Nel video si vedono gli escavatori al lavoro su terreno collinare.
+topoTitle: Rilievo Topografico
+topoImage: /images/realizzazioni/marti/collina.jpg
+topoReadout: "LOC: MARTI (PI) // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+videoType: mp4
+videoUrl: /videos/realizzazioni/marti/cantiere.mp4
+videoPoster: /videos/realizzazioni/marti/poster.jpg
+videoTitle: Video cantiere — Marti
+gallery:
+  - src: /images/realizzazioni/marti/copertina.jpg
+    alt: Vista aerea del cantiere a Marti
+    aspect: landscape
+  - src: /images/realizzazioni/marti/collina.jpg
+    alt: Vista aerea del cantiere a Marti
+    aspect: landscape
+  - src: /images/realizzazioni/marti/escavatori.jpg
+    alt: Escavatori al lavoro nello scavo
+    aspect: landscape
+  - src: /images/realizzazioni/marti/pista.jpg
+    alt: Escavatore sulla pista di cantiere
+    aspect: landscape
