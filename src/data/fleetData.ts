@@ -26,7 +26,7 @@ export const fleetAccess = {
   rightText: [
     "Dal miniescavatore da 15 quintali all'escavatore da 350 quintali.",
     "Dal bobcat alla pala gommata.",
-    "Dal camion 4 assi ai mezzi speciali forestali.",
+    "Dal camion 2 assi con gru alle attrezzature speciali.",
     "",
     "<span style='color:var(--nova-accent)'>Tutto ciò che serve, quando serve.</span>"
   ]
@@ -94,27 +94,14 @@ export const fleetCategories: FleetCategory[] = [
   {
     id: "camion",
     icon: "❐",
-    title: "Camion 3 e 4 Assi",
-    spec: "Logistica",
+    title: "Camion 2 Assi con Gru",
+    spec: "Motrice / Gru",
     image: "https://i.postimg.cc/mk6wMV6g/parcomezzi-camion3-4-assi.jpg",
     uses: [
-      "Trasporto materiali",
-      "Gestione terre e rocce da scavo",
-      "Rifornimento cantieri",
-      "Movimentazione inerti"
-    ]
-  },
-  {
-    id: "mezzi-forestali",
-    icon: "↟",
-    title: "Mezzi Forestali",
-    spec: "Speciali",
-    image: "https://i.postimg.cc/7Y8XcjXt/parcomezzi-mezzi-forestali2.jpg",
-    uses: [
-      "Abbattimenti controllati",
-      "Pulizia boschi e trinciature",
-      "Lavori in forte pendenza",
-      "Manutenzione verde su larga scala"
+      "Carico e scarico autonomo",
+      "Trasporto materiali e attrezzature",
+      "Sollevamento in cantiere",
+      "Accesso a strade e cantieri stretti"
     ]
   },
   {

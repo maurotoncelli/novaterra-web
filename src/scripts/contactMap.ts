@@ -27,15 +27,18 @@ function initOne(el: HTMLElement) {
       zoomControl: true,
     }).setView([lat, lng], zoom);
 
-    const primary = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      subdomains: 'abcd',
-      maxZoom: 20,
+    // Carto Dark Matter now watermarks tiles with "API KEY REQUIRED".
+    // OSM tiles + CSS invert keep the dark look without a key.
+    const primary = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+      className: 'contact-map-tiles',
     });
 
-    const fallbackLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+    const fallbackLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 19,
+      className: 'contact-map-tiles',
     });
 
     let tileErrors = 0;

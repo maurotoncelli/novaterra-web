@@ -116,7 +116,7 @@ export const expectations = [
 export const assets = [
     { num: "01", title: "Esperienza Vera", desc: "Cresciuti sui mezzi fin da bambini, formati in aziende leader come Deferco. Conosciamo il terreno toscano metro per metro." },
     { num: "02", title: "Metodo & Pulizia", desc: "Il cantiere non deve essere caos. Ordine, sicurezza e pulizia finale sono parte integrante del nostro servizio." },
-    { num: "03", title: "Tecnologia", desc: "Parco mezzi di proprietà costantemente rinnovato: escavatori precisi, camion 4 assi moderni e livelli laser." }
+    { num: "03", title: "Tecnologia", desc: "Parco mezzi di proprietà costantemente rinnovato: escavatori precisi, camion 2 assi con gru e livelli laser." }
 ];
 
 // 6. SERVIZI HOME

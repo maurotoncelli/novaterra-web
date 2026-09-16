@@ -59,7 +59,7 @@ export const timeline = {
     {
       year: "2026",
       title: "Oggi",
-      description: "Novaterra cresce: il parco mezzi si amplia con un nuovo camion 4 assi e macchine sempre più moderne; collaboro con una rete di professionisti e artigiani di fiducia. Lavoriamo in Valdera e provincia di Pisa su scavi, laghi, argini, strade, demolizioni e cura del verde. L'obiettivo dei prossimi anni è trasformare l'attività in una società strutturata, capace di diventare azienda leader in Toscana."
+      description: "Novaterra cresce: il parco mezzi si amplia con un camion 2 assi con gru e macchine sempre più moderne; collaboro con una rete di professionisti e artigiani di fiducia. Lavoriamo in Valdera e provincia di Pisa su scavi, laghi, argini, strade, demolizioni e cura del verde. L'obiettivo dei prossimi anni è trasformare l'attività in una società strutturata, capace di diventare azienda leader in Toscana."
     }
   ]
 };

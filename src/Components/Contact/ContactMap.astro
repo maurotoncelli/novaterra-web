@@ -48,6 +48,11 @@ import { contactInfo } from '../../data/contactData';
     box-shadow: 0 0 0 1px rgba(205, 92, 47, 0.06), 0 20px 50px rgba(0, 0, 0, 0.35);
   }
 
+  /* Invert OSM tiles to match the dark site (no Carto API key) */
+  .contact-map :global(.contact-map-tiles) {
+    filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.95) saturate(0.28);
+  }
+
   /* Dark-theme tune for Leaflet UI */
   .contact-map :global(.leaflet-control-zoom a) {
     background: rgba(18, 17, 16, 0.9);

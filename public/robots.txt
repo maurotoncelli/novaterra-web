@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /keystatic
+Disallow: /keystatic/
+Disallow: /mezzi
+Disallow: /mezzi/
