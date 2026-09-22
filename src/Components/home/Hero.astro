@@ -12,15 +12,21 @@ import { heroData } from '../../data/homeContent';
 			data-speed="0.5"
 			data-parallax-dir="up"
 		>
-			<!-- Streamable video background (autoplay + loop) -->
-			<iframe
-				class="hero-video-embed"
-				src="https://streamable.com/e/cohr26?autoplay=1&loop=1"
-				title="Novaterra Hero Video"
-				allow="autoplay; fullscreen"
-				allowfullscreen
-				frameborder="0"
-			></iframe>
+			<div
+				class="hero-fallback"
+				style="background-image: url('/videos/home/hero-poster.jpg')"
+			></div>
+			<video
+				class="hero-video"
+				src="/videos/home/hero.mp4"
+				poster="/videos/home/hero-poster.jpg"
+				autoplay
+				muted
+				loop
+				playsinline
+				preload="auto"
+				aria-hidden="true"
+			></video>
 		</div>
 		<!-- Match site background hue (avoid pure-black revealed band) -->
 		<div class="absolute inset-0" style="background: rgba(18, 17, 16, 0.15);"></div>
@@ -165,26 +171,21 @@ import { heroData } from '../../data/homeContent';
 		transform: scale(1.02);
 	}
 
-	/* Video sits on top of the fallback background image (cover behavior) */
-	.hero-video-embed {
+	/* Video sits on top of the fallback poster (cover behavior) */
+	.hero-video {
 		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		/* Cover behavior for 16:9 video */
-		width: 100vw;
-		height: 56.25vw; /* 9/16 * 100 */
-		min-width: 177.78vh; /* 16/9 * 100 */
-		min-height: 100vh;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		border: 0;
-		/* Keep hero content clickable */
 		pointer-events: none;
 		filter: brightness(0.9) contrast(1.08);
 	}
 
-	/* Accessibility: respect reduced motion by falling back to the image */
+	/* Accessibility: respect reduced motion by falling back to the poster */
 	@media (prefers-reduced-motion: reduce) {
-		.hero-video-embed {
+		.hero-video {
 			display: none;
 		}
 	}
