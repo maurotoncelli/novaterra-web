@@ -150,8 +150,7 @@ export default config({
         }),
         videoUrl: fields.text({
           label: "Video (URL o percorso)",
-          description: "Es. /videos/realizzazioni/ghizzano-bacino/cantiere.mp4 oppure un link YouTube",
-          validation: { isRequired: true },
+          description: "Es. /videos/realizzazioni/ghizzano-bacino/cantiere.mp4 oppure un link YouTube. Vuoto se il video non è ancora pronto.",
         }),
         videoPoster: fields.text({
           label: "Poster video (percorso)",
