@@ -1,0 +1,50 @@
+title: Aperture nei tini a Soianella
+id: "15"
+excerpt: "Aperture in tini di cemento armato in una cantina a Soianella, Terricciola. Taglio con disco e martello, armatura sezionata sul perimetro, varchi netti senza compromettere volta e tini confinanti."
+year: "2026"
+publishedAt: 2026-10-22
+category: demolizioni
+services:
+  - demolizioni
+heroMain: SOIANELLA
+heroAccent: APERTURE
+heroSubtitle: Case Study
+cover: /images/realizzazioni/demolizione-soianella/copertina.jpg
+client: Privato
+location: Soianella, Terricciola (PI)
+serviceLabel: Demolizioni
+challengeTitle: La Sfida
+challenge: "Aprire varchi regolari in pareti di cemento armato, dentro una cantina a volta. Spazi stretti, polvere, armatura da sezionare e tini confinanti da non lesionare."
+solution: "Abbiamo tracciato il vano sulla parete del tino, tagliato il perimetro con la troncatrice a disco e demolito il cuore con il martello. L'armatura si sega sul bordo dell'apertura. Si lavora in quota, su ponteggio, con protezione dalle polveri. A fine intervento i varchi sono netti e il corridoio tra i tini resta agibile."
+topoTitle: Rilievo Topografico
+topoImage: /images/realizzazioni/demolizione-soianella/cantina.jpg
+topoReadout: "LOC: SOIANELLA, TERRICCIOLA (PI) // YEAR: 2026 // TYPE: DEMOLIZIONE"
+videoType: mp4
+videoUrl: /videos/realizzazioni/demolizione-soianella/cantiere.mp4
+videoPoster: /videos/realizzazioni/demolizione-soianella/poster.jpg
+videoTitle: Video cantiere — Aperture nei tini a Soianella
+gallery:
+  - src: /images/realizzazioni/demolizione-soianella/copertina.jpg
+    alt: Aperture finite nei tini di cemento armato
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/cantina.jpg
+    alt: Cantina a volta con i tini e il materiale di demolizione
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/tracciatura.jpg
+    alt: Tracciatura del vano sulla parete del tino
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/sagoma.jpg
+    alt: Sagoma dell'apertura segnata sul cemento
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/disco.jpg
+    alt: Taglio del cemento armato con troncatrice a disco
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/martello.jpg
+    alt: Demolizione controllata con martello
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/ferro.jpg
+    alt: Armatura a vista sul bordo dell'apertura
+    aspect: landscape
+  - src: /images/realizzazioni/demolizione-soianella/apertura.jpg
+    alt: Apertura in corso, con il ferro ancora da sezionare
+    aspect: landscape

@@ -80,14 +80,17 @@ const topographic = project.topographic ?? {
         
       </div>
       
-      <!-- Video Cantiere (SEMPRE presente) -->
-      <span class="subtitle">Video Cantiere</span>
-      <ProjectVideo 
-        videoType={project.video.type}
-        videoUrl={project.video.url}
-        thumbnail={project.video.thumbnail}
-        title={project.video.title}
-      />
+      {project.video.url && (
+        <>
+          <span class="subtitle">Video Cantiere</span>
+          <ProjectVideo 
+            videoType={project.video.type}
+            videoUrl={project.video.url}
+            thumbnail={project.video.thumbnail}
+            title={project.video.title}
+          />
+        </>
+      )}
 
       <!-- Rilievo Topografico (sempre presente) -->
       <TopographicSection 

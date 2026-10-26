@@ -113,6 +113,196 @@ export interface Project {
 // Mock projects (oggi statico, domani da WordPress)
 export const projects: Project[] = [
   {
+    id: "14",
+    slug: "pulizia-oliveta-santo-pietro",
+
+    title: "Pulizia Oliveta a Santo Pietro",
+    excerpt:
+      "Pulizia di un oliveto a Santo Pietro: trinciatura di rovi ed erba alta tra i filari, con minipala cingolata Eurocomach 20TL e trattore con trinciatrice. Il materiale resta in campo e l’oliveta torna percorribile.",
+    thumbnail: "/images/realizzazioni/pulizia-oliveta/copertina.jpg",
+    year: "2025",
+    publishedAt: "2025-07-14",
+    category: "forestale",
+    services: ["forestale"],
+
+    hero: {
+      title: { main: "PULIZIA", accent: "OLIVETA" },
+      subtitle: "Case Study",
+      image: "/images/realizzazioni/pulizia-oliveta/copertina.jpg"
+    },
+
+    specs: {
+      client: "Privato",
+      location: "Santo Pietro (PI)",
+      year: "2025",
+      service: "Sistemazioni forestali"
+    },
+
+    challenge: {
+      title: "La Sfida",
+      description:
+        "Un oliveto con erba alta, rovi e ricacci tra i filari. I passaggi sono stretti, le chiome basse e il fondo irregolare: bisogna riaprire il sottofila senza scorticare i tronchi e senza aprire piste nel terreno."
+    },
+
+    solution: {
+      description:
+        "Siamo entrati con una minipala cingolata Eurocomach 20TL e trincia forestale, per triturare la vegetazione anche dove un trattore non gira. Nei filari più aperti ha lavorato il trattore Goldoni con trinciatrice, lasciando il trinciato a terra come pacciamatura. A fine intervento l’oliveta è di nuovo percorribile, senza asportare il materiale."
+    },
+
+    topographic: {
+      title: "Rilievo Topografico",
+      image: "/images/realizzazioni/pulizia-oliveta/trinciatura.jpg",
+      dataReadout: "LOC: SANTO PIETRO (PI) // YEAR: 2025 // TYPE: FORESTALE"
+    },
+
+    gallery: [
+      { src: "/images/realizzazioni/pulizia-oliveta/copertina.jpg", alt: "Trinciatura del sottofila tra gli olivi a Santo Pietro", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/trinciatura.jpg", alt: "Eurocomach 20TL con trincia forestale sulla vegetazione", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/eurocomach.jpg", alt: "Minipala cingolata Eurocomach tra le chiome degli olivi", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/trattore.jpg", alt: "Accesso al fondo lungo il viale di cipressi", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/oliveta.jpg", alt: "Rotore della trincia forestale sul trinciato", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/ferri-fronte.jpg", alt: "Trattore in ingresso nel filare da ripulire", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/cabina.jpg", alt: "Cabina protetta da griglia durante la trinciatura", aspect: "landscape" },
+      { src: "/images/realizzazioni/pulizia-oliveta/innesti.jpg", alt: "Innesti idraulici della trinciatrice", aspect: "landscape" }
+    ],
+
+    video: {
+      type: "mp4",
+      url: "/videos/realizzazioni/pulizia-oliveta/cantiere.mp4",
+      thumbnail: "/videos/realizzazioni/pulizia-oliveta/poster.jpg",
+      title: "Video cantiere — Pulizia oliveta a Santo Pietro"
+    }
+  },
+
+  {
+    id: "15",
+    slug: "demolizione-soianella",
+    title: "Aperture nei tini a Soianella",
+    excerpt:
+      "Aperture in tini di cemento armato in una cantina a Soianella, Terricciola. Taglio con disco e martello, armatura sezionata sul perimetro, varchi netti senza compromettere volta e tini confinanti.",
+    thumbnail: "/images/realizzazioni/demolizione-soianella/copertina.jpg",
+    year: "2026",
+    publishedAt: "2026-10-22",
+    category: "demolizioni",
+    services: ["demolizioni"],
+    hero: {
+      title: { main: "SOIANELLA", accent: "APERTURE" },
+      subtitle: "Case Study",
+      image: "/images/realizzazioni/demolizione-soianella/copertina.jpg"
+    },
+    specs: {
+      client: "Privato",
+      location: "Soianella, Terricciola (PI)",
+      year: "2026",
+      service: "Demolizioni"
+    },
+    challenge: {
+      title: "La Sfida",
+      description:
+        "Aprire varchi regolari in pareti di cemento armato, dentro una cantina a volta. Spazi stretti, polvere, armatura da sezionare e tini confinanti da non lesionare."
+    },
+    solution: {
+      description:
+        "Abbiamo tracciato il vano sulla parete del tino, tagliato il perimetro con la troncatrice a disco e demolito il cuore con il martello. L'armatura si sega sul bordo dell'apertura. Si lavora in quota, su ponteggio, con protezione dalle polveri. A fine intervento i varchi sono netti e il corridoio tra i tini resta agibile."
+    },
+    topographic: {
+      title: "Rilievo Topografico",
+      image: "/images/realizzazioni/demolizione-soianella/cantina.jpg",
+      dataReadout: "LOC: SOIANELLA, TERRICCIOLA (PI) // YEAR: 2026 // TYPE: DEMOLIZIONE"
+    },
+    gallery: [
+      { src: "/images/realizzazioni/demolizione-soianella/copertina.jpg", alt: "Aperture finite nei tini di cemento armato", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/cantina.jpg", alt: "Cantina a volta con i tini e il materiale di demolizione", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/tracciatura.jpg", alt: "Tracciatura del vano sulla parete del tino", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/sagoma.jpg", alt: "Sagoma dell'apertura segnata sul cemento", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/disco.jpg", alt: "Taglio del cemento armato con troncatrice a disco", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/martello.jpg", alt: "Demolizione controllata con martello", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/ferro.jpg", alt: "Armatura a vista sul bordo dell'apertura", aspect: "landscape" },
+      { src: "/images/realizzazioni/demolizione-soianella/apertura.jpg", alt: "Apertura in corso, con il ferro ancora da sezionare", aspect: "landscape" }
+    ],
+    video: {
+      type: "mp4",
+      url: "/videos/realizzazioni/demolizione-soianella/cantiere.mp4",
+      thumbnail: "/videos/realizzazioni/demolizione-soianella/poster.jpg",
+      title: "Video cantiere — Aperture nei tini a Soianella"
+    }
+  },
+
+  {
+    id: "16",
+    slug: "palizzata-peccioli",
+    title: "Palizzata a Peccioli",
+    excerpt:
+      "Scheda in preparazione. Palizzata a Peccioli: foto e video del cantiere verranno caricati a breve.",
+    thumbnail: "/images/realizzazioni/in-preparazione.jpg",
+    year: "2025",
+    publishedAt: "2025-06-05",
+    category: "idrogeologico",
+    services: ["idrogeologico"],
+    hero: {
+      title: { main: "PALIZZATA", accent: "PECCIOLI" },
+      subtitle: "Case Study",
+      image: "/images/realizzazioni/in-preparazione.jpg"
+    },
+    specs: {
+      client: "Da definire",
+      location: "Peccioli (PI)",
+      year: "2025",
+      service: "Consolidamenti idrogeologici"
+    },
+    challenge: {
+      title: "La Sfida",
+      description:
+        "Testo in attesa dei dettagli del lavoro. Foto e video della palizzata a Peccioli arriveranno su questa scheda."
+    },
+    solution: { description: "Testo in attesa dei dettagli del lavoro." },
+    topographic: {
+      title: "Rilievo Topografico",
+      image: "/images/realizzazioni/in-preparazione.jpg",
+      dataReadout: "LOC: PECCIOLI (PI) // YEAR: 2025 // TYPE: PALIZZATA // STATUS: IN PREPARAZIONE"
+    },
+    gallery: [],
+    video: { type: "mp4", url: "", title: "Video cantiere — Palizzata a Peccioli" }
+  },
+
+  {
+    id: "17",
+    slug: "riempimento-legoli",
+    title: "Riempimento a Legoli",
+    excerpt:
+      "Scheda in preparazione. Riempimento a Legoli: foto e video del cantiere verranno caricati a breve.",
+    thumbnail: "/images/realizzazioni/in-preparazione.jpg",
+    year: "2025",
+    publishedAt: "2025-12-02",
+    category: "movimento-terra",
+    services: ["movimento-terra"],
+    hero: {
+      title: { main: "RIEMPIMENTO", accent: "LEGOLI" },
+      subtitle: "Case Study",
+      image: "/images/realizzazioni/in-preparazione.jpg"
+    },
+    specs: {
+      client: "Da definire",
+      location: "Legoli (PI)",
+      year: "2025",
+      service: "Movimento terra"
+    },
+    challenge: {
+      title: "La Sfida",
+      description:
+        "Testo in attesa dei dettagli del lavoro. Foto e video del riempimento a Legoli arriveranno su questa scheda."
+    },
+    solution: { description: "Testo in attesa dei dettagli del lavoro." },
+    topographic: {
+      title: "Rilievo Topografico",
+      image: "/images/realizzazioni/in-preparazione.jpg",
+      dataReadout: "LOC: LEGOLI (PI) // YEAR: 2025 // TYPE: RIEMPIMENTO // STATUS: IN PREPARAZIONE"
+    },
+    gallery: [],
+    video: { type: "mp4", url: "", title: "Video cantiere — Riempimento a Legoli" }
+  },
+
+  {
     id: "13",
     slug: "bacino-idrico-ghizzano",
 
