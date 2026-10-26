@@ -7,7 +7,7 @@ export const servicesHero = {
     main: "SOLUZIONI",
     accent: "COMPLETE"
   },
-  image: "/images/servizi/forestale.jpg",
+  image: "/images/realizzazioni/ghizzano-bacino/copertina.jpg",
   parallaxSpeed: 0.5
 };
 

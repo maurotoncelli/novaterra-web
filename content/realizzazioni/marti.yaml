@@ -3,6 +3,7 @@ id: "11"
 excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
 year: "2025"
 publishedAt: 2025-08-19
+draft: false
 category: movimento-terra
 services:
   - movimento-terra

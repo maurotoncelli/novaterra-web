@@ -47,6 +47,8 @@ export interface Project {
   year: string;
   /** Data di pubblicazione sul sito (ISO: YYYY-MM-DD) */
   publishedAt: string;
+  /** Bozza: resta nel CMS ma non compare sul sito */
+  draft?: boolean;
   category: ProjectCategory;
   /** Uno o più servizi collegati (per anteprime nelle pagine servizio) */
   services: ServiceSlug[];
@@ -237,6 +239,7 @@ export const projects: Project[] = [
     thumbnail: "/images/realizzazioni/in-preparazione.jpg",
     year: "2025",
     publishedAt: "2025-06-05",
+    draft: true,
     category: "idrogeologico",
     services: ["idrogeologico"],
     hero: {
@@ -274,6 +277,7 @@ export const projects: Project[] = [
     thumbnail: "/images/realizzazioni/in-preparazione.jpg",
     year: "2025",
     publishedAt: "2025-12-02",
+    draft: true,
     category: "movimento-terra",
     services: ["movimento-terra"],
     hero: {
@@ -646,6 +650,10 @@ export function sortProjectsByPublishedAt(projects: Project[]): Project[] {
 
 export function filterProjectsByCategory(projects: Project[], category: ProjectCategory): Project[] {
   if (category === "tutti") return projects;
-  return projects.filter(project => project.category === category);
+  return projects.filter((project) => {
+    if (project.category === category) return true;
+    if (category === "altro") return false;
+    return project.services?.includes(category) ?? false;
+  });
 }
 

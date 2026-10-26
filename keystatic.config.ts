@@ -67,6 +67,11 @@ export default config({
           label: "Data di pubblicazione sul sito",
           validation: { isRequired: true },
         }),
+        draft: fields.checkbox({
+          label: "Bozza",
+          description: "Resta nel pannello ma non compare sul sito, finché non ci sono foto e video.",
+          defaultValue: false,
+        }),
         category: fields.select({
           label: "Categoria principale",
           options: categoryOptions,

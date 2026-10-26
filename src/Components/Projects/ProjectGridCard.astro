@@ -6,9 +6,10 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const categories = [...new Set([project.category, ...(project.services ?? [])])].join(" ");
 ---
 
-<a href={`/realizzazioni/${project.slug}`} class="project-item grid-card" data-category={project.category}>
+<a href={`/realizzazioni/${project.slug}`} class="project-item grid-card" data-category={project.category} data-categories={categories}>
   <div class="grid-media">
     <img
       src={project.thumbnail}

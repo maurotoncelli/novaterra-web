@@ -44,13 +44,6 @@ export interface ServiceDetailContent {
     }>;
   };
   
-  video?: {
-    title: string;
-    embedUrl?: string;
-    mp4Url?: string;
-    thumbnail?: string;
-  };
-  
   cta?: {
     text: string;
     link: string;

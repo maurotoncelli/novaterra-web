@@ -9,14 +9,18 @@ import { videoSection } from '../../data/aboutData';
     <h2 class="section-title">{videoSection.title}</h2>
   </div>
   
-  <div class="video-wrapper">
-    <video 
-      controls
+  <div class="video-wrapper" style={`background-image: url('${videoSection.placeholder}')`}>
+    <video
+      src={videoSection.video.src}
       poster={videoSection.placeholder}
-      preload="metadata"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-label={videoSection.title}
     >
       <source src={videoSection.video.src} type={videoSection.video.type} />
-      Il tuo browser non supporta il tag video.
     </video>
   </div>
 </div>
@@ -38,13 +42,21 @@ import { videoSection } from '../../data/aboutData';
     height: 500px;
     overflow: hidden;
     border: 1px solid var(--nova-line);
-    background: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.9);
+    background-size: cover;
+    background-position: center;
   }
   
   .video-wrapper video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-wrapper video {
+      display: none;
+    }
   }
   
   @media (max-width: 768px) {

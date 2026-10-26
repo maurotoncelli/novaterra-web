@@ -23,9 +23,8 @@ export const homeEmotionalStrips = {
         alt: "Cantiere al lavoro: standard operativi e sicurezza",
     },
     landscapeEngineering: {
-        // Existing strip (above “Ingegneria del Paesaggio”)
-        src: "https://i.postimg.cc/YqP2MfG3/servizi-Movimento-terra-e-sbancamenti-1.jpg",
-        alt: "Panoramica di cantiere in Toscana",
+        src: "/images/realizzazioni/ghizzano-bacino/bacino-circolare.jpg",
+        alt: "Scavo di un bacino circolare a Ghizzano, vista aerea",
     }
 };
 

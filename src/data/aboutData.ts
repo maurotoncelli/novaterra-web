@@ -30,9 +30,9 @@ export const founderBio = {
 export const videoSection = {
   subtitle: "Vision",
   title: "Terra, mezzi e territorio: così operiamo.",
-  placeholder: "https://i.postimg.cc/7ZcsZRRD/Placeholder_brand_id.jpg",
+  placeholder: "/videos/home/hero-poster.jpg",
   video: {
-    src: "https://videos.pexels.com/video-files/2882566/2882566-uhd_2560_1440_24fps.mp4",
+    src: "/videos/home/hero.mp4",
     type: "video/mp4"
   }
 };

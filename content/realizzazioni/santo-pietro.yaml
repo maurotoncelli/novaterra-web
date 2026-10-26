@@ -3,6 +3,7 @@ id: "10"
 excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
 year: "2025"
 publishedAt: 2025-04-18
+draft: false
 category: forestale
 services:
   - forestale

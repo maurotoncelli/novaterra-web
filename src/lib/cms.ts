@@ -130,6 +130,7 @@ function mapProject(slug: string, entry: Record<string, unknown>): Project {
     thumbnail: cover,
     year,
     publishedAt: asString(entry.publishedAt),
+    draft: entry.draft === true,
     category: asProjectCategory(entry.category),
     services: asServiceSlugs(entry.services),
     hero: {

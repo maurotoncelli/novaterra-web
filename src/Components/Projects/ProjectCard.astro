@@ -7,12 +7,14 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const categories = [...new Set([project.category, ...(project.services ?? [])])].join(" ");
 ---
 
 <a 
   href={`/realizzazioni/${project.slug}`}
   class="project-item"
   data-category={project.category}
+  data-categories={categories}
 >
   <div class="parallax-wrapper">
     <img 

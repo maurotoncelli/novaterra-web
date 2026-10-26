@@ -15,7 +15,8 @@ function withCardCover(project: Project): Project {
 
 async function readProjects(): Promise<Project[]> {
   const fromCms = await loadProjectsFromCms();
-  return fromCms.length ? fromCms : fallbackProjects;
+  const projects = fromCms.length ? fromCms : fallbackProjects;
+  return projects.filter((project) => !project.draft);
 }
 
 export async function getAllProjects(): Promise<Project[]> {

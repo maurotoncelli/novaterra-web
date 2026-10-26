@@ -3,6 +3,7 @@ id: "9"
 excerpt: "Intervento forestale con forwarder: esbosco, accatastamento e pulizia del sottobosco in area mediterranea. Mezzi specializzati, lavoro in pendenza e gestione del materiale legnoso in sito."
 year: "2024"
 publishedAt: 2024-05-09
+draft: false
 category: forestale
 services:
   - forestale
