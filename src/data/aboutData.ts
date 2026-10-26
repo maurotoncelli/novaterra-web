@@ -7,7 +7,7 @@ export const aboutHero = {
     main: "RADICI PROFONDE.",
     accent: "VISIONE MODERNA", // Corsivo/peso leggero
   },
-  image: "https://i.postimg.cc/W3Vdm2yC/chisiamo_radici_profonde_2.jpg",
+  image: "/images/chi-siamo/radici-profonde.jpg",
   parallaxSpeed: 0.5,
   description:
     "Dal 1993 a oggi: esperienza vera, metodo operativo e rispetto del paesaggio toscano."

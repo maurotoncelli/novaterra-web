@@ -15,12 +15,12 @@ export const heroData = {
 // NOTE: keep these as plain URLs (CMS-ready). Used by `FullBleedImage`.
 export const homeEmotionalStrips = {
     process: {
-        src: "https://i.postimg.cc/D03yxKJr/Home-unmetodochiaro.jpg",
-        alt: "Macchine operative in cantiere: metodo e controllo",
+        src: "/images/realizzazioni/santo-pietro-vigna/collina-ampia.jpg",
+        alt: "Bonifica di un vigneto a Santo Pietro, con i mezzi al lavoro tra i filari",
     },
     standards: {
-        src: "https://i.postimg.cc/Hn1s6Ccb/Home-cosaaspettarsi.jpg",
-        alt: "Cantiere al lavoro: standard operativi e sicurezza",
+        src: "/images/realizzazioni/ghizzano-bacino/paesaggio.jpg",
+        alt: "Bacino collinare a Ghizzano nel paesaggio della Valdera",
     },
     landscapeEngineering: {
         src: "/images/realizzazioni/ghizzano-bacino/bacino-circolare.jpg",
