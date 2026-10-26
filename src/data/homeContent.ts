@@ -19,7 +19,7 @@ export const homeEmotionalStrips = {
         alt: "Bonifica di un vigneto a Santo Pietro, con i mezzi al lavoro tra i filari",
     },
     standards: {
-        src: "/images/realizzazioni/ghizzano-bacino/paesaggio.jpg",
+        src: "/images/home/ghizzano-paesaggio.jpg",
         alt: "Bacino collinare a Ghizzano nel paesaggio della Valdera",
     },
     landscapeEngineering: {
