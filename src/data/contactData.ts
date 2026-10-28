@@ -41,8 +41,7 @@ export const contactInfo = {
 export const contactHero = {
   subtitle: contactInfo.subtitle,
   title: contactInfo.title,
-  image:
-    "https://i.postimg.cc/FsQ7Z03Z/contatti1.jpg",
+  image: "/images/contatti/hero.jpg",
   parallaxSpeed: 0.5,
   description:
     "Richiedi un sopralluogo o un preventivo: rispondiamo rapidamente con una proposta chiara e operativa."
