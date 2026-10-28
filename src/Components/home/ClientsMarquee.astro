@@ -2,7 +2,8 @@
 import { clients } from '../../data/homeContent';
 import SectionHeader from '../Ui/SectionHeader.astro';
 
-const infiniteClients = [...clients, ...clients, ...clients, ...clients]; 
+const loop = [...clients, ...clients, ...clients, ...clients];
+const infiniteClients = [...loop, ...loop]; 
 ---
 
 <section class="py-32 relative z-10 overflow-hidden bg-nova-bg">

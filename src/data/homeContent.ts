@@ -137,8 +137,8 @@ export const testimonials = [
 
 // 8. CLIENTI
 export const clients = [
-    "STUDIO TECNICO ROSSI", "CONSORZIO BONIFICA", "TENUTA SAN GUIDO", "EDILIZIA MODERNA SRL",
-    "AGRARIA VALDERA", "COMUNE DI TERRICCIOLA", "STUDIO ARCH. BIANCHI"
+    "Comune di Terricciola",
+    "Segnobianco"
 ];
 
 // 9. MENU LINKS
