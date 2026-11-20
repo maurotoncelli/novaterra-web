@@ -80,7 +80,7 @@ const topographic = project.topographic ?? {
         
       </div>
       
-      {project.video.url && (
+      {project.video.url && (project.video.url.startsWith("/") || project.video.url.startsWith("http")) && (
         <>
           <span class="subtitle">Video Cantiere</span>
           <ProjectVideo 

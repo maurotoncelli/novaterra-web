@@ -24,8 +24,8 @@ export const fleetAccess = {
   title: "Accesso totale. Nessun limite.",
   leftText: "Grazie a una rete strutturata di fornitori e partner tecnici di fiducia, Novaterra può disporre rapidamente di qualsiasi mezzo di movimento terra, in qualsiasi periodo dell'anno. Questo significa possibilità di affrontare scavi complessi, sbancamenti profondi, demolizioni, opere idrauliche e forestali con tempi rapidi di mobilitazione e costi ottimizzati.",
   rightText: [
-    "Dal miniescavatore da 15 quintali all'escavatore da 350 quintali.",
-    "Dal bobcat alla pala gommata.",
+    "Dal miniescavatore da 8 quintali all'escavatore da 350 quintali.",
+    "Dalla minipala alla pala gommata.",
     "Dal camion 2 assi con gru alle attrezzature speciali.",
     "",
     "<span style='color:var(--nova-accent)'>Tutto ciò che serve, quando serve.</span>"
@@ -40,28 +40,15 @@ export const fleetIntro = {
 
 export const fleetCategories: FleetCategory[] = [
   {
-    id: "escavatori-compatti",
+    id: "escavatori",
     icon: "⟁",
-    title: "Escavatori Compatti",
-    spec: "1 – 8 Tonnellate",
-    image: "https://i.postimg.cc/KjsNLQsc/parcomezzi-escavatoricompatti-2.jpg",
+    title: "Escavatori",
+    spec: "10 q.li – 25 t",
+    image: "/images/parco-mezzi/escavatori.jpg",
     uses: [
-      "Cantieri con accessi stretti",
-      "Scavi per fondazioni leggere",
-      "Urbanizzazioni e posa tubature",
-      "Lavori in spazi residenziali"
-    ]
-  },
-  {
-    id: "escavatori-grandi",
-    icon: "◼",
-    title: "Escavatori Medi e Grandi",
-    spec: "12 – 35 Tonnellate",
-    image: "https://i.postimg.cc/ZnDc3jDK/parcomezzi-escavatori-mediegrandi.jpg",
-    uses: [
-      "Sbancamenti e scavi profondi",
-      "Modellazioni di terreno",
-      "Argini, fossi, bacini idrici",
+      "Dal miniescavatore agli scavi di massa",
+      "Fondazioni, trincee e sbancamenti",
+      "Argini, fossi e bacini",
       "Demolizioni controllate"
     ]
   },
@@ -70,7 +57,7 @@ export const fleetCategories: FleetCategory[] = [
     icon: "◪",
     title: "Pale Gommate",
     spec: "Articolate",
-    image: "https://i.postimg.cc/vTSz9XSB/parcomezzi-pale-gommate.jpg",
+    image: "/images/parco-mezzi/pale-gommate.jpg",
     uses: [
       "Movimento grandi volumi",
       "Gestione piazzali",
@@ -82,13 +69,117 @@ export const fleetCategories: FleetCategory[] = [
     id: "minipale",
     icon: "◈",
     title: "Minipale Cingolate",
-    spec: "Skid Steer",
-    image: "https://i.postimg.cc/BbwgDNwb/parcomezzi-minipale-cingolate.jpg",
+    spec: "Eurocomach 20TL",
+    image: "/images/parco-mezzi/minipale.jpg",
     uses: [
-      "Manutenzione strade bianche",
+      "Accessi stretti e sottochioma",
       "Forestale leggero",
-      "Pulizia piccoli piazzali",
+      "Pulizia piazzali",
       "Livellamenti di fino"
+    ]
+  },
+  {
+    id: "trasportatori",
+    icon: "▭",
+    title: "Trasportatori Polivalenti",
+    spec: "Merlo Cingo",
+    image: "/images/parco-mezzi/trasportatori.jpg",
+    uses: [
+      "Trasporto in spazi stretti",
+      "Cantieri con poca portata del suolo",
+      "Movimentazione di inerti",
+      "Accessi dove un camion non entra"
+    ]
+  },
+  {
+    id: "dumper",
+    icon: "▣",
+    title: "Dumper Cingolati",
+    spec: "Yanmar",
+    image: "/images/parco-mezzi/dumper.jpg",
+    uses: [
+      "Sgombero del materiale di scavo",
+      "Terreni cedevoli e in pendenza",
+      "Cantieri senza strada di cantiere",
+      "Navetta tra scavo e deposito"
+    ]
+  },
+  {
+    id: "telescopici",
+    icon: "↗",
+    title: "Telescopici",
+    spec: "Merlo",
+    image: "/images/parco-mezzi/telescopici.jpg",
+    uses: [
+      "Sollevamento e posa materiali",
+      "Carico in quota",
+      "Cantieri edili e agricoli",
+      "Movimentazione di pallet e attrezzature"
+    ]
+  },
+  {
+    id: "betoniera",
+    icon: "◌",
+    title: "Betoniera Autocaricante",
+    spec: "Merlo",
+    image: "/images/parco-mezzi/betoniera.jpg",
+    uses: [
+      "Calcestruzzo prodotto in cantiere",
+      "Getti dove la betoniera stradale non arriva",
+      "Piccole fondazioni e cordoli",
+      "Dosaggio e carico autonomi"
+    ]
+  },
+  {
+    id: "rulli",
+    icon: "◎",
+    title: "Rulli Tandem",
+    spec: "Ammann",
+    image: "https://i.postimg.cc/fbrfvPJ9/parcomezzi-rulli-compattatori.jpg",
+    uses: [
+      "Compattazione sottofondi",
+      "Strade bianche e asfalto",
+      "Piazzali",
+      "Finiture di precisione"
+    ]
+  },
+  {
+    id: "compattatori",
+    icon: "◉",
+    title: "Compattatori di Terra",
+    spec: "Ammann",
+    image: "/images/parco-mezzi/compattatori.jpg",
+    uses: [
+      "Rilevati e sottofondi",
+      "Riempimenti di trincee",
+      "Piazzali in terra",
+      "Compattazione su terreni coesivi"
+    ]
+  },
+  {
+    id: "piastre",
+    icon: "▦",
+    title: "Piastre Vibranti",
+    spec: "Ammann",
+    image: "/images/parco-mezzi/piastre.jpg",
+    uses: [
+      "Finitura di sottofondi",
+      "Riempimenti in spazi stretti",
+      "Marciapiedi e bordi",
+      "Compattazione dove il rullo non entra"
+    ]
+  },
+  {
+    id: "generatori",
+    icon: "⚡",
+    title: "Gruppi Elettrogeni",
+    spec: "Pramac, fino a 36 kW",
+    image: "/images/parco-mezzi/generatori.jpg",
+    uses: [
+      "Energia in cantiere isolato",
+      "Utensili e pompe",
+      "Illuminazione",
+      "Alimentazione delle attrezzature"
     ]
   },
   {
@@ -108,26 +199,13 @@ export const fleetCategories: FleetCategory[] = [
     id: "attrezzature",
     icon: "⚙",
     title: "Attrezzature Tecniche",
-    spec: "Attachments",
+    spec: "Pinze, martelli, benne",
     image: "https://i.postimg.cc/0jHfmZHk/parcomezzi-attrezzature-tecniche-copia.jpg",
     uses: [
       "Martelli idraulici",
       "Benne inclinabili e grigliate",
       "Pinze da demolizione",
-      "Trivelle e Trenchers"
-    ]
-  },
-  {
-    id: "rulli",
-    icon: "◎",
-    title: "Rulli Compattatori",
-    spec: "Vibranti",
-    image: "https://i.postimg.cc/fbrfvPJ9/parcomezzi-rulli-compattatori.jpg",
-    uses: [
-      "Compattazione sottofondi",
-      "Strade bianche e asfalto",
-      "Piazzali industriali",
-      "Finiture di precisione"
+      "Livelli laser"
     ]
   }
 ];

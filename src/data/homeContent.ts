@@ -5,7 +5,7 @@ export const heroData = {
     subtitle: "Est. 2023 - Terricciola, Toscana",
     titleMain: "PLASMARE",
     titleAccent: "LA TERRA",
-    description: "Dalla Valdera a tutta la provincia di Pisa, uniamo ingegneria operativa e rispetto del paesaggio.",
+    description: "Dalla Valdera a tutta la Toscana, uniamo ingegneria operativa e rispetto del paesaggio.",
     primaryCTA: { text: "Richiedi Sopralluogo", link: "/contatti" },
     secondaryCTA: { text: "Esplora Progetti", link: "/realizzazioni" },
     bgImage: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=2800&auto=format&fit=crop"
@@ -36,7 +36,7 @@ export const introData = {
     shortIntro: {
         subtitle: "Novaterra in Breve",
         title: "L'EVOLUZIONE DEL<br>MOVIMENTO TERRA.",
-        desc: "Siamo un'azienda giovane ma con radici profonde. Operiamo a Terricciola, Peccioli, Ponsacco e in tutta la Valdera. Portiamo nel settore privato la stessa precisione e sicurezza che abbiamo imparato nei grandi cantieri industriali."
+        desc: "Siamo un'azienda giovane ma con radici profonde. Operiamo in Valdera e in tutta la Toscana. Portiamo nel settore privato la stessa precisione e sicurezza che abbiamo imparato nei grandi cantieri industriali."
     },
     founder: {
         subtitle: "Il Volto",
@@ -113,7 +113,7 @@ export const expectations = [
 
 // 5. ASSET (I 3 Pilastri)
 export const assets = [
-    { num: "01", title: "Esperienza Vera", desc: "Cresciuti sui mezzi fin da bambini, formati in aziende leader come Deferco. Conosciamo il terreno toscano metro per metro." },
+    { num: "01", title: "Esperienza Vera", desc: "Cresciuti sui mezzi fin da bambini, formati in cantieri industriali complessi. Conosciamo il terreno toscano metro per metro." },
     { num: "02", title: "Metodo & Pulizia", desc: "Il cantiere non deve essere caos. Ordine, sicurezza e pulizia finale sono parte integrante del nostro servizio." },
     { num: "03", title: "Tecnologia", desc: "Parco mezzi di proprietà costantemente rinnovato: escavatori precisi, camion 2 assi con gru e livelli laser." }
 ];

@@ -1,25 +1,25 @@
 title: Marti
 id: "11"
-excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
+excerpt: "A Marti, per Nicolas: due frane risistemate, argini ricostruiti e la strada a gradoni inclinata verso l’interno, con griglie che portano l’acqua a valle in tubazione."
 year: "2025"
 publishedAt: 2025-08-19
 draft: false
-category: movimento-terra
+category: idrogeologico
 services:
-  - movimento-terra
+  - idrogeologico
 heroMain: "MARTI"
-heroAccent: "CANTIERE"
+heroAccent: "ARGINI"
 heroSubtitle: Case Study
 cover: /images/realizzazioni/marti/copertina.jpg
-client: Da definire
+client: Nicolas
 location: Marti (PI)
-serviceLabel: Da definire
+serviceLabel: Sistemazioni idrogeologiche
 challengeTitle: La Sfida
-challenge: Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online.
-solution: Testo in attesa dei dettagli del lavoro. Nel video si vedono gli escavatori al lavoro su terreno collinare.
+challenge: "Due frane sugli argini e l’acqua che, scendendo dalla scarpata, li faceva smottare di nuovo. Le strade a gradoni c’erano già: andava corretta la pendenza e raccolta l’acqua."
+solution: "Abbiamo ricostruito e profilato gli argini franati. Ogni testa di argine, che fa da strada, è stata inclinata verso l’interno. Lungo il percorso abbiamo messo griglie che raccolgono l’acqua, la intubano e la portano a valle senza farla scorrere sulla scarpata."
 topoTitle: Rilievo Topografico
 topoImage: /images/realizzazioni/marti/collina.jpg
-topoReadout: "LOC: MARTI (PI) // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+topoReadout: "LOC: MARTI (PI) // YEAR: 2025 // TYPE: IDROGEOLOGICO"
 videoType: mp4
 videoUrl: /videos/realizzazioni/marti/cantiere.mp4
 videoPoster: /videos/realizzazioni/marti/poster.jpg

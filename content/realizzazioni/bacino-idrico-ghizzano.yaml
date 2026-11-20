@@ -65,15 +65,9 @@ gallery:
   - src: /images/realizzazioni/ghizzano-bacino/tubazioni.jpg
     alt: Rete in PVC e pozzetto di ispezione
     aspect: portrait
-  - src: /images/realizzazioni/ghizzano-bacino/drenaggio-yanmar.jpg
-    alt: Posa tubo drenante con miniescavatore Yanmar
-    aspect: portrait
   - src: /images/realizzazioni/ghizzano-bacino/case-scavo.jpg
     alt: CASE CX130D in scavo sul fronte del bacino
     aspect: landscape
   - src: /images/realizzazioni/ghizzano-bacino/sponda.jpg
     alt: Profilo della sponda durante la modellazione
-    aspect: landscape
-  - src: /images/realizzazioni/ghizzano-bacino/piazzale.jpg
-    alt: Sistemazione del piazzale a servizio della proprietà
     aspect: landscape

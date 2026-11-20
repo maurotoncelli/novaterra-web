@@ -200,7 +200,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
     
     content: {
       introParagraph: "Decostruire per ricostruire. Interveniamo su edifici civili e industriali con precisione chirurgica.",
-      bodyParagraph: "Utilizziamo pinze idrauliche e frantumatori per minimizzare polveri e vibrazioni. Fondamentale è la gestione dei materiali di risulta: separiamo ferro, legno, plastica e inerti direttamente in cantiere per un corretto smaltimento e riciclo."
+      bodyParagraph: "Scegliamo l’attrezzatura in base al cantiere: pinza, martello demolitore, benna o frantumatore, per contenere polveri e vibrazioni. Fondamentale è la gestione dei materiali di risulta: separiamo ferro, legno, plastica e inerti direttamente in cantiere per un corretto smaltimento e riciclo."
     },
     
     infoCard: {
@@ -272,7 +272,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
     infoCard: {
       title: "Interventi Tipici",
       items: [
-        "Pulizia boschi e terreni incolti",
+        "Taglio boschi e terreni incolti",
         "Trinciatura argini e fossi",
         "Abbattimento alberi alto fusto",
         "Manutenzione verde agricolo"
@@ -341,6 +341,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
         "Scogliere di contenimento",
         "Regimazione acque superficiali",
         "Pulizia fossi e canali",
+        "Realizzazione di palizzate in legno",
         "Ingegneria naturalistica"
       ]
     },
@@ -389,7 +390,7 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
     hero: {
       title: {
         main: "BACINI IDRICI",
-        accent: "E CONSOLIDAMENTI"
+        accent: "E LAGHI"
       },
       subtitle: "Servizio 06",
       image: "/images/servizi/bacini.jpg",
@@ -398,16 +399,16 @@ export const servicesDetail: Record<string, ServiceDetailContent> = {
     
     content: {
       introParagraph: "Creazione di riserve idriche strategiche e messa in sicurezza dei versanti.",
-      bodyParagraph: "Progettiamo e realizziamo laghi artificiali per irrigazione o scopo ornamentale, curando l'impermeabilizzazione e le opere di presa. Interveniamo su versanti instabili con opere di consolidamento come palificate in legno e terre armate, integrando le strutture nel paesaggio circostante."
+      bodyParagraph: "Progettiamo e realizziamo laghi artificiali per irrigazione o scopo ornamentale. Curiamo lo scavo, l'impermeabilizzazione quando il terreno non trattiene l'acqua, e le opere di presa. È questo che distingue un bacino da un semplice movimento terra."
     },
     
     infoCard: {
       title: "Specifiche Tecniche",
       items: [
         "Scavo e modellazione laghi",
-        "Palificate in legno e pietrame",
-        "Terre armate e rinverdimento",
-        "Consolidamento versanti in frana"
+        "Impermeabilizzazione degli invasi",
+        "Opere di presa",
+        "Cisterne e reti di adduzione"
       ]
     },
     

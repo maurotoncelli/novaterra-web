@@ -1,26 +1,25 @@
 title: Santo Pietro
 id: "10"
-excerpt: "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati."
+excerpt: "Pulizia forestale a Santo Pietro per l’azienda agricola Podere Tegolaia: terreno e argini ripuliti con escavatore CASE e trincia forestale."
 year: "2025"
 publishedAt: 2025-04-18
 draft: false
 category: forestale
 services:
   - forestale
-  - movimento-terra
 heroMain: "SANTO"
 heroAccent: "PIETRO"
 heroSubtitle: Case Study
 cover: /images/realizzazioni/santo-pietro/escavatore-case.jpg
-client: Da definire
+client: Azienda agricola Podere Tegolaia
 location: Santo Pietro (PI)
-serviceLabel: Da definire
+serviceLabel: Sistemazioni forestali
 challengeTitle: La Sfida
-challenge: Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online.
-solution: Testo in attesa dei dettagli del lavoro. Nel video si vede il nuovo escavatore CASE in operazione.
+challenge: "Una zona di terreno e gli argini da ripulire, con vegetazione fitta da buttare giù. È un recupero forestale, non uno sbancamento: il lavoro resta nel verde e sugli argini."
+solution: "Abbiamo pulito terreno e argini con un escavatore CASE e un mezzo attrezzato con trincia forestale, lasciando l’area di nuovo percorribile."
 topoTitle: Rilievo Topografico
 topoImage: /images/realizzazioni/santo-pietro/escavatore-case.jpg
-topoReadout: "LOC: SANTO PIETRO // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+topoReadout: "LOC: SANTO PIETRO (PI) // YEAR: 2025 // TYPE: FORESTALE"
 videoType: mp4
 videoUrl: /videos/realizzazioni/santo-pietro/cantiere.mp4
 videoPoster: /videos/realizzazioni/santo-pietro/poster.jpg

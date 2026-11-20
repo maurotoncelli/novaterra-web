@@ -15,6 +15,7 @@ const { className = '', showBox = false } = Astro.props;
   data-tuscany-map
   data-show-box={showBox ? "true" : undefined}
 >
+  <div class="tuscany-map-frame">
   <svg
     class="tuscany-map"
     xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +32,11 @@ const { className = '', showBox = false } = Astro.props;
     <rect id="Box" x=".5" y=".5" width="436.45" height="501.11" />
     <path class="tuscany-path" d="M228.21,493.47c.22-2.39-5.81-.47-5.34,2.2s4.87,2.83,5.34-2.2Z"/>
   </svg>
+  <span class="hq-marker" aria-label="Sede a Terricciola">
+    <span class="hq-dot"></span>
+    <span class="hq-name">Terricciola</span>
+  </span>
+  </div>
 </div>
 
 <style>
@@ -43,6 +49,7 @@ const { className = '', showBox = false } = Astro.props;
     padding: clamp(18px, 3vw, 34px);
     /* IMPORTANT: don't clip thick strokes / glow */
     overflow: visible;
+    position: relative;
   }
 
   /* Compact variant (used in the home “Territorio” split section) */
@@ -62,11 +69,73 @@ const { className = '', showBox = false } = Astro.props;
     }
   }
 
+  .tuscany-map-frame {
+    position: relative;
+  }
+
   .tuscany-map {
     display: block;
     width: 100%;
     height: auto;
     overflow: visible;
+  }
+
+  /* Sede. Percentuali sul viewBox (155/436.95, 208/501.61): il centro resta lo stesso a ogni larghezza. */
+  .hq-marker {
+    position: absolute;
+    left: 35.47%;
+    top: 41.47%;
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  :global([data-tuscany-map].is-filled) .hq-marker {
+    opacity: 1;
+    transition: opacity 500ms ease 180ms;
+  }
+
+  .hq-dot {
+    box-sizing: border-box;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff7f2;
+    border: 2px solid #cd5c2f;
+    box-shadow: 0 0 0 5px rgba(205, 92, 47, 0.35);
+  }
+
+  .hq-name {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff7f2;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .hq-marker,
+    .hq-dot {
+      width: 9px;
+      height: 9px;
+    }
+
+    .hq-dot {
+      box-shadow: 0 0 0 3px rgba(205, 92, 47, 0.4);
+    }
+
+    .hq-name {
+      font-size: 0.68rem;
+      left: 13px;
+    }
   }
 
   .tuscany-path {
@@ -143,6 +212,10 @@ const { className = '', showBox = false } = Astro.props;
     .tuscany-path {
       transition: none !important;
       animation: none !important;
+    }
+
+    .hq-marker {
+      opacity: 1;
     }
   }
 </style>

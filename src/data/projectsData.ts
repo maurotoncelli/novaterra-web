@@ -134,7 +134,7 @@ export const projects: Project[] = [
     },
 
     specs: {
-      client: "Privato",
+      client: "Azienda agricola Podere Tegolaia",
       location: "Santo Pietro (PI)",
       year: "2025",
       service: "Sistemazioni forestali"
@@ -148,7 +148,7 @@ export const projects: Project[] = [
 
     solution: {
       description:
-        "Siamo entrati con una minipala cingolata Eurocomach 20TL e trincia forestale, per triturare la vegetazione anche dove un trattore non gira. Nei filari più aperti ha lavorato il trattore Goldoni con trinciatrice, lasciando il trinciato a terra come pacciamatura. A fine intervento l’oliveta è di nuovo percorribile, senza asportare il materiale."
+        "Siamo entrati con una minipala cingolata Eurocomach 20TL e trincia forestale, per triturare la vegetazione anche dove un trattore non gira. Nei filari più aperti ha lavorato il trattore Goldoni con trinciatrice. A fine intervento l’oliveta è di nuovo percorribile, senza asportare il materiale."
     },
 
     topographic: {
@@ -193,7 +193,7 @@ export const projects: Project[] = [
       image: "/images/realizzazioni/demolizione-soianella/copertina.jpg"
     },
     specs: {
-      client: "Privato",
+      client: "Azienda agricola Podere Tegolaia",
       location: "Soianella, Terricciola (PI)",
       year: "2026",
       service: "Demolizioni"
@@ -363,10 +363,8 @@ export const projects: Project[] = [
       { src: "/images/realizzazioni/ghizzano-bacino/cisterne-zenitale.jpg", alt: "Cisterne in linea viste dallo zenit", aspect: "landscape" },
       { src: "/images/realizzazioni/ghizzano-bacino/cisterne-trincea.jpg", alt: "Cisterne interrate nella trincea di posa", aspect: "portrait" },
       { src: "/images/realizzazioni/ghizzano-bacino/tubazioni.jpg", alt: "Rete in PVC e pozzetto di ispezione", aspect: "portrait" },
-      { src: "/images/realizzazioni/ghizzano-bacino/drenaggio-yanmar.jpg", alt: "Posa tubo drenante con miniescavatore Yanmar", aspect: "portrait" },
       { src: "/images/realizzazioni/ghizzano-bacino/case-scavo.jpg", alt: "CASE CX130D in scavo sul fronte del bacino", aspect: "landscape" },
-      { src: "/images/realizzazioni/ghizzano-bacino/sponda.jpg", alt: "Profilo della sponda durante la modellazione", aspect: "landscape" },
-      { src: "/images/realizzazioni/ghizzano-bacino/piazzale.jpg", alt: "Sistemazione del piazzale a servizio della proprietà", aspect: "landscape" }
+      { src: "/images/realizzazioni/ghizzano-bacino/sponda.jpg", alt: "Profilo della sponda durante la modellazione", aspect: "landscape" }
     ],
 
     video: {
@@ -397,7 +395,7 @@ export const projects: Project[] = [
     },
 
     specs: {
-      client: "Privato",
+      client: "Azienda agricola Podere Tegolaia",
       location: "Santo Pietro (PI)",
       year: "2026",
       service: "Bonifica vigneto"
@@ -448,41 +446,41 @@ export const projects: Project[] = [
 
     title: "Marti",
     excerpt:
-      "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati.",
+      "A Marti, per Nicolas: due frane risistemate, argini ricostruiti e la strada a gradoni inclinata verso l’interno, con griglie che portano l’acqua a valle in tubazione.",
     thumbnail: "/images/realizzazioni/marti/copertina.jpg",
     year: "2025",
     publishedAt: "2025-08-19",
-    category: "movimento-terra",
-    services: ["movimento-terra"],
+    category: "idrogeologico",
+    services: ["idrogeologico"],
 
     hero: {
-      title: { main: "MARTI", accent: "CANTIERE" },
+      title: { main: "MARTI", accent: "ARGINI" },
       subtitle: "Case Study",
       image: "/images/realizzazioni/marti/copertina.jpg"
     },
 
     specs: {
-      client: "Da definire",
+      client: "Nicolas",
       location: "Marti (PI)",
       year: "2025",
-      service: "Da definire"
+      service: "Sistemazioni idrogeologiche"
     },
 
     challenge: {
       title: "La Sfida",
       description:
-        "Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online."
+        "Due frane sugli argini e l’acqua che, scendendo dalla scarpata, li faceva smottare di nuovo. Le strade a gradoni c’erano già: andava corretta la pendenza e raccolta l’acqua."
     },
 
     solution: {
       description:
-        "Testo in attesa dei dettagli del lavoro. Nel video si vedono gli escavatori al lavoro su terreno collinare."
+        "Abbiamo ricostruito e profilato gli argini franati. Ogni testa di argine, che fa da strada, è stata inclinata verso l’interno. Lungo il percorso abbiamo messo griglie che raccolgono l’acqua, la intubano e la portano a valle senza farla scorrere sulla scarpata."
     },
 
     topographic: {
       title: "Rilievo Topografico",
       image: "/images/realizzazioni/marti/collina.jpg",
-      dataReadout: "LOC: MARTI (PI) // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+      dataReadout: "LOC: MARTI (PI) // YEAR: 2025 // TYPE: IDROGEOLOGICO"
     },
 
     gallery: [
@@ -506,12 +504,12 @@ export const projects: Project[] = [
 
     title: "Santo Pietro",
     excerpt:
-      "Scheda in preparazione: video cantiere già disponibile. Testi, cliente e dettagli dell’intervento verranno aggiornati.",
+      "Pulizia forestale a Santo Pietro per l’azienda agricola Podere Tegolaia: terreno e argini ripuliti con escavatore CASE e trincia forestale.",
     thumbnail: "/images/realizzazioni/santo-pietro/escavatore-case.jpg",
     year: "2025",
     publishedAt: "2025-04-18",
     category: "forestale",
-    services: ["forestale", "movimento-terra"],
+    services: ["forestale"],
 
     hero: {
       title: { main: "SANTO", accent: "PIETRO" },
@@ -520,27 +518,27 @@ export const projects: Project[] = [
     },
 
     specs: {
-      client: "Da definire",
+      client: "Azienda agricola Podere Tegolaia",
       location: "Santo Pietro (PI)",
       year: "2025",
-      service: "Da definire"
+      service: "Sistemazioni forestali"
     },
 
     challenge: {
       title: "La Sfida",
       description:
-        "Testo in attesa dei dettagli del lavoro. Il video del cantiere è già online."
+        "Una zona di terreno e gli argini da ripulire, con vegetazione fitta da buttare giù. È un recupero forestale, non uno sbancamento: il lavoro resta nel verde e sugli argini."
     },
 
     solution: {
       description:
-        "Testo in attesa dei dettagli del lavoro. Nel video si vede il nuovo escavatore CASE in operazione."
+        "Abbiamo pulito terreno e argini con un escavatore CASE e un mezzo attrezzato con trincia forestale, lasciando l’area di nuovo percorribile."
     },
 
     topographic: {
       title: "Rilievo Topografico",
       image: "/images/realizzazioni/santo-pietro/escavatore-case.jpg",
-      dataReadout: "LOC: SANTO PIETRO // YEAR: 2025 // STATUS: IN PREPARAZIONE"
+      dataReadout: "LOC: SANTO PIETRO (PI) // YEAR: 2025 // TYPE: FORESTALE"
     },
 
     gallery: [
@@ -563,7 +561,7 @@ export const projects: Project[] = [
 
     title: "Sistemazione Forestale a San Vincenzo",
     excerpt:
-      "Intervento forestale con forwarder: esbosco, accatastamento e pulizia del sottobosco in area mediterranea. Mezzi specializzati, lavoro in pendenza e gestione del materiale legnoso in sito.",
+      "Prestazione di manodopera in un bosco ceduo di querce a San Vincenzo: esbosco e accatastamento con forwarder, in pendenza e senza aprire piste nuove.",
     thumbnail: "/images/realizzazioni/san-vincenzo/copertina.jpg",
     year: "2024",
     publishedAt: "2024-05-09",
@@ -577,7 +575,7 @@ export const projects: Project[] = [
     },
 
     specs: {
-      client: "Privato",
+      client: "Azienda agricola",
       location: "San Vincenzo (LI)",
       year: "2024",
       service: "Sistemazioni forestali"
@@ -586,7 +584,7 @@ export const projects: Project[] = [
     challenge: {
       title: "La Sfida",
       description:
-        "Operare in un bosco mediterraneo con pendenze, accessi stretti e vegetazione densa, esboscando e accatastando il materiale senza danneggiare il soprassuolo residuo e senza aprire piste invasive."
+        "Operare in un bosco ceduo di querce, con pendenze e accessi stretti, esboscando e accatastando il materiale senza danneggiare le piante da lasciare e senza aprire piste invasive."
     },
 
     solution: {

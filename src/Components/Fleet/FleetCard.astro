@@ -13,7 +13,15 @@ const { category } = Astro.props;
   <div class="fleet-image">
     <img src={category.image} alt={category.title} loading="lazy" decoding="async" />
   </div>
-  <div class="fleet-icon">{category.icon}</div>
+  <div class="fleet-icon">
+    {category.icon === "⚡" ? (
+      <svg class="fleet-bolt" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M13.2 1.5 3.4 13.6h6.3l-1.1 8.9 10.9-13.2h-6.6l.3-7.8z" />
+      </svg>
+    ) : (
+      category.icon
+    )}
+  </div>
   <h3 class="fleet-title">{category.title}</h3>
   <span class="fleet-spec">{category.spec}</span>
   <ul class="fleet-list">
@@ -64,6 +72,13 @@ const { category } = Astro.props;
     font-size: 2rem;
     margin-bottom: 1rem;
     color: var(--nova-accent);
+    line-height: 1;
+  }
+
+  .fleet-bolt {
+    display: block;
+    width: 1.7rem;
+    height: 1.7rem;
   }
   
   .fleet-title {

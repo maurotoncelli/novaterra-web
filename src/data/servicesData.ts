@@ -76,7 +76,7 @@ export const servicesList: Service[] = [
   {
     id: "bacini",
     symbol: "◉",
-    title: "Bacini idrici + Consolidamenti",
+    title: "Bacini idrici",
     slug: "/servizi/bacini",
     image: "/images/servizi/bacini.jpg"
   }
