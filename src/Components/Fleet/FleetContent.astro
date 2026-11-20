@@ -1,7 +1,11 @@
 ---
 // src/Components/Fleet/FleetContent.astro
 import FleetCard from './FleetCard.astro';
-import { fleetAccess, fleetIntro, fleetCategories, fleetMethod, fleetCTA } from '../../data/fleetData';
+import { getLocale } from '../../i18n/config';
+import { fleetContent } from '../../i18n/content';
+
+const fleet = fleetContent(getLocale(Astro.url.pathname));
+const { access: fleetAccess, intro: fleetIntro, categories: fleetCategories, method: fleetMethod, cta: fleetCTA } = fleet;
 ---
 
 <!-- Sezione Accesso Totale -->

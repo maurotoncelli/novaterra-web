@@ -1,0 +1,95 @@
+---
+// src/pages/contatti.astro
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import ContactForm from '../Components/Contact/ContactForm.astro';
+import ContactInfo from '../Components/Contact/ContactInfo.astro';
+import ContactMap from '../Components/Contact/ContactMap.astro';
+import { getLocale } from '../i18n/config';
+import { contactContent } from '../i18n/content';
+
+const page = contactContent(getLocale(Astro.url.pathname));
+const contactHero = page.hero;
+---
+
+<PageTemplate
+  meta={{
+    title: page.meta.title,
+    description: page.meta.description,
+  }}
+  hero={contactHero}
+>
+  <section class="contact-page">
+    <!-- Grid 2 colonne: Info | Form -->
+    <div class="contact-layout">
+      <!-- Colonna Info -->
+      <div>
+        <span class="subtitle">{page.page.infoKicker}</span>
+        <h2 class="section-title">{page.page.infoTitle}</h2>
+        <div class="contact-info-stack">
+          <ContactInfo showHeading={false} />
+        </div>
+      </div>
+
+      <!-- Colonna Form -->
+      <div>
+        <span class="subtitle">{page.page.formKicker}</span>
+        <h2 class="section-title">{page.page.formTitle}</h2>
+        <p class="contact-lead">
+          {page.page.formLead}
+        </p>
+        <ContactForm />
+      </div>
+    </div>
+
+    <!-- Mappa -->
+    <ContactMap />
+  </section>
+</PageTemplate>
+
+<style>
+  .contact-page {
+    width: 100%;
+  }
+
+  .contact-lead {
+    margin-top: 1.25rem;
+    margin-bottom: 3rem;
+    color: var(--nova-muted);
+    line-height: 1.7;
+    max-width: 42rem;
+  }
+  
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+  }
+
+  .contact-info-stack {
+    margin-top: 2.25rem;
+  }
+
+  /* Tablet: reduce spacing without changing layout */
+  @media (max-width: 1024px) {
+    .contact-layout {
+      gap: 3rem;
+      margin-bottom: 5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .contact-info-stack {
+      margin-top: 1.75rem;
+    }
+
+    .contact-lead {
+      margin-bottom: 2.25rem;
+    }
+
+    .contact-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

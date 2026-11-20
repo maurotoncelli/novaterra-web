@@ -1,5 +1,8 @@
 ---
 // src/Components/Projects/ProjectHero.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   title: {
     main: string;
@@ -11,6 +14,7 @@ interface Props {
 }
 
 const { title, subtitle, image, backLink } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
 ---
 
 <div class="project-hero">
@@ -23,7 +27,7 @@ const { title, subtitle, image, backLink } = Astro.props;
   
   <div class="project-hero-content">
     <a href={backLink} class="btn-back">
-      ← Torna ai Progetti
+      {ui.backToProjects}
     </a>
     <span class="subtitle text-white">{subtitle}</span>
     <h1 class="display-text text-white m-0">

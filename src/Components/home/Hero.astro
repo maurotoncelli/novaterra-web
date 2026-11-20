@@ -1,6 +1,11 @@
 ---
 // src/Components/Home/Hero.astro
-import { heroData } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { chrome, homeContent } from '../../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const heroData = homeContent(locale).hero;
+const scrollLabel = chrome(locale).scroll;
 ---
 
 <main class="relative w-full h-screen overflow-hidden flex items-center justify-center" data-parallax-section="hero">
@@ -65,7 +70,7 @@ import { heroData } from '../../data/homeContent';
 		<div class="mouse-icon">
 			<div class="mouse-wheel"></div>
 		</div>
-		<span class="scroll-text-lbl">SCROLL</span>
+		<span class="scroll-text-lbl">{scrollLabel}</span>
 	</div>
 </main>
 

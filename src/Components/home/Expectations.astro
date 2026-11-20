@@ -1,10 +1,13 @@
 ---
-import { expectations } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
 import SectionHeader from '../Ui/SectionHeader.astro';
+
+const { expectations, expectationsHeader } = homeContent(getLocale(Astro.url.pathname));
 ---
 <section class="container mx-auto px-[5vw] mt-16 md:mt-32 relative z-10">
     
-    <SectionHeader subtitle="Standard Operativo" title="Cosa aspettarti da noi." />
+    <SectionHeader subtitle={expectationsHeader.subtitle} title={expectationsHeader.title} />
 
     <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
         {expectations.map(exp => (

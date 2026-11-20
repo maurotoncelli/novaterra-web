@@ -1,5 +1,8 @@
 ---
 // src/Components/Blog/ArticleHero.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   title: {
     main: string;
@@ -12,7 +15,8 @@ interface Props {
   category?: string;
 }
 
-const { title, subtitle, image, backLink, date, category } = Astro.props;
+const { title, subtitle, image, backLink } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
 ---
 
 <div class="article-hero" data-parallax-section="hero">
@@ -25,7 +29,7 @@ const { title, subtitle, image, backLink, date, category } = Astro.props;
   
   <div class="article-hero-content">
     <a href={backLink} class="btn-back">
-      ← Torna alle Notizie
+      {ui.backToNews}
     </a>
     <span class="subtitle text-white">{subtitle}</span>
     <h1 class="display-text text-white m-0">

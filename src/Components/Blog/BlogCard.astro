@@ -1,17 +1,21 @@
 ---
 // src/Components/Blog/BlogCard.astro
-import { formatDate, type BlogPost } from '../../data/blogData';
+import type { BlogPost } from '../../data/blogData';
+import { getLocale, articlePath } from '../../i18n/config';
+import { chrome, formatLocalizedDate, localizePost } from '../../i18n/content';
 
 interface Props {
   post: BlogPost;
 }
 
-const { post } = Astro.props;
-const formattedDate = formatDate(post.date);
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const post = localizePost(Astro.props.post, locale);
+const formattedDate = formatLocalizedDate(post.date, locale);
 ---
 
 <a 
-  href={`/blog/${post.slug}`} 
+  href={articlePath(post.slug, locale)} 
   class="blog-card"
   data-category={post.category}
 >
@@ -20,7 +24,7 @@ const formattedDate = formatDate(post.date);
     <h3 class="blog-title">{post.title}</h3>
     <p class="blog-excerpt">{post.excerpt}</p>
   </div>
-  <span class="blog-link">LEGGI TUTTO →</span>
+  <span class="blog-link">{ui.readMore}</span>
 </a>
 
 <style>

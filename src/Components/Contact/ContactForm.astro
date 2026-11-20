@@ -1,6 +1,12 @@
 ---
 // src/Components/Contact/ContactForm.astro
-import { formConfig } from '../../data/contactData';
+import { getLocale, pathFor } from '../../i18n/config';
+import { chrome, contactContent } from '../../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const contact = contactContent(locale);
+const formConfig = contact.form;
 ---
 
 <!-- Banner successo (visibile quando URL ha ?success=true dopo submission Netlify) -->
@@ -8,10 +14,10 @@ import { formConfig } from '../../data/contactData';
   <div class="success-inner">
     <span class="success-icon">✓</span>
     <div class="success-text">
-      <strong class="success-title">Messaggio inviato!</strong>
-      <p class="success-desc">Riccardo ti risponderà al più presto a <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
+      <strong class="success-title">{ui.contactSentTitle}</strong>
+      <p class="success-desc">{ui.contactSentBody} <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
     </div>
-    <button class="success-close" type="button" aria-label="Chiudi">✕</button>
+    <button class="success-close" type="button" aria-label={ui.closeAria}>✕</button>
   </div>
 </div>
 
@@ -20,17 +26,17 @@ import { formConfig } from '../../data/contactData';
   <div class="success-inner">
     <span class="error-icon">!</span>
     <div class="success-text">
-      <strong class="error-title">Invio non riuscito</strong>
-      <p class="success-desc">Riprova tra poco oppure scrivici a <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
+      <strong class="error-title">{ui.contactErrorTitle}</strong>
+      <p class="success-desc">{ui.contactErrorBody} <a href="mailto:info@novaterra.work">info@novaterra.work</a></p>
     </div>
-    <button class="success-close error-close" type="button" aria-label="Chiudi">✕</button>
+    <button class="success-close error-close" type="button" aria-label={ui.closeAria}>✕</button>
   </div>
 </div>
 
 <div class="form-wrapper">
   <!--
     Invio via POST standard (non AJAX) all'endpoint serverless /api/contact.
-    L'endpoint invia l'email con Resend e redirige a /contatti?success=true (o ?error=true).
+    L'endpoint invia l'email e torna al percorso contatti della lingua del modulo (?success=true oppure ?error=true).
     Per cambiare email di notifica: variabile d'ambiente CONTACT_TO_EMAIL su Vercel.
   -->
   <form
@@ -44,6 +50,8 @@ import { formConfig } from '../../data/contactData';
     <p class="honeypot" aria-hidden="true">
       <input name="bot-field" tabindex="-1" autocomplete="off" />
     </p>
+
+    <input type="hidden" name="returnTo" value={contact.returnTo} />
 
     {formConfig.fields.map((field) => (
       <div class="input-group">
@@ -63,16 +71,16 @@ import { formConfig } from '../../data/contactData';
       <label class="consent-row">
         <input id="privacy-consent" name="privacyConsent" type="checkbox" required />
         <span class="consent-text">
-          Ho letto e accetto la <a class="consent-link" href="/privacy-policy">Privacy Policy</a>.
-          I dati verranno usati per rispondere alla richiesta e, se applicabile, per analisi statistiche (Google Analytics) e comunicazioni informative/marketing.
-          <strong>Non vendiamo i dati a terzi</strong>.
+          {ui.privacyBefore} <a class="consent-link" href={pathFor("privacy", locale)}>{ui.privacy}</a>.
+          {ui.privacyAfter}
+          <strong>{ui.noResale}</strong>.
         </span>
       </label>
       <label class="consent-row consent-row--optional">
         <input id="newsletter-consent" name="newsletterConsent" type="checkbox" />
         <span class="consent-text">
-          Voglio ricevere aggiornamenti dal blog — per esempio su nuovi bonus edilizia, normative o articoli utili.
-          <span class="consent-optional">(facoltativo)</span>
+          {ui.newsletter}
+          <span class="consent-optional">{ui.optional}</span>
         </span>
       </label>
     </div>

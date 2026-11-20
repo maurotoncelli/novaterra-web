@@ -8,41 +8,49 @@ import Preloader from '../Components/Ui/Preloader.astro';
 import BackToTop from '../Components/Ui/BackToTop.astro';
 import Analytics from '../Components/Ui/Analytics.astro';
 import DepthGauge from '../Components/Ui/DepthGauge.astro';
+import { absoluteUrl, defaultLocale, getLocale, locales, translatePath } from '../i18n/config';
+import { chrome } from '../i18n/content';
 
 interface Props {
 	title: string;
 	description?: string;
 	showPreloader?: boolean;
-	// NOTE: use explicit prop names to avoid any edge-case with reserved/ambiguous attribute names.
 	canonicalHref?: string;
 	robotsMeta?: string;
-	// Back-compat aliases (in case some pages already use these names)
 	canonical?: string;
 	robots?: string;
 }
 
 const { 
 	title = "NOVATERRA | Earth Engineering", 
-	description = "Ingegneria del territorio e scavi in Toscana.",
 	showPreloader = false,
-	canonicalHref,
 	robotsMeta,
-	canonical,
 	robots,
 } = Astro.props;
 
+const locale = getLocale(Astro.url.pathname);
+const description = Astro.props.description ?? chrome(locale).metaDescription;
+const robotsContent = robotsMeta ?? robots;
+const canonicalUrl = absoluteUrl(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="it">
+<html lang={locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		{(canonicalHref ?? canonical) && <link rel="canonical" href={(canonicalHref ?? canonical)!} />}
-		{(robotsMeta ?? robots) && <meta name="robots" content={(robotsMeta ?? robots)!} />}
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" type="text/plain" href={absoluteUrl("/llms.txt")} title="llms.txt" />
+		{!robotsContent?.includes("noindex") && locales.map((code) => (
+			<link rel="alternate" hreflang={code} href={absoluteUrl(translatePath(Astro.url.pathname, code))} />
+		))}
+		{!robotsContent?.includes("noindex") && (
+			<link rel="alternate" hreflang="x-default" href={absoluteUrl(translatePath(Astro.url.pathname, defaultLocale))} />
+		)}
+		{robotsContent && <meta name="robots" content={robotsContent} />}
 		<Analytics />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

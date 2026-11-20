@@ -1,0 +1,27 @@
+---
+// src/pages/parco-mezzi/index.astro
+// Route ufficiale “Parco Mezzi” (navbar + canonical):
+// - UI consistente con le altre pagine (PageTemplate + PageHero)
+// - /mezzi rimane come alias con redirect 301 verso /parco-mezzi
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import FleetContent from '../Components/Fleet/FleetContent.astro';
+import { getLocale } from '../i18n/config';
+import { fleetContent } from '../i18n/content';
+
+const page = fleetContent(getLocale(Astro.url.pathname));
+const fleetHero = page.hero;
+---
+
+<PageTemplate
+  meta={{
+    title: page.meta.title,
+    description: page.meta.description,
+  }}
+  hero={fleetHero}
+>
+  <FleetContent />
+</PageTemplate>
+
+
+
+

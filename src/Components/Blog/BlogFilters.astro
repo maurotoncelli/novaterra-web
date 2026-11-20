@@ -1,17 +1,21 @@
 ---
 // src/Components/Blog/BlogFilters.astro
-import { blogCategories, type BlogCategory } from '../../data/blogData';
+import type { BlogCategory } from '../../data/blogData';
+import { getLocale } from '../../i18n/config';
+import { blogIndex, chrome } from '../../i18n/content';
 
 interface Props {
   activeCategory?: BlogCategory;
 }
 
 const { activeCategory = "tutti" } = Astro.props;
-const categories = Object.entries(blogCategories);
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const categories = Object.entries(blogIndex(locale).categories);
 ---
 
 <div class="blog-filters">
-  <span class="filters-label">Filtra per:</span>
+  <span class="filters-label">{ui.filterBy}</span>
   <div class="filters-buttons">
     {categories.map(([key, label]) => (
       <button 

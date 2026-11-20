@@ -1,14 +1,18 @@
 ---
 // src/Components/Ui/BackToTop.astro
 // Global "back to top" button. Behavior is wired in src/scripts/site.ts
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
+const label = chrome(getLocale(Astro.url.pathname)).backToTop;
 ---
 
 <button
   id="back-to-top"
   class="back-to-top"
   type="button"
-  aria-label="Torna su"
-  title="Torna su"
+  aria-label={label}
+  title={label}
 >
   <span class="arrow" aria-hidden="true">↑</span>
 </button>

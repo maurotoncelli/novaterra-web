@@ -1,0 +1,114 @@
+---
+// src/pages/blog/[slug].astro
+// Dynamic routing per articoli blog
+
+import Layout from '../layouts/Layout.astro';
+import ArticleHero from '../Components/Blog/ArticleHero.astro';
+import ArticleContent from '../Components/Blog/ArticleContent.astro';
+import RelatedArticles from '../Components/Blog/RelatedArticles.astro';
+import { getArticleBySlug, getPostBySlug } from '../lib/blogRepository';
+import { entrySlug, getLocale, pathFor } from '../i18n/config';
+import { chrome, formatLocalizedDate, localizeArticle, localizePost } from '../i18n/content';
+
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const slug = entrySlug(Astro.url.pathname);
+const sourcePost = slug ? await getPostBySlug(slug) : undefined;
+const sourceArticle = slug ? await getArticleBySlug(slug) : undefined;
+if (!sourcePost || !sourceArticle || !slug) {
+  throw new Error(`Missing article for ${Astro.url.pathname}`);
+}
+const post = localizePost(sourcePost, locale);
+const article = localizeArticle(sourceArticle, locale);
+const pageTitle = `${post.title} | ${ui.newsTitleBrand}`;
+const pageDescription = post.excerpt;
+const formattedDate = formatLocalizedDate(post.date, locale);
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  
+  <article class="article-page">
+    
+    <!-- Hero con Featured Image -->
+    <ArticleHero 
+      title={article.hero.title}
+      subtitle={article.hero.subtitle}
+      image={article.hero.image}
+      backLink={article.hero.backLink}
+      date={formattedDate}
+      category={post.category}
+    />
+    
+    <!-- Contenuto Articolo -->
+    <div class="container">
+      <ArticleContent 
+        paragraphs={article.content.paragraphs}
+        sections={article.content.sections}
+      />
+      
+      <!-- Articoli Correlati -->
+      <RelatedArticles 
+        currentSlug={slug!}
+        currentCategory={post.category}
+        maxItems={3}
+      />
+      
+      <!-- CTA Bottom -->
+      <div class="article-cta">
+        <a href={pathFor("news", locale)} class="cta-button">
+          {ui.allArticles}
+        </a>
+      </div>
+    </div>
+    
+  </article>
+
+</Layout>
+
+<style>
+  .article-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .container {
+    max-width: var(--container-width, 1400px);
+    margin: 0 auto;
+    padding: 0 5vw 6rem 5vw;
+    width: 100%;
+  }
+  
+  .article-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 3rem;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--nova-text);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    border-color: var(--nova-accent);
+    color: var(--nova-accent);
+    transform: translateX(-5px);
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding-bottom: 4rem;
+    }
+  }
+</style>
+

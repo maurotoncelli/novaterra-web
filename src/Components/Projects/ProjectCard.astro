@@ -1,17 +1,21 @@
 ---
 // src/Components/Projects/ProjectCard.astro
 import type { Project } from '../../data/projectsData';
+import { getLocale, projectPath } from '../../i18n/config';
+import { chrome, localizeProject } from '../../i18n/content';
 
 interface Props {
   project: Project;
 }
 
-const { project } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const project = localizeProject(Astro.props.project, locale);
 const categories = [...new Set([project.category, ...(project.services ?? [])])].join(" ");
 ---
 
 <a 
-  href={`/realizzazioni/${project.slug}`}
+  href={projectPath(project.slug, locale)}
   class="project-item"
   data-category={project.category}
   data-categories={categories}
@@ -32,7 +36,7 @@ const categories = [...new Set([project.category, ...(project.services ?? [])])]
       <p class="project-excerpt">{project.excerpt}</p>
     </div>
     <div class="project-meta-container">
-      <span class="project-meta">VEDI PROGETTO →</span>
+      <span class="project-meta">{ui.seeProject}</span>
       <span class="project-year">{project.year}</span>
     </div>
   </div>

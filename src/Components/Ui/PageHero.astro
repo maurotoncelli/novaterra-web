@@ -1,5 +1,8 @@
 ---
 // src/Components/Ui/PageHero.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   subtitle: string;
   title: {
@@ -22,8 +25,9 @@ const {
   description,
   parallaxSpeed = 0.5,
   backLink,
-  backLabel = '← Torna Indietro',
+  backLabel,
 } = Astro.props;
+const label = backLabel ?? chrome(getLocale(Astro.url.pathname)).back;
 ---
 
 <div class="page-hero" data-parallax-section="hero">
@@ -37,7 +41,7 @@ const {
   <div class="page-hero-content">
     {backLink && (
       <a href={backLink} class="page-hero-back">
-        {backLabel}
+        {label}
       </a>
     )}
     <span class="subtitle text-white">{subtitle}</span>

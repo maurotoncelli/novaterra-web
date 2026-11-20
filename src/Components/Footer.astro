@@ -1,19 +1,22 @@
 ---
 // src/Components/Footer.astro
+import { getLocale, pathFor } from '../i18n/config';
+import { chrome } from '../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
 ---
 <footer class="w-full py-16 px-[5vw] border-t border-white/10 bg-nova-bg text-nova-muted text-sm relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
     
-    <!-- Dati Aziendali -->
     <div class="text-center md:text-left">
-        <p>&copy; 2026 Novaterra. P.IVA 02488820503.</p>
-        <a href="/privacy-policy" class="footer-link inline-block mt-3 text-xs uppercase tracking-widest opacity-70 hover:opacity-100 hover:text-nova-accent transition-colors">
-          Privacy Policy
+        <p>{ui.legalLine}</p>
+        <a href={pathFor("privacy", locale)} class="footer-link inline-block mt-3 text-xs uppercase tracking-widest opacity-70 hover:opacity-100 hover:text-nova-accent transition-colors">
+          {ui.privacy}
         </a>
     </div>
     
-    <!-- Credits -->
     <div class="text-center opacity-60 uppercase tracking-widest text-xs">
-        Sito realizzato da A&T Studio - Mauro Toncelli / Anna Gallucci
+        {ui.footerCredit}
     </div>
 
     <!-- Socials -->

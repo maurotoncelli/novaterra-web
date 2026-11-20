@@ -1,0 +1,100 @@
+---
+// src/pages/servizi/[slug].astro
+// Dynamic routing per pagine dettaglio servizi
+
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import ServiceTextGrid from '../Components/ServiceDetail/ServiceTextGrid.astro';
+import ServiceInfoCard from '../Components/ServiceDetail/ServiceInfoCard.astro';
+import ServiceRelatedProjects from '../Components/ServiceDetail/ServiceRelatedProjects.astro';
+import { getServiceBySlug } from '../lib/servicesRepository';
+import { currentServiceId, getLocale } from '../i18n/config';
+import { chrome, localizeService } from '../i18n/content';
+
+// getStaticPaths genera tutte le pagine servizi
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const serviceId = currentServiceId(Astro.url.pathname);
+const source = serviceId ? getServiceBySlug(serviceId) : undefined;
+const service = source ? localizeService(source, locale) : undefined;
+if (!service || !serviceId) {
+  throw new Error(`Missing service for ${Astro.url.pathname}`);
+}
+const pageTitle = `${service.hero.title.main} ${service.hero.title.accent} | Novaterra`;
+const pageDescription = service.content.introParagraph;
+---
+
+<PageTemplate
+  meta={{
+    title: pageTitle,
+    description: pageDescription,
+  }}
+  hero={{
+    subtitle: service.hero.subtitle,
+    title: service.hero.title,
+    image: service.hero.image,
+    backLink: service.hero.backLink,
+    backLabel: ui.backToServices,
+  }}
+>
+  <div class="service-detail-page">
+    <!-- Grid Testo + Info Card -->
+    <ServiceTextGrid
+      introParagraph={service.content.introParagraph}
+      bodyParagraph={service.content.bodyParagraph}
+    >
+      <ServiceInfoCard
+        title={service.infoCard.title}
+        items={service.infoCard.items}
+        headingLevel="h2"
+      />
+    </ServiceTextGrid>
+
+    <!-- Realizzazioni correlate (auto, max 3) -->
+    <ServiceRelatedProjects serviceSlugs={[serviceId]} />
+
+    <!-- CTA (opzionale) -->
+    {service.cta && (
+      <div class="cta-section">
+        <a href={service.cta.link} class="cta-button">
+          {service.cta.text}
+        </a>
+      </div>
+    )}
+  </div>
+</PageTemplate>
+
+<style>
+  .service-detail-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .cta-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    border: 1px solid var(--nova-accent);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background: var(--nova-accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+</style>
+

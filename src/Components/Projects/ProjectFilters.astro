@@ -1,19 +1,22 @@
 ---
 // src/Components/Projects/ProjectFilters.astro
-import { projectCategories, type ProjectCategory } from '../../data/projectsData';
+import type { ProjectCategory } from '../../data/projectsData';
+import { getLocale } from '../../i18n/config';
+import { chrome, projectsIndex } from '../../i18n/content';
 
 interface Props {
   activeCategory?: ProjectCategory;
 }
 
 const { activeCategory = "tutti" } = Astro.props;
-const categories = Object.entries(projectCategories);
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const categories = Object.entries(projectsIndex(locale).categories);
 ---
 
 <div class="project-filters">
-  <span class="filters-label">Filtra per servizio:</span>
-  <!-- Mobile: dropdown (1 riga) -->
-  <select class="filters-select" aria-label="Filtra progetti" data-filters-select>
+  <span class="filters-label">{ui.filterByService}</span>
+  <select class="filters-select" aria-label={ui.filterProjectsAria} data-filters-select>
     {categories.map(([key, label]) => (
       <option value={key} selected={activeCategory === key}>{label}</option>
     ))}

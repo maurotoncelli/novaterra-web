@@ -1,0 +1,23 @@
+---
+// src/pages/servizi.astro
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import ServicesList from '../Components/Services/ServicesList.astro';
+import { getLocale } from '../i18n/config';
+import { servicesIndex } from '../i18n/content';
+
+const page = servicesIndex(getLocale(Astro.url.pathname));
+const servicesHero = page.hero;
+---
+
+<PageTemplate
+  meta={{
+    title: page.meta.title,
+    description: page.meta.description,
+  }}
+  hero={servicesHero}
+>
+  <ServicesList />
+</PageTemplate>
+
+
+

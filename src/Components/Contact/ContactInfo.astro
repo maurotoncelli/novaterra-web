@@ -1,12 +1,16 @@
 ---
 // src/Components/Contact/ContactInfo.astro
-import { contactInfo } from '../../data/contactData';
+import { getLocale } from '../../i18n/config';
+import { chrome, contactContent } from '../../i18n/content';
 
 interface Props {
   showHeading?: boolean;
 }
 
 const { showHeading = true } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const contactInfo = contactContent(locale).info;
 ---
 
 <div class={`contact-info-wrapper ${showHeading ? '' : 'no-heading'}`}>
@@ -22,17 +26,17 @@ const { showHeading = true } = Astro.props;
   
   <div class="contact-details">
     <div class="contact-block">
-      <h3 class="contact-block-title">Azienda</h3>
+      <h3 class="contact-block-title">{ui.company}</h3>
       <p class="contact-block-value font-bold text-white">
         {contactInfo.company.name} <span class="font-normal">{contactInfo.company.owner}</span>
       </p>
       <p class="contact-block-meta">
-        P.IVA {contactInfo.company.vat} · REA {contactInfo.company.rea}
+        {ui.vatLabel} {contactInfo.company.vat} · REA {contactInfo.company.rea}
       </p>
     </div>
 
     <div class="contact-block">
-      <h3 class="contact-block-title">Indirizzo</h3>
+      <h3 class="contact-block-title">{ui.address}</h3>
       <address class="contact-block-value contact-address">
         {contactInfo.address.street}, {contactInfo.address.city}
       </address>
@@ -40,13 +44,13 @@ const { showHeading = true } = Astro.props;
     
     <!-- Nome contatto -->
     <div class="contact-block">
-      <h3 class="contact-block-title">Referente</h3>
+      <h3 class="contact-block-title">{ui.contactPerson}</h3>
       <span class="contact-person-name">{contactInfo.contactPerson}</span>
     </div>
     
     <!-- Telefono (pulsante grande) -->
     <div class="contact-block">
-      <h3 class="contact-block-title">Recapiti</h3>
+      <h3 class="contact-block-title">{ui.contactDetails}</h3>
       <a href={contactInfo.phone.href} class="btn-contact-phone">
         {contactInfo.phone.display}
       </a>

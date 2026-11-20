@@ -1,6 +1,9 @@
 ---
 // src/Components/home/IntroSection.astro
-import { introData } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
+
+const introData = homeContent(getLocale(Astro.url.pathname)).intro;
 ---
 
 <section class="container mx-auto px-[5vw] pt-16 pb-16 relative z-10">

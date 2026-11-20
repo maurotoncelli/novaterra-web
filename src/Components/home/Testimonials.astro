@@ -1,12 +1,17 @@
 ---
-import { testimonials } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
+
+const home = homeContent(getLocale(Astro.url.pathname));
+const testimonials = home.testimonials;
+const testimonialsHeader = home.testimonialsHeader;
 import SectionHeader from '../Ui/SectionHeader.astro';
 ---
 
 <section class="container mx-auto px-[5vw] mt-32 relative z-10">
     
     <!-- Header Standard -->
-    <SectionHeader subtitle="Feedback" title="Dicono di Noi." />
+    <SectionHeader subtitle={testimonialsHeader.subtitle} title={testimonialsHeader.title} />
 
     <!-- TYPEWRITER BOX -->
     <div class="border-l border-nova-accent pl-8 py-4 min-h-[250px] flex flex-col justify-center max-w-[900px] mx-auto reveal-fx">

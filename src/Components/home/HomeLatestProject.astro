@@ -2,26 +2,25 @@
 // src/Components/home/HomeLatestProject.astro
 import SectionHeader from '../Ui/SectionHeader.astro';
 import { getLatestProject } from '../../lib/projectsRepository';
+import { getLocale, pathFor, projectPath } from '../../i18n/config';
+import { chrome, localizeProject } from '../../i18n/content';
 
-const latestProject = await getLatestProject();
-
-function formatItDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const latest = await getLatestProject();
+const latestProject = latest ? localizeProject(latest, locale) : undefined;
 ---
 
 {latestProject && (
   <section class="container mx-auto px-[5vw] mt-32 relative z-10">
-    <SectionHeader subtitle="Realizzazioni" title="Il nostro ultimo lavoro.">
+    <SectionHeader subtitle={ui.latestSubtitle} title={ui.latestTitle}>
       <p class="mt-6 mx-auto text-center text-nova-muted text-[1.05rem] font-light leading-[1.7] max-w-[58ch]">
-        Un'anteprima dal campo: dettagli, contesto e risultati. Sfoglia tutte le realizzazioni per vedere metodi, mezzi e soluzioni applicate ai cantieri.
+        {ui.latestLead}
       </p>
     </SectionHeader>
 
     <article class="latest-project-card reveal-fx">
-      <a class="latest-project-media" href={`/realizzazioni/${latestProject.slug}`} aria-label={`Apri: ${latestProject.title}`}>
+      <a class="latest-project-media" href={projectPath(latestProject.slug, locale)} aria-label={`${ui.openProject} ${latestProject.title}`}>
         <img
           src={latestProject.thumbnail}
           alt={latestProject.title}
@@ -36,9 +35,9 @@ function formatItDate(iso: string): string {
 
       <div class="latest-project-body">
         <div class="latest-project-meta">
-          <span class="latest-project-kicker">Ultimo progetto</span>
+          <span class="latest-project-kicker">{ui.latestKicker}</span>
           <div class="latest-project-dates">
-            <span class="latest-project-year">Anno lavoro {latestProject.year}</span>
+            <span class="latest-project-year">{ui.latestYear} {latestProject.year}</span>
           </div>
         </div>
 
@@ -46,8 +45,8 @@ function formatItDate(iso: string): string {
         <p class="latest-project-excerpt">{latestProject.excerpt}</p>
 
         <div class="latest-project-cta">
-          <a class="btn-minimal" href={`/realizzazioni/${latestProject.slug}`}>Vedi questo progetto →</a>
-          <a class="btn-outline" href="/realizzazioni">Tutte le realizzazioni</a>
+          <a class="btn-minimal" href={projectPath(latestProject.slug, locale)}>{ui.seeThisProject}</a>
+          <a class="btn-outline" href={pathFor("projects", locale)}>{ui.allProjectsShort}</a>
         </div>
       </div>
     </article>

@@ -5,6 +5,8 @@
 import BlogCard from './BlogCard.astro';
 import { getAllPosts } from '../../lib/blogRepository';
 import type { BlogPost, BlogCategory } from '../../data/blogData';
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
 
 interface Props {
   currentSlug: string;
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const { currentSlug, currentCategory, maxItems = 3 } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
 
 // Ottieni tutti i post
 const allPosts = await getAllPosts();
@@ -46,7 +49,7 @@ relatedPosts = relatedPosts.slice(0, maxItems);
 {relatedPosts.length > 0 && (
   <section class="related-articles">
     <div class="related-header">
-      <h2 class="related-title">Potrebbe interessarti anche</h2>
+      <h2 class="related-title">{ui.alsoInterested}</h2>
     </div>
     
     <div class="related-grid">

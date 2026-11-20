@@ -1,18 +1,20 @@
 ---
-import { methodSteps } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
 import SectionHeader from '../Ui/SectionHeader.astro';
+
+const { methodSteps, methodHeader } = homeContent(getLocale(Astro.url.pathname));
 ---
 
 <section class="container mx-auto px-[5vw] mt-16 md:mt-32 pt-10 md:pt-16 relative z-10">
     
     <!-- HEADER DELLA SEZIONE -->
     <SectionHeader 
-        subtitle="Il Processo" 
-        title="Un metodo chiaro,<br>per lavori che funzionano."
+        subtitle={methodHeader.subtitle} 
+        title={methodHeader.title}
     >
-        <!-- QUESTO È IL TESTO CHE MANCAVA -->
         <p class="mt-4 md:mt-6 text-nova-text text-[0.92rem] md:text-[1.1rem] font-light leading-[1.5] md:leading-[1.7]">
-            Novaterra è un’impresa moderna, organizzata e affidabile. Seguiamo ogni progetto con una procedura precisa e trasparente.
+            {methodHeader.lead}
         </p>
     </SectionHeader>
 

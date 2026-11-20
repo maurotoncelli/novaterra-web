@@ -1,5 +1,8 @@
 import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
+import { pages } from '../../i18n/config';
+
+const contactPaths = new Set<string>(Object.values(pages.contact));
 
 // On-demand route (runs on Vercel serverless), not prerendered at build time.
 export const prerender = false;
@@ -22,6 +25,12 @@ function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+function contactReturn(form?: FormData): string {
+  const raw = form ? String(form.get('returnTo') || '') : '';
+  if (contactPaths.has(raw)) return raw;
+  return pages.contact.it;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -36,13 +45,15 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     form = await request.formData();
   } catch {
-    return redirect('/contatti?error=true');
+    return redirect(`${pages.contact.it}?error=true`);
   }
+
+  const back = contactReturn(form);
 
   // Honeypot: se compilato è un bot → fingiamo successo senza inviare.
   const honeypot = (form.get('bot-field') || '').toString().trim();
   if (honeypot) {
-    return redirect('/contatti?success=true');
+    return redirect(`${back}?success=true`);
   }
 
   const name = (form.get('name') || '').toString().trim();
@@ -52,12 +63,12 @@ export const POST: APIRoute = async ({ request }) => {
   const newsletterConsent = form.get('newsletterConsent') != null;
 
   if (!name || !email || !details || !privacyConsent || !isValidEmail(email)) {
-    return redirect('/contatti?error=true');
+    return redirect(`${back}?error=true`);
   }
 
   if (!SMTP_USER || !SMTP_PASS) {
     console.error('[contact] Credenziali SMTP mancanti (SMTP_USER / SMTP_PASS)');
-    return redirect('/contatti?error=true');
+    return redirect(`${back}?error=true`);
   }
 
   const transporter = nodemailer.createTransport({
@@ -103,8 +114,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (err) {
     console.error('[contact] Errore invio SMTP:', err);
-    return redirect('/contatti?error=true');
+    return redirect(`${back}?error=true`);
   }
 
-  return redirect('/contatti?success=true');
+  return redirect(`${back}?success=true`);
 };

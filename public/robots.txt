@@ -5,3 +5,5 @@ Disallow: /keystatic
 Disallow: /keystatic/
 Disallow: /mezzi
 Disallow: /mezzi/
+
+Sitemap: https://novaterra.work/sitemap.xml

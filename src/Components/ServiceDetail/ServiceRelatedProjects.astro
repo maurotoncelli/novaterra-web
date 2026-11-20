@@ -1,25 +1,29 @@
 ---
 import { getProjectsByServices } from '../../lib/projectsRepository';
 import type { ServiceSlug } from '../../data/projectsData';
+import { getLocale, pathFor, projectPath } from '../../i18n/config';
+import { chrome, localizeProject } from '../../i18n/content';
 
 interface Props {
   serviceSlugs: ServiceSlug[];
   title?: string;
 }
 
-const { serviceSlugs, title = 'Realizzazioni correlate' } = Astro.props;
-const projects = await getProjectsByServices(serviceSlugs, 3);
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const { serviceSlugs, title = ui.relatedTitle } = Astro.props;
+const projects = (await getProjectsByServices(serviceSlugs, 3)).map((project) => localizeProject(project, locale));
 ---
 
 <section class="related-projects">
-  <span class="subtitle">Realizzazioni</span>
+  <span class="subtitle">{ui.relatedKicker}</span>
   <h2 class="section-title">{title}</h2>
 
   {projects.length ? (
     <>
       <div class="related-grid">
         {projects.map((p) => (
-          <a class="related-card" href={`/realizzazioni/${p.slug}`}>
+          <a class="related-card" href={projectPath(p.slug, locale)}>
             <div class="related-media">
               <img src={p.thumbnail} alt={p.title} loading="lazy" decoding="async" />
             </div>
@@ -27,7 +31,7 @@ const projects = await getProjectsByServices(serviceSlugs, 3);
               <h3 class="related-title">{p.title}</h3>
               <p class="related-excerpt">{p.excerpt}</p>
               <div class="related-meta">
-                <span class="related-cta">VEDI PROGETTO →</span>
+                <span class="related-cta">{ui.seeProject}</span>
                 <span class="related-year">{p.year}</span>
               </div>
             </div>
@@ -36,11 +40,11 @@ const projects = await getProjectsByServices(serviceSlugs, 3);
       </div>
 
       <div class="related-actions">
-        <a class="all-link" href="/realizzazioni">Vedi tutte le realizzazioni</a>
+        <a class="all-link" href={pathFor("projects", locale)}>{ui.allProjects}</a>
       </div>
     </>
   ) : (
-    <p class="related-empty">Nuove realizzazioni in arrivo.</p>
+    <p class="related-empty">{ui.comingSoon}</p>
   )}
 </section>
 

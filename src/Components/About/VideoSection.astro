@@ -1,6 +1,9 @@
 ---
 // src/Components/About/VideoSection.astro
-import { videoSection } from '../../data/aboutData';
+import { getLocale } from '../../i18n/config';
+import { aboutContent } from '../../i18n/content';
+
+const videoSection = aboutContent(getLocale(Astro.url.pathname)).video;
 ---
 
 <div class="video-presentation">

@@ -1,0 +1,66 @@
+---
+// src/pages/chi-siamo.astro
+import PageTemplate from '../Components/Ui/PageTemplate.astro';
+import BioSection from '../Components/About/BioSection.astro';
+import VideoSection from '../Components/About/VideoSection.astro';
+import Timeline from '../Components/About/Timeline.astro';
+import { getLocale } from '../i18n/config';
+import { aboutContent } from '../i18n/content';
+
+const page = aboutContent(getLocale(Astro.url.pathname));
+const aboutHero = page.hero;
+const ctaSection = page.cta;
+---
+
+<PageTemplate
+  meta={{
+    title: page.meta.title,
+    description: page.meta.description,
+  }}
+  hero={aboutHero}
+>
+  <!-- Bio Section -->
+  <BioSection />
+  
+  <!-- Video Section -->
+  <VideoSection />
+  
+  <!-- Timeline -->
+  <Timeline />
+  
+  <!-- CTA -->
+  <div class="cta-section">
+    <a href={ctaSection.href} class="cta-link">
+      {ctaSection.text}
+    </a>
+  </div>
+</PageTemplate>
+
+<style>
+  .cta-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .cta-link {
+    display: inline-block;
+    padding: 1.2rem 2.5rem;
+    border: 1px solid var(--nova-accent);
+    color: var(--nova-accent);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  
+  .cta-link:hover {
+    background: var(--nova-accent);
+    color: white;
+  }
+</style>
+

@@ -1,0 +1,25 @@
+---
+import LocaleRouter from '../../views/LocaleRouter.astro';
+import { serviceIds, serviceSlug } from '../../i18n/config';
+import { getAllProjectSlugs } from '../../lib/projectsRepository';
+import { getAllPostSlugs } from '../../lib/blogRepository';
+
+export async function getStaticPaths() {
+  const projectSlugs = await getAllProjectSlugs();
+  const postSlugs = await getAllPostSlugs();
+  const rests = [
+    'about',
+    'services',
+    'fleet',
+    'projects',
+    'news',
+    'contact',
+    'privacy',
+    ...serviceIds.map((id) => `services/${serviceSlug[id].en}`),
+    ...projectSlugs.map((slug) => `projects/${slug}`),
+    ...postSlugs.map((slug) => `news/${slug}`),
+  ];
+  return rests.map((slug) => ({ params: { locale: 'en', slug } }));
+}
+---
+<LocaleRouter />

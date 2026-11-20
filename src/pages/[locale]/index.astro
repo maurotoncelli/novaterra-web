@@ -1,0 +1,8 @@
+---
+import LocaleRouter from '../../views/LocaleRouter.astro';
+
+export function getStaticPaths() {
+  return [{ params: { locale: 'en' } }];
+}
+---
+<LocaleRouter />

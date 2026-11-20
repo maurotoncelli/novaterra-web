@@ -1,9 +1,18 @@
 ---
 // src/Components/Navbar.astro
-import { navLinks, navConfig } from '../data/navData';
+import { navConfig } from '../data/navData';
+import { getLocale, pathFor, switchHref } from '../i18n/config';
+import { chrome, navItems } from '../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const links = navItems(locale);
+const homeHref = pathFor("home", locale);
+const itHref = switchHref(Astro.url, "it");
+const enHref = switchHref(Astro.url, "en");
 ---
 <nav class="navbar-main fixed top-0 left-0 w-full px-[5vw] flex justify-between items-center z-[100000] bg-nova-bg backdrop-blur-sm border-b border-white/10 transition-all duration-300">
-    <a href="/" class="logo text-[1.2rem] font-light tracking-[0.05em] uppercase text-white hover:text-nova-accent transition-colors">
+    <a href={homeHref} class="logo text-[1.2rem] font-light tracking-[0.05em] uppercase text-white hover:text-nova-accent transition-colors">
         {navConfig.logo.text}<span class="font-extrabold text-nova-accent">{navConfig.logo.accent}</span>
     </a>
 
@@ -12,27 +21,41 @@ import { navLinks, navConfig } from '../data/navData';
         43° 31' 36" N  10° 40' 54" E
     </div>
 
-    <button id="menu-btn" class="menu-toggle relative text-[0.9rem] uppercase tracking-[0.1em] font-bold text-white hover:text-nova-accent transition-colors px-[10px] py-[10px]">
-        <span id="menu-btn-text">Menu</span>
-    </button>
+    <div class="nav-tools">
+        <nav class="lang-switch" aria-label={ui.langLabel}>
+            <a href={itHref} class:list={["lang-link", { "is-current": locale === "it" }]} hreflang="it" lang="it">IT</a>
+            <span class="lang-sep" aria-hidden="true">/</span>
+            <a href={enHref} class:list={["lang-link", { "is-current": locale === "en" }]} hreflang="en" lang="en">EN</a>
+        </nav>
+        <button id="menu-btn" class="menu-toggle relative text-[0.9rem] uppercase tracking-[0.1em] font-bold text-white hover:text-nova-accent transition-colors px-[10px] py-[10px]">
+            <span id="menu-btn-text" data-open={ui.menu} data-close={ui.close}>{ui.menu}</span>
+        </button>
+    </div>
 </nav>
 
 <div id="nav-overlay" class="fixed inset-0 bg-nova-bg z-[100001] -translate-y-full transition-transform duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)]">
     
     <!-- Navbar dentro overlay -->
     <div class="overlay-navbar fixed top-0 left-0 w-full px-[5vw] flex justify-between items-center border-b border-white/10 z-[100002]">
-        <a href="/" class="logo text-[1.2rem] font-light tracking-[0.05em] uppercase text-white hover:text-nova-accent transition-colors">
+        <a href={homeHref} class="logo text-[1.2rem] font-light tracking-[0.05em] uppercase text-white hover:text-nova-accent transition-colors">
             {navConfig.logo.text}<span class="font-extrabold text-nova-accent">{navConfig.logo.accent}</span>
         </a>
-        <button id="close-menu-btn" class="menu-toggle relative text-[0.9rem] uppercase tracking-[0.1em] font-bold text-white hover:text-nova-accent transition-colors px-[10px] py-[10px]">
-            <span>Chiudi</span>
-        </button>
+        <div class="nav-tools">
+            <nav class="lang-switch" aria-label={ui.langLabel}>
+                <a href={itHref} class:list={["lang-link", { "is-current": locale === "it" }]} hreflang="it" lang="it">IT</a>
+                <span class="lang-sep" aria-hidden="true">/</span>
+                <a href={enHref} class:list={["lang-link", { "is-current": locale === "en" }]} hreflang="en" lang="en">EN</a>
+            </nav>
+            <button id="close-menu-btn" class="menu-toggle relative text-[0.9rem] uppercase tracking-[0.1em] font-bold text-white hover:text-nova-accent transition-colors px-[10px] py-[10px]">
+                <span>{ui.close}</span>
+            </button>
+        </div>
     </div>
     
     <!-- Menu links centrati -->
     <div class="overlay-content flex flex-col items-center justify-center h-full">
         <ul class="text-center space-y-6">
-            {navLinks.map(link => (
+            {links.map(link => (
                 <li class="overflow-hidden">
                     <a href={link.href} class="nav-link inline-block font-light text-[clamp(2rem,4vw,3.5rem)] text-white hover:text-nova-accent transition-all duration-500">
                         {link.label}
@@ -46,7 +69,7 @@ import { navLinks, navConfig } from '../data/navData';
     <div class="overlay-footer fixed bottom-0 left-0 w-full px-[5vw] border-t border-white/10 z-[100002] bg-nova-bg">
         <div class="overlay-footer-inner flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="text-center md:text-left text-nova-muted text-xs">
-                <span>&copy; 2026 Novaterra. P.IVA 02488820503.</span>
+                <span>{ui.legalLine}</span>
             </div>
             <div class="flex gap-6 text-xs">
                 <a href="#" class="hover:text-nova-accent transition-colors text-nova-muted">Instagram</a>
@@ -80,6 +103,40 @@ import { navLinks, navConfig } from '../data/navData';
         /* Keep links centered between overlay top bar and overlay footer */
         padding-top: var(--navbar-height);
         padding-bottom: var(--overlay-footer-height, 88px);
+    }
+
+    .nav-tools {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .lang-switch {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-right: 0.35rem;
+    }
+
+    .lang-link {
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.45);
+        text-decoration: none;
+    }
+
+    .lang-link.is-current {
+        color: var(--nova-accent);
+    }
+
+    .lang-link:hover {
+        color: white;
+    }
+
+    .lang-sep {
+        color: rgba(255, 255, 255, 0.28);
+        font-size: 0.72rem;
     }
 
     .navbar-coords {
@@ -122,7 +179,9 @@ import { navLinks, navConfig } from '../data/navData';
         if (!overlay) return;
         const isActive = overlay.classList.toggle('translate-y-0');
         overlay.classList.toggle('-translate-y-full');
-        if (text) text.textContent = isActive ? 'Chiudi' : 'Menu';
+        if (text?.dataset.open && text.dataset.close) {
+            text.textContent = isActive ? text.dataset.close : text.dataset.open;
+        }
         document.body.style.overflow = isActive ? 'hidden' : '';
     }
 

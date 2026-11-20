@@ -1,6 +1,9 @@
 ---
 // src/Components/About/BioSection.astro
-import { founderBio } from '../../data/aboutData';
+import { getLocale } from '../../i18n/config';
+import { aboutContent } from '../../i18n/content';
+
+const founderBio = aboutContent(getLocale(Astro.url.pathname)).bio;
 ---
 
 <div class="bio-layout">

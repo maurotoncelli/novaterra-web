@@ -1,5 +1,8 @@
 ---
 // src/Components/ServiceDetail/ServiceGalleryScroller.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   title: string;
   images: Array<{
@@ -12,6 +15,12 @@ interface Props {
 }
 
 const { title, images } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
+const openImageLabel = (index: number, alt: string) =>
+  ui.openImage
+    .replace("{index}", String(index))
+    .replace("{total}", String(images.length))
+    .replace("{alt}", alt);
 ---
 
 {images.length > 0 && (
@@ -23,7 +32,7 @@ const { title, images } = Astro.props;
       <button
         type="button"
         class="gallery-nav gallery-nav--left"
-        aria-label="Scorri galleria a sinistra"
+        aria-label={ui.galleryPrev}
         data-gallery-nav="left"
       >
         <span class="gallery-nav__inner">
@@ -41,7 +50,7 @@ const { title, images } = Astro.props;
             <button
               type="button"
               class={`gallery-item ${aspect === "portrait" ? "is-portrait" : "is-landscape"}`}
-              aria-label={`Apri immagine ${index + 1} di ${images.length}: ${image.alt}`}
+              aria-label={openImageLabel(index + 1, image.alt)}
               data-index={index}
             >
               <img
@@ -60,7 +69,7 @@ const { title, images } = Astro.props;
       <button
         type="button"
         class="gallery-nav gallery-nav--right"
-        aria-label="Scorri galleria a destra"
+        aria-label={ui.galleryNext}
         data-gallery-nav="right"
       >
         <span class="gallery-nav__inner">

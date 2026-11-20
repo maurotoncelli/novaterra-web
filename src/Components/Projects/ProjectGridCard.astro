@@ -1,15 +1,19 @@
 ---
 import type { Project } from '../../data/projectsData';
+import { getLocale, projectPath } from '../../i18n/config';
+import { chrome, localizeProject } from '../../i18n/content';
 
 interface Props {
   project: Project;
 }
 
-const { project } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const project = localizeProject(Astro.props.project, locale);
 const categories = [...new Set([project.category, ...(project.services ?? [])])].join(" ");
 ---
 
-<a href={`/realizzazioni/${project.slug}`} class="project-item grid-card" data-category={project.category} data-categories={categories}>
+<a href={projectPath(project.slug, locale)} class="project-item grid-card" data-category={project.category} data-categories={categories}>
   <div class="grid-media">
     <img
       src={project.thumbnail}
@@ -24,7 +28,7 @@ const categories = [...new Set([project.category, ...(project.services ?? [])])]
     <h3 class="grid-title">{project.title}</h3>
     <p class="grid-excerpt">{project.excerpt}</p>
     <div class="grid-meta">
-      <span class="grid-cta">VEDI PROGETTO →</span>
+      <span class="grid-cta">{ui.seeProject}</span>
       <span class="grid-year">{project.year}</span>
     </div>
   </div>

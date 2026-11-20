@@ -1,5 +1,8 @@
 ---
 // src/Components/Projects/ProjectVideo.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   videoType: "youtube" | "vimeo" | "mp4";
   videoUrl: string;
@@ -7,7 +10,8 @@ interface Props {
   title?: string;
 }
 
-const { videoType, videoUrl, thumbnail, title = "Video Cantiere" } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
+const { videoType, videoUrl, thumbnail, title = ui.siteVideo } = Astro.props;
 
 // Converti URL in embed URL per YouTube/Vimeo
 let embedUrl: string | undefined;
@@ -49,7 +53,7 @@ if (videoType === "youtube") {
         preload="metadata"
       >
         <source src={videoUrl} type="video/mp4" />
-        Il tuo browser non supporta il tag video.
+        {ui.videoUnsupported}
       </video>
     </div>
   )}
@@ -60,8 +64,8 @@ if (videoType === "youtube") {
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         </svg>
-        <p>Video Cantiere</p>
-        <span class="placeholder-hint">Il video verrà caricato dal cliente tramite WordPress</span>
+        <p>{title}</p>
+        <span class="placeholder-hint">{ui.videoPending}</span>
       </div>
     </div>
   )}

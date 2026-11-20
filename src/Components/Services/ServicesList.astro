@@ -1,6 +1,13 @@
 ---
 // src/Components/Services/ServicesList.astro
-import { servicesIntro, servicesList } from '../../data/servicesData';
+import { getLocale } from '../../i18n/config';
+import { chrome, servicesIndex } from '../../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const page = servicesIndex(locale);
+const servicesIntro = page.intro;
+const servicesList = page.list;
+const ui = chrome(locale);
 ---
 
 <div class="services-section">
@@ -28,7 +35,7 @@ import { servicesIntro, servicesList } from '../../data/servicesData';
               <span class="service-symbol">{service.symbol}</span>
               <h3 class="service-title">{service.title}</h3>
             </div>
-            <span class="service-arrow">DETTAGLI →</span>
+            <span class="service-arrow">{ui.details}</span>
           </div>
         </a>
       </li>

@@ -1,5 +1,8 @@
 ---
 // src/Components/Projects/ProjectSpecs.astro
+import { getLocale } from '../../i18n/config';
+import { chrome } from '../../i18n/content';
+
 interface Props {
   client: string;
   location: string;
@@ -8,23 +11,24 @@ interface Props {
 }
 
 const { client, location, year, service } = Astro.props;
+const ui = chrome(getLocale(Astro.url.pathname));
 ---
 
 <div class="project-specs">
   <div class="spec-item">
-    <span class="spec-label">Cliente</span>
+    <span class="spec-label">{ui.client}</span>
     <span class="spec-value">{client}</span>
   </div>
   <div class="spec-item">
-    <span class="spec-label">Luogo</span>
+    <span class="spec-label">{ui.place}</span>
     <span class="spec-value">{location}</span>
   </div>
   <div class="spec-item">
-    <span class="spec-label">Anno</span>
+    <span class="spec-label">{ui.year}</span>
     <span class="spec-value">{year}</span>
   </div>
   <div class="spec-item">
-    <span class="spec-label">Servizio</span>
+    <span class="spec-label">{ui.service}</span>
     <span class="spec-value">{service}</span>
   </div>
 </div>

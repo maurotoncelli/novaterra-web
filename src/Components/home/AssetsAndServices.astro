@@ -1,13 +1,16 @@
 ---
-import { assets } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
 import SectionHeader from '../Ui/SectionHeader.astro';
+
+const { assets, assetsHeader } = homeContent(getLocale(Astro.url.pathname));
 ---
 
 <!-- 1. ASSETS (3 Pilastri) -->
 <section class="container mx-auto px-[5vw] mt-16 md:mt-32 mb-16 md:mb-24 relative z-10">
     
     <!-- Header Standard -->
-    <SectionHeader subtitle="Asset" title="Le Fondamenta." />
+    <SectionHeader subtitle={assetsHeader.subtitle} title={assetsHeader.title} />
 
     <div class="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-8 reveal-fx">
         {assets.map(asset => (

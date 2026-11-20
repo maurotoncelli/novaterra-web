@@ -1,0 +1,30 @@
+---
+import { getLocale, resolveLocalePath } from '../i18n/config';
+import HomePage from './HomePage.astro';
+import AboutPage from './AboutPage.astro';
+import ServicesPage from './ServicesPage.astro';
+import ServicePage from './ServicePage.astro';
+import FleetPage from './FleetPage.astro';
+import ProjectsPage from './ProjectsPage.astro';
+import ProjectPage from './ProjectPage.astro';
+import BlogPage from './BlogPage.astro';
+import ArticlePage from './ArticlePage.astro';
+import ContactPage from './ContactPage.astro';
+import PrivacyPage from './PrivacyPage.astro';
+
+const locale = getLocale(Astro.url.pathname);
+const parts = Astro.url.pathname.split('/').filter(Boolean);
+if (locale !== 'it') parts.shift();
+const route = resolveLocalePath(locale, parts.length ? parts.join('/') : undefined);
+---
+{route?.kind === 'home' && <HomePage />}
+{route?.kind === 'about' && <AboutPage />}
+{route?.kind === 'services' && <ServicesPage />}
+{route?.kind === 'service' && <ServicePage />}
+{route?.kind === 'fleet' && <FleetPage />}
+{route?.kind === 'projects' && <ProjectsPage />}
+{route?.kind === 'project' && <ProjectPage />}
+{route?.kind === 'news' && <BlogPage />}
+{route?.kind === 'article' && <ArticlePage />}
+{route?.kind === 'contact' && <ContactPage />}
+{route?.kind === 'privacy' && <PrivacyPage />}

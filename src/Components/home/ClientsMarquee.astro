@@ -1,6 +1,10 @@
 ---
 import { clients } from '../../data/homeContent';
+import { getLocale } from '../../i18n/config';
+import { homeContent } from '../../i18n/content';
 import SectionHeader from '../Ui/SectionHeader.astro';
+
+const clientsHeader = homeContent(getLocale(Astro.url.pathname)).clientsHeader;
 
 const loop = [...clients, ...clients, ...clients, ...clients];
 const infiniteClients = [...loop, ...loop]; 
@@ -9,7 +13,7 @@ const infiniteClients = [...loop, ...loop];
 <section class="py-32 relative z-10 overflow-hidden bg-nova-bg">
     
     <div class="px-[5vw]">
-        <SectionHeader subtitle="Fiducia" title="Clienti & Partner" />
+        <SectionHeader subtitle={clientsHeader.subtitle} title={clientsHeader.title} />
     </div>
 
     <!-- WRAPPER SCROLL -->

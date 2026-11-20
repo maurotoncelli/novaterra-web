@@ -1,14 +1,18 @@
 ---
 // src/Components/home/HomeServices.astro
-import { homeServices } from '../../data/homeContent';
-import { servicesList } from '../../data/servicesData';
+import { getLocale } from '../../i18n/config';
+import { chrome, homeContent, servicesIndex } from '../../i18n/content';
 import SectionHeader from '../Ui/SectionHeader.astro';
 
-const imageBySlug = new Map(servicesList.map((s) => [s.slug, s.image]));
+const locale = getLocale(Astro.url.pathname);
+const home = homeContent(locale);
+const ui = chrome(locale);
+const homeServices = home.services;
+const imageBySlug = new Map(servicesIndex(locale).list.map((service) => [service.slug, service.image]));
 ---
 
 <section class="container mx-auto px-[5vw] pb-10 md:pb-16 relative z-10">
-  <SectionHeader subtitle="Cosa Facciamo" title="Ingegneria del Paesaggio" />
+  <SectionHeader subtitle={home.servicesHeader.subtitle} title={home.servicesHeader.title} />
 
   <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-white/10 border border-white/10 reveal-fx">
     {homeServices.map((srv) => {
@@ -38,7 +42,7 @@ const imageBySlug = new Map(servicesList.map((s) => [s.slug, s.image]));
             {srv.num} / {srv.title}
           </span>
           <span class="hidden md:inline-block text-[0.75rem] font-bold tracking-[0.1em] text-nova-muted group-hover:text-white transition-colors uppercase">
-            APPROFONDISCI &rarr;
+            {ui.learnMore}
           </span>
         </a>
       );

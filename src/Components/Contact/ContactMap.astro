@@ -1,6 +1,11 @@
 ---
 // src/Components/Contact/ContactMap.astro
-import { contactInfo } from '../../data/contactData';
+import { getLocale } from '../../i18n/config';
+import { chrome, contactContent } from '../../i18n/content';
+
+const locale = getLocale(Astro.url.pathname);
+const ui = chrome(locale);
+const contactInfo = contactContent(locale).info;
 ---
 
 <div class="map-wrapper">
@@ -14,15 +19,15 @@ import { contactInfo } from '../../data/contactData';
   >
     <div class="map-fallback" id="contact-map-fallback">
       <div class="map-fallback-inner">
-        <div class="map-fallback-kicker">Mappa</div>
-        <div class="map-fallback-title">Caricamento in corso…</div>
+        <div class="map-fallback-kicker">{ui.map}</div>
+        <div class="map-fallback-title">{ui.mapLoading}</div>
         <a
           class="map-fallback-link"
           href={`https://www.google.com/maps?q=${contactInfo.address.street}, ${contactInfo.address.city}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Apri su Google Maps →
+          {ui.openMaps}
         </a>
       </div>
     </div>
