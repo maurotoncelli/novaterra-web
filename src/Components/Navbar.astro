@@ -63,6 +63,11 @@ const enHref = switchHref(Astro.url, "en");
                 </li>
             ))}
         </ul>
+        <nav class="lang-menu" aria-label={ui.langLabel}>
+            <a href={itHref} class:list={["lang-link", { "is-current": locale === "it" }]} hreflang="it" lang="it">IT</a>
+            <span class="lang-sep" aria-hidden="true">/</span>
+            <a href={enHref} class:list={["lang-link", { "is-current": locale === "en" }]} hreflang="en" lang="en">EN</a>
+        </nav>
     </div>
 
     <!-- Footer dentro overlay -->
@@ -139,6 +144,10 @@ const enHref = switchHref(Astro.url, "en");
         font-size: 0.72rem;
     }
 
+    .lang-menu {
+        display: none;
+    }
+
     .navbar-coords {
         position: absolute;
         left: 50%;
@@ -166,6 +175,34 @@ const enHref = switchHref(Astro.url, "en");
 
         /* Avoid overlap on small screens */
         .navbar-coords { display: none; }
+
+        .navbar-main .lang-switch,
+        .overlay-navbar .lang-switch {
+            display: none;
+        }
+
+        .lang-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2.75rem;
+        }
+
+        .lang-menu .lang-link,
+        .lang-menu .lang-sep {
+            font-size: 1.15rem;
+            letter-spacing: 0.2em;
+        }
+
+        .lang-menu .lang-link {
+            padding: 0.65rem 0.35rem;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .lang-menu .lang-link.is-current {
+            color: var(--nova-accent);
+        }
     }
 </style>
 
